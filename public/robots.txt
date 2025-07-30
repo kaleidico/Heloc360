@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://heloc360.com/sitemap.xml
+
+# Block access to admin areas (if any)
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+
+# Allow important pages
+Allow: /heloc-101
+Allow: /calculators/
+Allow: /about
+Allow: /blog/
+Allow: /contact

@@ -1,0 +1,128 @@
+{
+  "companyInfo": {
+    "tagline": "Your trusted partner in turning home equity into opportunity",
+    "callToAction": "Make the smart move.",
+    "description": "HELOC360 equips you with the essential tools to secure the ideal loan. HELOC360 is provided by the friendly folks at My Perfect Leads, LLC.",
+    "legalDisclaimer": "This is not an offer to enter into an agreement. Not all customers will qualify. Information, rates and programs are subject to change without notice. All products are subject to credit and property approval. Other restrictions and limitations may apply. Equal Housing Opportunity."
+  },
+  "socialMedia": [
+    {
+      "label": "Facebook",
+      "url": "#",
+      "icon": "Facebook"
+    },
+    {
+      "label": "Twitter",
+      "url": "#",
+      "icon": "Twitter"
+    },
+    {
+      "label": "LinkedIn",
+      "url": "#",
+      "icon": "Linkedin"
+    },
+    {
+      "label": "Email",
+      "url": "mailto:info@heloc360.com",
+      "icon": "Mail"
+    }
+  ],
+  "learnMore": [
+    {
+      "label": "HELOC 101",
+      "url": "/heloc-101",
+      "type": "text",
+      "icon": "BookOpen"
+    },
+    {
+      "label": "HELOC Fundamentals",
+      "url": "/blog/heloc-fundamentals",
+      "type": "text",
+      "icon": "School"
+    },
+    {
+      "label": "Tips & Success Stories",
+      "url": "/blog/tips-success-stories",
+      "type": "text",
+      "icon": "Star"
+    },
+    {
+      "label": "Smart Equity Strategies",
+      "url": "/blog/smart-equity-strategies",
+      "type": "text",
+      "icon": "Lightbulb"
+    }
+  ],
+  "tools": [
+    {
+      "label": "Debt Consolidation Calculator",
+      "url": "/calculators/debt-consolidation",
+      "type": "text",
+      "icon": "Calculator"
+    },
+    {
+      "label": "Home Equity Estimator",
+      "url": "/calculators/home-equity",
+      "type": "text",
+      "icon": "CircleEqual"
+    },
+    {
+      "label": "All Calculators",
+      "url": "/calculators",
+      "type": "text",
+      "icon": "List"
+    }
+  ],
+  "aboutUs": [
+    {
+      "label": "Our Story",
+      "url": "/about",
+      "type": "text",
+      "icon": "Info"
+    },
+    {
+      "label": "Meet the Team",
+      "url": "/about#team",
+      "type": "text",
+      "icon": "Users"
+    },
+    {
+      "label": "Contact Us",
+      "url": "/contact",
+      "type": "text",
+      "icon": "Mail"
+    },
+    {
+      "label": "Blog",
+      "url": "/blog",
+      "type": "text",
+      "icon": "Notebook"
+    }
+  ],
+  "bottomFooterRow": [
+    {
+      "label": "Privacy Policy",
+      "url": "/privacy",
+      "type": "text",
+      "icon": null
+    },
+    {
+      "label": "Terms of Use",
+      "url": "/terms",
+      "type": "text",
+      "icon": null
+    },
+    {
+      "label": "Affiliate Disclosure",
+      "url": "/affiliate-disclosure",
+      "type": "text",
+      "icon": null
+    },
+    {
+      "label": "Communication Consent",
+      "url": "/communication-consent",
+      "type": "text",
+      "icon": null
+    }
+  ]
+}
