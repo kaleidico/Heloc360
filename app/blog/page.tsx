@@ -1,12 +1,25 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, Suspense } from "react"
 import { Button } from "@/components/ui/button"
-import BlogCard from "@/components/blog/blog-card"
-import BlogSearch from "@/components/blog/blog-search"
-import BlogPagination from "@/components/blog/blog-pagination"
+import dynamic from "next/dynamic"
 import { blogPosts } from "@/data/blog-posts"
 import Link from "next/link"
+
+const BlogCard = dynamic(() => import("@/components/blog/blog-card"), {
+  loading: () => <div className="animate-pulse bg-gray-200 h-64 rounded-lg"></div>,
+  ssr: true
+})
+
+const BlogSearch = dynamic(() => import("@/components/blog/blog-search"), {
+  loading: () => <div className="animate-pulse bg-gray-200 h-12 rounded-lg"></div>,
+  ssr: true
+})
+
+const BlogPagination = dynamic(() => import("@/components/blog/blog-pagination"), {
+  loading: () => <div className="animate-pulse bg-gray-200 h-12 rounded-lg"></div>,
+  ssr: true
+})
 
 // Note: Since this is a client component, we'll handle metadata differently
 // In a real app, you'd want to make this a server component or use generateMetadata

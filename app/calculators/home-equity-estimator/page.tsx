@@ -1,6 +1,13 @@
 import type { Metadata } from "next"
+import dynamic from "next/dynamic"
 import SEOHead from "@/components/seo-head"
-import HomeEquityEstimatorCalculator from "@/components/calculators/home-equity-estimator-calculator"
+
+const HomeEquityEstimatorCalculator = dynamic(
+  () => import("@/components/calculators/home-equity-estimator-calculator"),
+  {
+    loading: () => <div className="flex justify-center items-center h-64"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div></div>
+  }
+)
 
 export const metadata: Metadata = {
   title: "Home Equity Estimator Calculator | HELOC360",

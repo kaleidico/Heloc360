@@ -90,7 +90,10 @@ const config: Config = {
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
   			'accordion-up': 'accordion-up 0.2s ease-out'
-  		}
+  		},
+        lineHeight: {
+            'extra-loose': '1.3',
+        },
   	}
   },
   plugins: [require("tailwindcss-animate")],

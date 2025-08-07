@@ -4,12 +4,19 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
-import ScrollToTop from "@/components/scroll-to-top"
+import dynamic from "next/dynamic"
+import TrackingProvider from "@/components/tracking-provider"
+
+const ScrollToTop = dynamic(() => import("@/components/scroll-to-top"), {
+  loading: () => null,
+})
 
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-inter",
+  preload: true,
+  fallback: ['system-ui', 'arial'],
 })
 
 export const viewport: Viewport = {
@@ -197,13 +204,16 @@ export default function RootLayout({
         <Header />
 
         <main id="main-content" className="min-h-screen">
-          {children}
+          <TrackingProvider>
+            {children}
+          </TrackingProvider>
         </main>
 
         <Footer />
 
         {/* Google Analytics - Replace with your GA4 ID */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID" />
+        {/* Temporarily disabled for performance optimization */}
+        {/* <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID" />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -216,7 +226,7 @@ export default function RootLayout({
               });
             `,
           }}
-        />
+        /> */}
       </body>
     </html>
   )
