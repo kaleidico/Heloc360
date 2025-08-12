@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { CheckCircle, Home, Users, Shield, Clock } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 import HomeFAQ from "@/components/home-faq"
 import type { Metadata } from "next"
 
@@ -49,8 +50,9 @@ export default function HomePage() {
             size="lg"
             className="bg-[#02c39a] hover:bg-[#00a896] text-white px-8 py-3 text-lg rounded-lg"
             aria-label="Get pre-qualified for a HELOC - Free and confidential"
+            asChild
           >
-            Get Pre-Qualified
+            <Link href="/get-started">Get Pre-Qualified</Link>
           </Button>
           <p className="text-sm mt-4 opacity-90">
             At HELOC360, we simplify the process, empower you with knowledge, and connect you with lenders tailored to

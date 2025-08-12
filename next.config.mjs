@@ -48,6 +48,7 @@ const nextConfig = {
     }
     return config
   },
+  // Redirects for legacy slugs are handled dynamically in app/[slug]/page.tsx
 }
 
 export default nextConfig
