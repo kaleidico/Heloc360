@@ -18,43 +18,49 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
   const [activeId, setActiveId] = useState<string>("")
 
   useEffect(() => {
-    // Extract headings from content
-    const tempDiv = document.createElement("div")
-    tempDiv.innerHTML = content
-
-    const headings = tempDiv.querySelectorAll("h2, h3, h4")
+    // Extract headings from markdown content
+    const lines = content.split('\n')
     const items: TOCItem[] = []
+    let index = 0
 
-    headings.forEach((heading, index) => {
-      const id = heading.id || `heading-${index}`
-      const text = heading.textContent || ""
-      const level = Number.parseInt(heading.tagName.charAt(1))
-
-      // Ensure heading has an ID for linking
-      if (!heading.id) {
-        heading.id = id
+    lines.forEach((line) => {
+      const trimmedLine = line.trim()
+      
+      // Check for markdown headings (# ## ### ####)
+      if (trimmedLine.startsWith('#')) {
+        const level = trimmedLine.match(/^#+/)?.[0].length || 2
+        if (level >= 2 && level <= 4) {
+          const text = trimmedLine.replace(/^#+\s*/, '').trim()
+          const id = `heading-${index}`
+          
+          items.push({ id, text, level })
+          index++
+        }
       }
-
-      items.push({ id, text, level })
     })
 
     setTocItems(items)
 
-    // Set up intersection observer for active heading
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id)
-          }
-        })
-      },
-      { rootMargin: "-20% 0% -35% 0%" },
-    )
+    // Set up intersection observer for active heading after content renders
+    const timer = setTimeout(() => {
+      const headings = document.querySelectorAll("h2, h3, h4")
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setActiveId(entry.target.id)
+            }
+          })
+        },
+        { rootMargin: "-20% 0% -35% 0%" },
+      )
 
-    headings.forEach((heading) => observer.observe(heading))
+      headings.forEach((heading) => observer.observe(heading))
 
-    return () => observer.disconnect()
+      return () => observer.disconnect()
+    }, 100)
+
+    return () => clearTimeout(timer)
   }, [content])
 
   const scrollToHeading = (id: string) => {

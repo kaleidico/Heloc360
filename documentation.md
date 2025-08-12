@@ -433,6 +433,12 @@ NODE_ENV=development
 # Production
 NODE_ENV=production
 NEXT_PUBLIC_HCAPTCHA_SITE_KEY=your_site_key_here
+
+# Contentful (Blog)
+CONTENTFUL_SPACE_ID=your_space_id
+CONTENTFUL_ENVIRONMENT=master
+CONTENTFUL_ACCESS_TOKEN=your_cda_access_token
+CONTENTFUL_HOST=cdn.contentful.com
 ```
 
 ### Build Configuration

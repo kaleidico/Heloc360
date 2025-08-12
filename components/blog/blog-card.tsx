@@ -37,9 +37,6 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
             Featured
           </div>
         )}
-        <div className="absolute top-4 right-4 bg-[#02c39a] text-white px-3 py-1 rounded-full text-sm font-medium">
-          {post.category}
-        </div>
       </div>
 
       <CardHeader className="flex-shrink-0">

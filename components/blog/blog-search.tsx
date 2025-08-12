@@ -3,7 +3,6 @@ import { Search, X } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { blogCategories } from "@/data/blog-posts"
 
 interface BlogSearchProps {
   searchTerm: string
@@ -14,6 +13,7 @@ interface BlogSearchProps {
   onTagChange: (tag: string) => void
   onClearFilters: () => void
   availableTags: string[]
+  categories?: { id: string; name: string }[]
 }
 
 export default function BlogSearch({
@@ -25,9 +25,11 @@ export default function BlogSearch({
   onTagChange,
   onClearFilters,
   availableTags,
+  categories,
 }: BlogSearchProps) {
   const hasActiveFilters = searchTerm || selectedCategory || selectedTag
   const activeFilterCount = [searchTerm, selectedCategory, selectedTag].filter(Boolean).length
+  const categoryList = categories || []
 
   return (
     <div className="mb-8">
@@ -48,13 +50,13 @@ export default function BlogSearch({
         {/* Filters */}
         <div className="flex flex-col sm:flex-row gap-3 lg:gap-2">
           {/* Category Filter */}
-          <Select value={selectedCategory} onValueChange={onCategoryChange}>
+          <Select value={selectedCategory || 'all'} onValueChange={onCategoryChange}>
             <SelectTrigger className="w-full sm:w-[180px] border-gray-200">
               <SelectValue placeholder="Category" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Categories</SelectItem>
-              {blogCategories.map((category) => (
+              {categoryList.map((category) => (
                 <SelectItem key={category.id} value={category.name}>
                   {category.name}
                 </SelectItem>
@@ -63,7 +65,7 @@ export default function BlogSearch({
           </Select>
 
           {/* Tag Filter */}
-          <Select value={selectedTag} onValueChange={onTagChange}>
+          <Select value={selectedTag || 'all'} onValueChange={onTagChange}>
             <SelectTrigger className="w-full sm:w-[140px] border-gray-200">
               <SelectValue placeholder="Tag" />
             </SelectTrigger>

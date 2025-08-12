@@ -116,6 +116,12 @@ NEXT_PUBLIC_HCAPTCHA_SITE_KEY=your_hcaptcha_site_key_here
 
 # Webhook URL (already configured)
 WEBHOOK_URL=https://webhooks-listener-woad.vercel.app/api/webhook/f129713b-67b2-4302-9ca0-b2884e21d682
+
+# Contentful (Blog)
+CONTENTFUL_SPACE_ID=your_space_id
+CONTENTFUL_ENVIRONMENT=master
+CONTENTFUL_ACCESS_TOKEN=your_cda_access_token
+CONTENTFUL_HOST=cdn.contentful.com
 ```
 
 ## 🎯 Usage
