@@ -4,6 +4,7 @@ import { CheckCircle, Users, Target, Shield, Heart, Award, TrendingUp, Home } fr
 import Image from "next/image"
 import Link from "next/link"
 import type { Metadata } from "next"
+import { getAllTeamMembers } from "@/lib/contentful"
 
 export const metadata: Metadata = {
   title: "About HELOC360 - Your Trusted Home Equity Partner",
@@ -13,42 +14,6 @@ export const metadata: Metadata = {
     canonical: "https://heloc360.com/about",
   },
 }
-
-// Placeholder team data - will be replaced with Contentful data
-const teamMembers = [
-  {
-    id: 1,
-    name: "Sarah Johnson",
-    title: "CEO & Founder",
-    bio: "With over 15 years in mortgage lending, Sarah founded HELOC360 to make home equity accessible to all homeowners.",
-    image: "/placeholder.svg?height=300&width=300&text=Sarah+Johnson",
-    linkedin: "#",
-  },
-  {
-    id: 2,
-    name: "Michael Chen",
-    title: "Head of Lending Operations",
-    bio: "Michael brings 12 years of experience in financial services, specializing in home equity products and lender relations.",
-    image: "/placeholder.svg?height=300&width=300&text=Michael+Chen",
-    linkedin: "#",
-  },
-  {
-    id: 3,
-    name: "Emily Rodriguez",
-    title: "Customer Success Director",
-    bio: "Emily ensures every customer has an exceptional experience, from initial consultation through loan closing.",
-    image: "/placeholder.svg?height=300&width=300&text=Emily+Rodriguez",
-    linkedin: "#",
-  },
-  {
-    id: 4,
-    name: "David Thompson",
-    title: "Technology Director",
-    bio: "David leads our technology initiatives, creating tools and platforms that simplify the HELOC process for customers.",
-    image: "/placeholder.svg?height=300&width=300&text=David+Thompson",
-    linkedin: "#",
-  },
-]
 
 const companyStats = [
   {
@@ -73,7 +38,10 @@ const companyStats = [
   },
 ]
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  // Fetch team members from Contentful
+  const teamMembers = await getAllTeamMembers()
+
   return (
     <>
       {/* Hero Section */}
@@ -266,35 +234,114 @@ export default function AboutPage() {
               <p className="text-lg text-gray-600">The experts dedicated to helping you unlock your home's potential</p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {teamMembers.map((member) => (
-                <Link key={member.id} href={`/meet-our-team/${member.name.toLowerCase().replace(" ", "-")}`}>
-                  <Card className="text-center hover:shadow-lg transition-all duration-200 cursor-pointer group h-full flex flex-col">
-                    <CardHeader className="flex-shrink-0">
-                      <div className="relative w-32 h-32 mx-auto mb-4">
-                        <Image
-                          src={member.image || "/placeholder.svg"}
-                          alt={`${member.name} - ${member.title}`}
-                          fill
-                          className="rounded-full object-cover group-hover:scale-105 transition-transform duration-200"
-                        />
-                      </div>
-                      <CardTitle className="text-xl text-[#1b75bc] group-hover:text-[#02c39a] transition-colors h-14 flex items-center justify-center">
-                        {member.name}
-                      </CardTitle>
-                      <p className="text-[#02c39a] font-medium h-6 flex items-center justify-center">{member.title}</p>
-                    </CardHeader>
-                    <CardContent className="flex-1 flex flex-col justify-between pt-0">
-                      <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-4">{member.bio}</p>
-                      <div className="inline-flex items-center text-[#1b75bc] group-hover:text-[#02c39a] transition-colors text-sm font-medium justify-center">
-                        <Users className="w-4 h-4 mr-2" />
-                        Learn More
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
-              ))}
-            </div>
+            {teamMembers.length > 0 ? (
+              <>
+                {/* Leadership & Management */}
+                <div className="mb-12">
+                  <h3 className="text-2xl font-bold text-[#1b75bc] mb-8 text-center">Leadership & Management</h3>
+                  <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    {teamMembers
+                      .filter(member => 
+                        member.title?.toLowerCase().includes('ceo') ||
+                        member.title?.toLowerCase().includes('founder') ||
+                        member.title?.toLowerCase().includes('content studio director') ||
+                        member.title?.toLowerCase().includes('senior account manager')
+                      )
+                      .sort((a, b) => {
+                        const order = ['ceo', 'founder', 'content studio director', 'senior account manager'];
+                        const aIndex = order.findIndex(role => a.title?.toLowerCase().includes(role));
+                        const bIndex = order.findIndex(role => b.title?.toLowerCase().includes(role));
+                        return aIndex - bIndex;
+                      })
+                      .map((member) => (
+                        <Link key={member.id} href={`/meet-our-team/${member.slug}`}>
+                          <Card className="text-center hover:shadow-lg transition-all duration-200 cursor-pointer group h-full flex flex-col">
+                            <CardHeader className="flex-shrink-0">
+                              <div className="relative w-32 h-32 mx-auto mb-4">
+                                <Image
+                                  src={member.image || "/placeholder.svg"}
+                                  alt={`${member.name} - ${member.title || 'Team Member'}`}
+                                  fill
+                                  className="rounded-full object-cover group-hover:scale-105 transition-transform duration-200"
+                                />
+                              </div>
+                              <CardTitle className="text-xl text-[#1b75bc] group-hover:text-[#02c39a] transition-colors h-14 flex items-center justify-center">
+                                {member.name}
+                              </CardTitle>
+                              <p className="text-[#02c39a] font-medium h-6 flex items-center justify-center">{member.title}</p>
+                            </CardHeader>
+                            <CardContent className="flex-1 flex flex-col justify-between pt-0">
+                              <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-4">{member.bio}</p>
+                              <div className="inline-flex items-center text-[#1b75bc] group-hover:text-[#02c39a] transition-colors text-sm font-medium justify-center">
+                                <Users className="w-4 h-4 mr-2" />
+                                Learn More
+                              </div>
+                            </CardContent>
+                          </Card>
+                        </Link>
+                      ))}
+                  </div>
+                </div>
+
+                {/* Contributors */}
+                {teamMembers.filter(member => 
+                  !member.title?.toLowerCase().includes('ceo') &&
+                  !member.title?.toLowerCase().includes('founder') &&
+                  !member.title?.toLowerCase().includes('content studio director') &&
+                  !member.title?.toLowerCase().includes('senior account manager')
+                ).length > 0 && (
+                  <div>
+                    <h3 className="text-2xl font-bold text-[#1b75bc] mb-8 text-center">Contributors</h3>
+                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                      {teamMembers
+                        .filter(member => 
+                          !member.title?.toLowerCase().includes('ceo') &&
+                          !member.title?.toLowerCase().includes('founder') &&
+                          !member.title?.toLowerCase().includes('content studio director') &&
+                          !member.title?.toLowerCase().includes('senior account manager')
+                        )
+                        .map((member) => (
+                          <Link key={member.id} href={`/meet-our-team/${member.slug}`}>
+                            <Card className="text-center hover:shadow-lg transition-all duration-200 cursor-pointer group h-full flex flex-col">
+                              <CardHeader className="flex-shrink-0">
+                                <div className="relative w-32 h-32 mx-auto mb-4">
+                                  <Image
+                                    src={member.image || "/placeholder.svg"}
+                                    alt={`${member.name} - ${member.title || 'Team Member'}`}
+                                    fill
+                                    className="rounded-full object-cover group-hover:scale-105 transition-transform duration-200"
+                                  />
+                                </div>
+                                <CardTitle className="text-xl text-[#1b75bc] group-hover:text-[#02c39a] transition-colors h-14 flex items-center justify-center">
+                                  {member.name}
+                                </CardTitle>
+                                <p className="text-[#02c39a] font-medium h-6 flex items-center justify-center">{member.title}</p>
+                              </CardHeader>
+                              <CardContent className="flex-1 flex flex-col justify-between pt-0">
+                                <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-4">{member.bio}</p>
+                                <div className="inline-flex items-center text-[#1b75bc] group-hover:text-[#02c39a] transition-colors text-sm font-medium justify-center">
+                                  <Users className="w-4 h-4 mr-2" />
+                                  Learn More
+                                </div>
+                              </CardContent>
+                            </Card>
+                          </Link>
+                        ))}
+                    </div>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="text-center py-12">
+                <div className="text-gray-500 mb-4">
+                  <Users className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">Team information coming soon</h3>
+                <p className="text-gray-600 mb-6">
+                  We're currently setting up our team profiles. Check back soon to meet our experts.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </section>

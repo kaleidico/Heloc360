@@ -33,6 +33,31 @@ type BlogPostFields = {
   featureImage?: ContentfulSysLink
 }
 
+type TeamMemberFields = {
+  teamMemberName: string
+  slug: string
+  title?: string
+  email?: string
+  phone?: string
+  linkedIn?: string
+  twitter?: string
+  about?: string
+  photo?: ContentfulSysLink
+}
+
+export type TeamMember = {
+  id: string
+  name: string
+  slug: string
+  title?: string
+  email?: string
+  phone?: string
+  linkedIn?: string
+  twitter?: string
+  bio?: string
+  image?: string
+}
+
 type ContentfulCollectionResponse<TFields> = {
   items: Array<ContentfulEntry<TFields>>
   includes?: {
@@ -140,6 +165,41 @@ async function mapEntryToBlogPost(
   }
 }
 
+async function mapEntryToTeamMember(
+  entry: ContentfulEntry<TeamMemberFields>,
+  assets: ContentfulAsset[] | undefined,
+): Promise<TeamMember> {
+  const fields = entry.fields
+  
+  // Get photo URL from included assets
+  const photoId = fields.photo?.sys?.id
+  let image = getAssetUrlById(assets, photoId)
+  
+  // If no image found and we have an ID, try to fetch it directly
+  if (!image && photoId) {
+    console.log(`Fetching asset ${photoId} directly for team member ${fields.teamMemberName}`)
+    image = await fetchAssetUrlById(photoId)
+  }
+  
+  // Fallback to placeholder if still no image
+  if (!image) {
+    image = '/placeholder.svg'
+  }
+
+  return {
+    id: entry.sys.id,
+    name: fields.teamMemberName,
+    slug: fields.slug,
+    title: fields.title,
+    email: fields.email,
+    phone: fields.phone,
+    linkedIn: fields.linkedIn,
+    twitter: fields.twitter,
+    bio: fields.about,
+    image,
+  }
+}
+
 async function contentfulFetch<T>(pathnameAndQuery: string, init?: RequestInit) {
   if (!CONTENTFUL_SPACE_ID || !CONTENTFUL_ACCESS_TOKEN) {
     return null as unknown as T
@@ -217,6 +277,41 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
     console.error('Failed to load blog post by slug from Contentful', err)
     const local = localBlogPosts.find((p) => p.slug === slug)
     return local || null
+  }
+}
+
+export async function getAllTeamMembers(): Promise<TeamMember[]> {
+  try {
+    const data = await contentfulFetch<ContentfulCollectionResponse<TeamMemberFields>>(
+      `/entries?content_type=teamMembers&include=1&order=fields.teamMemberName`,
+    )
+    if (!data) {
+      console.warn('Contentful returned null for team members; returning empty array')
+      return []
+    }
+    
+    const assets = data.includes?.Asset
+    const mapped = await Promise.all(data.items.map((entry) => mapEntryToTeamMember(entry, assets)))
+    return mapped
+  } catch (err) {
+    console.error('Failed to load team members from Contentful', err)
+    return []
+  }
+}
+
+export async function getTeamMemberBySlug(slug: string): Promise<TeamMember | null> {
+  try {
+    const data = await contentfulFetch<ContentfulCollectionResponse<TeamMemberFields>>(
+      `/entries?content_type=teamMembers&fields.slug=${encodeURIComponent(slug)}&include=1&limit=1`,
+    )
+    if (!data || data.items.length === 0) {
+      return null
+    }
+    const assets = data.includes?.Asset
+    return await mapEntryToTeamMember(data.items[0], assets)
+  } catch (err) {
+    console.error('Failed to load team member by slug from Contentful', err)
+    return null
   }
 }
 
