@@ -195,20 +195,23 @@ export default function BlogHome({ initialPosts }: { initialPosts: BlogPost[] })
                 )}
               </div>
               
-              {/* Filter Status */}
-              {(searchTerm || selectedCategory) && (
-                <div className="mt-2 text-sm text-gray-600">
-                  {searchTerm && selectedCategory && (
-                    <>Showing results for "{searchTerm}" in {selectedCategory}</>
-                  )}
-                  {searchTerm && !selectedCategory && (
-                    <>Showing results for "{searchTerm}"</>
-                  )}
-                  {!searchTerm && selectedCategory && (
-                    <>Showing {selectedCategory} articles</>
-                  )}
-                </div>
-              )}
+                             {/* Filter Status */}
+               {(searchTerm || selectedCategory) && (
+                 <div className="mt-4 p-3 bg-gradient-to-r from-[#1b75bc]/10 to-[#02c39a]/10 border border-[#1b75bc]/20 rounded-lg">
+                   <div className="flex items-center gap-2 text-[#1b75bc] font-medium">
+                     <div className="w-2 h-2 bg-[#02c39a] rounded-full"></div>
+                     {searchTerm && selectedCategory && (
+                       <>Showing results for <span className="bg-white px-2 py-1 rounded-md text-sm font-semibold">"{searchTerm}"</span> in <span className="bg-[#02c39a] text-white px-2 py-1 rounded-md text-sm font-semibold">{selectedCategory}</span></>
+                     )}
+                     {searchTerm && !selectedCategory && (
+                       <>Showing results for <span className="bg-white px-2 py-1 rounded-md text-sm font-semibold">"{searchTerm}"</span></>
+                     )}
+                     {!searchTerm && selectedCategory && (
+                       <>Showing <span className="bg-[#02c39a] text-white px-2 py-1 rounded-md text-sm font-semibold">{selectedCategory}</span> articles</>
+                     )}
+                   </div>
+                 </div>
+               )}
             </div>
 
             {currentPosts.length > 0 ? (
