@@ -5,6 +5,7 @@ import { Calendar, Clock, ArrowLeft, Share2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import TableOfContents from "@/components/blog/table-of-contents"
 import BlogCard from "@/components/blog/blog-card"
+import ShareButton from "@/components/blog/share-button"
 import type { Metadata } from "next"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
@@ -148,10 +149,12 @@ export default async function BlogPostPage({ params }: Props) {
                 <span>{post.readTime} min read</span>
               </div>
 
-              <Button variant="outline" size="sm" className="ml-auto bg-transparent">
-                <Share2 className="w-4 h-4 mr-2" />
-                Share
-              </Button>
+              <ShareButton
+                className="ml-auto bg-transparent"
+                title={post.title}
+                url={`https://heloc360.com/blog/${post.slug}`}
+                text={post.excerpt}
+              />
             </div>
 
             {/* Featured Image */}
