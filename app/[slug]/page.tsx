@@ -12,16 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export async function generateStaticParams() {
-  try {
-    const [posts, members] = await Promise.all([getAllBlogPosts(), getAllTeamMembers()])
-    const postSlugs = posts.map((p) => ({ slug: p.slug }))
-    const memberSlugs = members.map((m) => ({ slug: m.slug }))
-    return [...postSlugs, ...memberSlugs]
-  } catch {
-    return []
-  }
-}
+// No generateStaticParams here to avoid duplicate Contentful fetches during build.
 
 export default async function LegacySlugPage({ params }: Props) {
   const slug = params.slug

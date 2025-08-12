@@ -3,8 +3,9 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function POST(request: NextRequest) {
   try {
     const data = await request.json()
-    
-    console.log('Received mortgage application data:', JSON.stringify(data, null, 2))
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('Received mortgage application data (redacted for prod)')
+    }
     
     // Submit to the webhook endpoint
     const response = await fetch('https://webhooks-listener-woad.vercel.app/api/webhook/f129713b-67b2-4302-9ca0-b2884e21d682', {
@@ -15,11 +16,15 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify(data),
     })
 
-    console.log('Webhook response status:', response.status)
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('Webhook response status:', response.status)
+    }
     
     if (response.ok) {
       const responseData = await response.text()
-      console.log('Webhook response:', responseData)
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('Webhook response:', responseData)
+      }
       
       return NextResponse.json({
         success: true,

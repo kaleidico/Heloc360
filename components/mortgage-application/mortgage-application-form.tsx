@@ -195,19 +195,25 @@ export default function MortgageApplicationForm() {
             setValue('city', city)
             setValue('state', state)
           } else {
-            console.log('No location data found for zip code:', zipCode)
+            if (process.env.NODE_ENV !== 'production') {
+              console.log('No location data found for zip code:', zipCode)
+            }
             setLocationData(null)
             setValue('city', '')
             setValue('state', '')
           }
         } else {
-          console.log('Zip code lookup failed with status:', response.status)
+          if (process.env.NODE_ENV !== 'production') {
+            console.log('Zip code lookup failed with status:', response.status)
+          }
           setLocationData(null)
           setValue('city', '')
           setValue('state', '')
         }
       } catch (error) {
-        console.log('Zip code lookup failed:', error)
+        if (process.env.NODE_ENV !== 'production') {
+          console.log('Zip code lookup failed:', error)
+        }
         setLocationData(null)
         setValue('city', '')
         setValue('state', '')
@@ -325,10 +331,14 @@ export default function MortgageApplicationForm() {
         source: 'mortgage-application-form'
       }
 
-      console.log('Submitting data:', submissionData)
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('Submitting data:', submissionData)
+      }
 
       // Use server-side proxy to submit to webhook (bypasses CORS issues)
-      console.log('Submitting via server-side proxy...')
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('Submitting via server-side proxy...')
+      }
       
       const response = await fetch('/api/submit-mortgage', {
         method: 'POST',
@@ -338,11 +348,15 @@ export default function MortgageApplicationForm() {
         body: JSON.stringify(submissionData),
       })
 
-      console.log('Proxy response status:', response.status)
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('Proxy response status:', response.status)
+      }
 
       if (response.ok) {
         const responseData = await response.json()
-        console.log('Proxy response data:', responseData)
+        if (process.env.NODE_ENV !== 'production') {
+          console.log('Proxy response data:', responseData)
+        }
         router.push('/get-started/confirmation')
       } else {
         const errorData = await response.json()

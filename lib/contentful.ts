@@ -145,7 +145,9 @@ async function mapEntryToBlogPost(
   
   // If no image found and we have an ID, try to fetch it directly
   if (!featuredImage && featuredImageId) {
-    console.log(`Fetching asset ${featuredImageId} directly for post ${fields.title}`)
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`Fetching asset ${featuredImageId} directly for post ${fields.title}`)
+    }
     featuredImage = await fetchAssetUrlById(featuredImageId)
   }
   
@@ -186,7 +188,9 @@ async function mapEntryToTeamMember(
   
   // If no image found and we have an ID, try to fetch it directly
   if (!image && photoId) {
-    console.log(`Fetching asset ${photoId} directly for team member ${fields.teamMemberName}`)
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`Fetching asset ${photoId} directly for team member ${fields.teamMemberName}`)
+    }
     image = await fetchAssetUrlById(photoId)
   }
   
@@ -216,25 +220,49 @@ async function contentfulFetch<T>(pathnameAndQuery: string, init?: RequestInit) 
 
   const url = `${BASE_URL}${pathnameAndQuery}`
   const isDev = process.env.NODE_ENV !== 'production'
-  const res = await fetch(url, {
-    ...init,
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${CONTENTFUL_ACCESS_TOKEN}`,
-      ...(init?.headers || {}),
-    },
-    // In dev, always fetch fresh to avoid confusion while modeling content
-    // In prod, cache for 24h
-    ...(isDev
-      ? { cache: 'no-store' as const }
-      : { next: { revalidate: 86400 } }),
-  })
+  // Simple retry with exponential backoff for rate limits and transient errors
+  const maxAttempts = 3
+  let attempt = 0
+  let lastError: any
 
-  if (!res.ok) {
-    console.error('Contentful fetch failed', res.status, await res.text())
-    throw new Error(`Contentful request failed: ${res.status}`)
+  while (attempt < maxAttempts) {
+    attempt += 1
+    const res = await fetch(url, {
+      ...init,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${CONTENTFUL_ACCESS_TOKEN}`,
+        ...(init?.headers || {}),
+      },
+      ...(isDev
+        ? { cache: 'no-store' as const }
+        : { next: { revalidate: 86400 } }),
+    })
+
+    if (res.ok) {
+      return (await res.json()) as T
+    }
+
+    const status = res.status
+    const body = await res.text()
+    lastError = new Error(`Contentful request failed: ${status} - ${body}`)
+
+    // Retry on 429/5xx
+    if (status === 429 || (status >= 500 && status < 600)) {
+      const backoffMs = Math.min(2000 * attempt, 5000)
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn(`Contentful retry ${attempt}/${maxAttempts} after ${status}. Backing off ${backoffMs}ms`)
+      }
+      await new Promise((r) => setTimeout(r, backoffMs))
+      continue
+    }
+
+    console.error('Contentful fetch failed', status, body)
+    throw lastError
   }
-  return (await res.json()) as T
+
+  console.error('Contentful fetch failed after retries', lastError)
+  throw lastError
 }
 
 export async function getAllBlogPosts(): Promise<BlogPost[]> {

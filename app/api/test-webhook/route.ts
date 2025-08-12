@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET() {
   try {
-    console.log('Testing webhook endpoint accessibility...')
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('Testing webhook endpoint accessibility...')
+    }
     
     const testData = {
       test: true,
@@ -18,11 +20,15 @@ export async function GET() {
       body: JSON.stringify(testData),
     })
 
-    console.log('Webhook test response status:', response.status)
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('Webhook test response status:', response.status)
+    }
     
     if (response.ok) {
       const responseText = await response.text()
-      console.log('Webhook test response:', responseText)
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('Webhook test response:', responseText)
+      }
       
       return NextResponse.json({
         success: true,

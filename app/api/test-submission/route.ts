@@ -4,8 +4,9 @@ export async function POST(request: NextRequest) {
   try {
     const data = await request.json()
     
-    // Log the received data
-    console.log('Received form submission:', JSON.stringify(data, null, 2))
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('Received form submission (redacted for prod)')
+    }
     
     // Simulate processing time
     await new Promise(resolve => setTimeout(resolve, 500))

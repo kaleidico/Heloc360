@@ -321,11 +321,8 @@ export default async function AboutPage() {
                                     sizes="128px"
                                     loading="lazy"
                                     quality={70}
-                                  />
-                                </div>
-                                <CardTitle className="text-xl text-[#1b75bc] group-hover:text-[#02c39a] transition-colors h-14 flex items-center justify-center">
-                                  {member.name}
-                                </CardTitle>
+ed-full object-cover group-hover:scale-105 transition-transform duration-200"
+dTitle>
                                 <p className="text-[#02c39a] font-medium h-6 flex items-center justify-center">{member.title}</p>
                               </CardHeader>
                               <CardContent className="flex-1 flex flex-col justify-between pt-0">
