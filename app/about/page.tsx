@@ -43,7 +43,7 @@ export default async function AboutPage() {
   const teamMembers = await getAllTeamMembers()
 
   return (
-    <>
+    <div>
       {/* Hero Section */}
       <section className="relative py-20 bg-gradient-to-r from-[#1b75bc] to-[#02c39a] overflow-hidden">
         <div className="container mx-auto px-4">
@@ -240,7 +240,7 @@ export default async function AboutPage() {
             </div>
 
             {teamMembers.length > 0 ? (
-              <>
+              <div>
                 {/* Leadership & Management */}
                 <div className="mb-12">
                   <h3 className="text-2xl font-bold text-[#1b75bc] mb-8 text-center">Leadership & Management</h3>
@@ -321,8 +321,11 @@ export default async function AboutPage() {
                                     sizes="128px"
                                     loading="lazy"
                                     quality={70}
-ed-full object-cover group-hover:scale-105 transition-transform duration-200"
-dTitle>
+                                  />
+                                </div>
+                                <CardTitle className="text-xl text-[#1b75bc] group-hover:text-[#02c39a] transition-colors h-14 flex items-center justify-center">
+                                  {member.name}
+                                </CardTitle>
                                 <p className="text-[#02c39a] font-medium h-6 flex items-center justify-center">{member.title}</p>
                               </CardHeader>
                               <CardContent className="flex-1 flex flex-col justify-between pt-0">
@@ -338,7 +341,7 @@ dTitle>
                     </div>
                   </div>
                 )}
-              </>
+              </div>
             ) : (
               <div className="text-center py-12">
                 <div className="text-gray-500 mb-4">
@@ -461,6 +464,6 @@ dTitle>
           </div>
         </div>
       </section>
-    </>
+    </div>
   )
 }
