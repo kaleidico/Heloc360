@@ -4,7 +4,11 @@ import { useState, useMemo } from "react"
 import dynamic from "next/dynamic"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Search, X } from "lucide-react"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import type { BlogPost } from "@/types/blog"
+import { ALLOWED_CATEGORIES } from "@/config/blog"
 
 const BlogCard = dynamic(() => import("@/components/blog/blog-card"), {
   loading: () => <div className="animate-pulse bg-gray-200 h-64 rounded-lg"></div>,
@@ -21,13 +25,82 @@ const POSTS_PER_PAGE = 12
 export default function BlogHome({ initialPosts }: { initialPosts: BlogPost[] }) {
   const blogPosts = initialPosts
   const [currentPage, setCurrentPage] = useState(1)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [selectedCategory, setSelectedCategory] = useState("")
 
-  const totalPages = Math.ceil(blogPosts.length / POSTS_PER_PAGE)
+
+
+  // Filter posts based on search term and category
+  const filteredPosts = useMemo(() => {
+    let filtered = blogPosts
+
+    // Filter by category first
+    if (selectedCategory) {
+      filtered = filtered.filter((post) => post.category === selectedCategory)
+    }
+
+    // Then filter by search term
+    if (searchTerm.trim()) {
+      const searchLower = searchTerm.toLowerCase()
+      
+      filtered = filtered.filter((post) => {
+        // Search in title
+        if (post.title.toLowerCase().includes(searchLower)) {
+          return true
+        }
+        
+        // Search in excerpt
+        if (post.excerpt.toLowerCase().includes(searchLower)) {
+          return true
+        }
+        
+        // Search in content
+        if (post.content.toLowerCase().includes(searchLower)) {
+          return true
+        }
+        
+        // Search in tags
+        if (post.tags.some(tag => tag.toLowerCase().includes(searchLower))) {
+          return true
+        }
+        
+        // Search in category
+        if (post.category.toLowerCase().includes(searchLower)) {
+          return true
+        }
+        
+        return false
+      })
+    }
+
+    return filtered
+  }, [blogPosts, searchTerm, selectedCategory])
+
+  const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE)
   const startIndex = (currentPage - 1) * POSTS_PER_PAGE
   const endIndex = startIndex + POSTS_PER_PAGE
-  const currentPosts = blogPosts.slice(startIndex, endIndex)
+  const currentPosts = filteredPosts.slice(startIndex, endIndex)
 
   const featuredPosts = blogPosts.filter((post) => post.featured).slice(0, 3)
+
+  // Reset to first page when search changes
+  const handleSearchChange = (value: string) => {
+    setSearchTerm(value)
+    setCurrentPage(1)
+  }
+
+  // Handle category change
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category === "all" ? "" : category)
+    setCurrentPage(1)
+  }
+
+  // Clear all filters
+  const clearFilters = () => {
+    setSearchTerm("")
+    setSelectedCategory("")
+    setCurrentPage(1)
+  }
 
   return (
     <>
@@ -76,8 +149,66 @@ export default function BlogHome({ initialPosts }: { initialPosts: BlogPost[] })
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-3xl font-bold text-[#1b75bc]">All Articles</h2>
               <div className="text-gray-600">
-                {blogPosts.length} article{blogPosts.length !== 1 ? "s" : ""} found
+                {filteredPosts.length} article{filteredPosts.length !== 1 ? "s" : ""} found
               </div>
+            </div>
+
+            {/* Search and Filter Bar */}
+            <div className="mb-8">
+              <div className="flex flex-col sm:flex-row gap-4">
+                {/* Search Input */}
+                <div className="relative flex-1 max-w-md">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <Input
+                    type="text"
+                    placeholder="Search articles by title, content, tags, or category..."
+                    value={searchTerm}
+                    onChange={(e) => handleSearchChange(e.target.value)}
+                    className="pl-10 pr-10"
+                  />
+                </div>
+
+                {/* Category Filter */}
+                <Select value={selectedCategory || "all"} onValueChange={handleCategoryChange}>
+                  <SelectTrigger className="w-full sm:w-[200px]">
+                    <SelectValue placeholder="Filter by category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Categories</SelectItem>
+                    {ALLOWED_CATEGORIES.map((category) => (
+                      <SelectItem key={category} value={category}>
+                        {category}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                {/* Clear Filters Button */}
+                {(searchTerm || selectedCategory) && (
+                  <Button
+                    variant="outline"
+                    onClick={clearFilters}
+                    className="w-full sm:w-auto"
+                  >
+                    Clear Filters
+                  </Button>
+                )}
+              </div>
+              
+              {/* Filter Status */}
+              {(searchTerm || selectedCategory) && (
+                <div className="mt-2 text-sm text-gray-600">
+                  {searchTerm && selectedCategory && (
+                    <>Showing results for "{searchTerm}" in {selectedCategory}</>
+                  )}
+                  {searchTerm && !selectedCategory && (
+                    <>Showing results for "{searchTerm}"</>
+                  )}
+                  {!searchTerm && selectedCategory && (
+                    <>Showing {selectedCategory} articles</>
+                  )}
+                </div>
+              )}
             </div>
 
             {currentPosts.length > 0 ? (
@@ -87,7 +218,9 @@ export default function BlogHome({ initialPosts }: { initialPosts: BlogPost[] })
                     <BlogCard key={post.id} post={post} />
                   ))}
                 </div>
-                <BlogPagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+                {totalPages > 1 && (
+                  <BlogPagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+                )}
               </>
             ) : (
               <div className="text-center py-12">
@@ -106,10 +239,20 @@ export default function BlogHome({ initialPosts }: { initialPosts: BlogPost[] })
                     />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">No articles found</h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  {searchTerm ? "No articles found" : "No articles available"}
+                </h3>
                 <p className="text-gray-600 mb-6">
-                  Check back soon for new articles.
+                  {searchTerm 
+                    ? "Try adjusting your search terms to find what you're looking for."
+                    : "Check back soon for new articles."
+                  }
                 </p>
+                {(searchTerm || selectedCategory) && (
+                  <Button onClick={clearFilters} variant="outline">
+                    Clear Filters
+                  </Button>
+                )}
               </div>
             )}
           </div>

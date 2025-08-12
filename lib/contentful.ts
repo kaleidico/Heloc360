@@ -3,6 +3,7 @@ import 'server-only'
 import type { BlogPost } from '@/types/blog'
 import { blogPosts as localBlogPosts } from '@/data/blog-posts'
 import { ALLOWED_CATEGORIES, pickFirstAllowedCategory, toAllowedCategoryOrDefault } from '@/config/blog'
+import { decodeHtmlEntities } from '@/lib/utils'
 
 type ContentfulSysLink = {
   sys: { id: string; linkType: string; type: string }
@@ -123,8 +124,16 @@ async function mapEntryToBlogPost(
   const featuredImageId = fields.featureImage?.sys?.id
   
   // Derive values to fit existing BlogPost type without changing UI
-  // Normalize to allowed categories list
-  const category = pickFirstAllowedCategory(categories)
+  // Use the first category directly, or fall back to normalization
+  let category = categories.length > 0 ? categories[0] : 'General'
+  
+  // Only normalize if the category isn't already in our allowed list
+  if (!ALLOWED_CATEGORIES.includes(category as any)) {
+    category = pickFirstAllowedCategory(categories)
+  }
+  
+  // Decode HTML entities in the category
+  category = decodeHtmlEntities(category)
   
 
   // Tags: until you add explicit tags in Contentful, we keep tags empty to avoid noise
@@ -136,7 +145,7 @@ async function mapEntryToBlogPost(
   
   // If no image found and we have an ID, try to fetch it directly
   if (!featuredImage && featuredImageId) {
-    console.log(`Fetching asset ${featureImageId} directly for post ${fields.title}`)
+    console.log(`Fetching asset ${featuredImageId} directly for post ${fields.title}`)
     featuredImage = await fetchAssetUrlById(featuredImageId)
   }
   
@@ -231,23 +240,14 @@ async function contentfulFetch<T>(pathnameAndQuery: string, init?: RequestInit) 
 export async function getAllBlogPosts(): Promise<BlogPost[]> {
   try {
     const data = await contentfulFetch<ContentfulCollectionResponse<BlogPostFields>>(
-      `/entries?content_type=blogPosts&include=1&order=-fields.publishDate`,
+      `/entries?content_type=blogPosts&include=1&order=-fields.publishDate&limit=1000`,
     )
     if (!data) {
       console.warn('Contentful returned null; falling back to local blog posts')
       return localBlogPosts
     }
     
-    // Debug: Check what categories Contentful is actually sending for ALL posts
-    console.log('=== CONTENTFUL CATEGORIES DEBUG ===')
-    data.items.forEach((entry, index) => {
-      const fields = entry.fields
-      console.log(`Post ${index + 1}: "${fields.title}"`)
-      console.log(`  - categories field:`, fields.categories)
-      console.log(`  - category field:`, fields.category)
-      console.log(`  - all field keys:`, Object.keys(fields))
-      console.log('---')
-    })
+
     
     const assets = data.includes?.Asset
     const mapped = await Promise.all(data.items.map((entry) => mapEntryToBlogPost(entry, assets)))

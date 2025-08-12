@@ -1,3 +1,5 @@
+import { decodeHtmlEntities } from '@/lib/utils'
+
 export const ALLOWED_CATEGORIES = [
   'General',
   'HELOC Fundamentals',
@@ -21,12 +23,20 @@ function canonicalize(input: string): string {
 function findBestMatch(input: string): AllowedCategory {
   if (!input) return 'General'
   
-  const normalized = canonicalize(input)
+  // Decode HTML entities first
+  const decodedInput = decodeHtmlEntities(input)
+  const normalized = canonicalize(decodedInput)
   
-  // First try exact match
-  const exactMatch = ALLOWED_CATEGORIES.find(c => c === input)
+  // First try exact match with decoded input
+  const exactMatch = ALLOWED_CATEGORIES.find(c => c === decodedInput)
   if (exactMatch) {
     return exactMatch
+  }
+  
+  // Then try exact match with original input
+  const exactMatchOriginal = ALLOWED_CATEGORIES.find(c => c === input)
+  if (exactMatchOriginal) {
+    return exactMatchOriginal
   }
   
   // Then try canonicalized match

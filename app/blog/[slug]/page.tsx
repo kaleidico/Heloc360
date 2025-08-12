@@ -10,6 +10,7 @@ import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 
 import { getAllBlogPosts, getBlogPostBySlug } from "@/lib/contentful"
+import { decodeHtmlEntities } from "@/lib/utils"
 
 type Props = {
   params: { slug: string }
@@ -133,7 +134,7 @@ export default async function BlogPostPage({ params }: Props) {
             {/* Category Badge */}
             <div className="mb-4">
               <span className="inline-block bg-[#02c39a] text-white px-3 py-1 rounded-full text-sm font-medium">
-                {post.category}
+                {decodeHtmlEntities(post.category)}
               </span>
             </div>
 

@@ -3,6 +3,7 @@ import Image from "next/image"
 import { Calendar, Clock, Tag } from "lucide-react"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import type { BlogPost } from "@/types/blog"
+import { decodeHtmlEntities } from "@/lib/utils"
 
 interface BlogCardProps {
   post: BlogPost
@@ -40,6 +41,11 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
       </div>
 
       <CardHeader className="flex-shrink-0">
+        <div className="mb-2">
+          <span className="inline-block bg-[#02c39a] text-white px-2 py-1 rounded-full text-xs font-medium">
+            {decodeHtmlEntities(post.category)}
+          </span>
+        </div>
         <Link href={`/blog/${post.slug}`}>
           <h3 className="text-xl font-bold text-gray-900 group-hover:text-[#1b75bc] transition-colors line-clamp-2 leading-tight">
             {post.title}
