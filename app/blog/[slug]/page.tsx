@@ -52,12 +52,7 @@ export async function generateStaticParams() {
   return posts.map((post) => ({ slug: post.slug }))
 }
 
-
-
-
-
 export const revalidate = 86400
-export const dynamic = 'force-dynamic'
 
 export default async function BlogPostPage({ params }: Props) {
   const post = await getBlogPostBySlug(params.slug)
@@ -170,8 +165,6 @@ export default async function BlogPostPage({ params }: Props) {
               />
             </div>
 
-
-
             {/* Table of Contents */}
             {post.content && post.content.trim().length > 0 && (
               <TableOfContents content={post.content} />
@@ -197,53 +190,20 @@ export default async function BlogPostPage({ params }: Props) {
               </div>
             )}
 
-
+            {/* Related Articles */}
+            {relatedPosts.length > 0 && (
+              <section className="mt-16">
+                <h2 className="text-2xl font-bold mb-6">Related Articles</h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {relatedPosts.map((related) => (
+                    <BlogCard key={related.id} post={related} />
+                  ))}
+                </div>
+              </section>
+            )}
           </div>
         </div>
       </article>
-
-      {/* FAQ Section - Only show if you add FAQ content to Contentful later */}
-
-      {/* Related Posts */}
-      {relatedPosts.length > 0 && (
-        <section className="py-16 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <h2 className="text-3xl font-bold text-[#1b75bc] mb-8 text-center">Related Articles</h2>
-              <div className="grid md:grid-cols-3 gap-8">
-                {relatedPosts.map((relatedPost) => (
-                  <BlogCard key={relatedPost.id} post={relatedPost} />
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-[#1b75bc] to-[#02c39a]">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center text-white">
-            <h2 className="text-3xl font-bold mb-4">Ready to Explore Your HELOC Options?</h2>
-            <p className="text-xl mb-8 opacity-90">
-              Get personalized guidance from our experts and find the right HELOC for your needs.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-white text-[#1b75bc] hover:bg-gray-100">
-                Get Pre-Qualified
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-white text-white hover:bg-white/10 bg-transparent"
-                asChild
-              >
-                <Link href="/contact">Speak with an Expert</Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
     </>
   )
 }

@@ -76,6 +76,8 @@ export default async function AboutPage() {
                 height={400}
                 className="rounded-lg shadow-2xl"
                 priority
+                quality={70}
+                sizes="(min-width: 1024px) 50vw, 100vw"
               />
             </div>
           </div>
@@ -144,6 +146,9 @@ export default async function AboutPage() {
                   width={600}
                   height={400}
                   className="rounded-lg shadow-lg"
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  loading="lazy"
+                  quality={70}
                 />
               </div>
             </div>
@@ -263,6 +268,9 @@ export default async function AboutPage() {
                                   alt={`${member.name} - ${member.title || 'Team Member'}`}
                                   fill
                                   className="rounded-full object-cover group-hover:scale-105 transition-transform duration-200"
+                                  sizes="128px"
+                                  loading="lazy"
+                                  quality={70}
                                 />
                               </div>
                               <CardTitle className="text-xl text-[#1b75bc] group-hover:text-[#02c39a] transition-colors h-14 flex items-center justify-center">
@@ -310,6 +318,9 @@ export default async function AboutPage() {
                                     alt={`${member.name} - ${member.title || 'Team Member'}`}
                                     fill
                                     className="rounded-full object-cover group-hover:scale-105 transition-transform duration-200"
+                                    sizes="128px"
+                                    loading="lazy"
+                                    quality={70}
                                   />
                                 </div>
                                 <CardTitle className="text-xl text-[#1b75bc] group-hover:text-[#02c39a] transition-colors h-14 flex items-center justify-center">
