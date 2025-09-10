@@ -73,15 +73,21 @@ export default function HELOC101Page() {
 							<Button
 								size='lg'
 								className='bg-white text-[#1b75bc] hover:bg-gray-100'
+								asChild
 							>
-								Get Pre-Qualified
+								<Link href='https://ratequote-heloc360.secure-clix.com/'>
+									Get Pre-Qualified
+								</Link>
 							</Button>
 							<Button
 								size='lg'
 								variant='outline'
 								className='border-white text-white hover:bg-white/10 bg-transparent'
+								asChild
 							>
-								Use Our Calculator
+								<Link href='/calculators/home-equity-estimator'>
+									Use Our Calculator
+								</Link>
 							</Button>
 						</div>
 					</div>
