@@ -11,6 +11,7 @@ import { CheckCircle, Home, Users, Shield, Clock } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import HomeFAQ from "@/components/home-faq";
+import MailingListForm from "@/components/mailing-list-form";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -487,39 +488,12 @@ export default function HomePage() {
 									Stay Connected with HELOC360
 								</CardTitle>
 								<CardDescription className='text-white/80'>
-									Enter your information to get started with
-									your HELOC journey
+									Get the latest HELOC tips, market updates,
+									and success stories delivered to your inbox.
 								</CardDescription>
 							</CardHeader>
 							<CardContent className='space-y-4'>
-								<form
-									role='form'
-									aria-label='HELOC Pre-qualification Form'
-								>
-									<div className='grid sm:grid-cols-2 gap-4'>
-										<Input
-											placeholder='First Name'
-											className='bg-white/20 border-white/30 text-white placeholder:text-white/70'
-											required
-											aria-label='First Name'
-										/>
-										<Input
-											type='email'
-											placeholder='Email Address'
-											className='bg-white/20 border-white/30 text-white placeholder:text-white/70'
-											required
-											aria-label='Email Address'
-										/>
-									</div>
-									<Button
-										size='lg'
-										className='w-full bg-[#02c39a] hover:bg-[#00a896] text-white mt-4'
-										type='submit'
-										aria-label='Submit pre-qualification form'
-									>
-										Get Started
-									</Button>
-								</form>
+								<MailingListForm />
 								<p className='text-xs text-white/70'>
 									By submitting this form, you agree to our{" "}
 									<a
