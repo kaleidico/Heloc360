@@ -448,12 +448,14 @@ export default function HomePage() {
 
 						<div className='relative'>
 							<Image
-								src='/placeholder.svg?height=400&width=600'
-								alt='Family planning their finances and discussing home equity options'
+								src='/images/v48rryfvnyc.jpg'
+								alt='Construction workers on a house roof, representing home improvement projects that can be funded with HELOC'
 								width={600}
 								height={400}
 								className='rounded-lg shadow-lg'
 								sizes='(max-width: 768px) 100vw, 50vw'
+								placeholder='blur'
+								blurDataURL='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=='
 							/>
 						</div>
 					</div>
