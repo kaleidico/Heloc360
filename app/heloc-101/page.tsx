@@ -815,7 +815,7 @@ export default function HELOC101Page() {
 								className='border-white text-white hover:bg-white/10 bg-transparent'
 								asChild
 							>
-								<Link href='/calculators/home-equity'>
+								<Link href='/calculators/home-equity-estimator'>
 									Calculate Your Equity
 								</Link>
 							</Button>
