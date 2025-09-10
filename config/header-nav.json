@@ -1,46 +1,46 @@
 [
-  {
-    "label": "HELOC 101",
-    "url": "/heloc-101",
-    "type": "text",
-    "icon": "BookOpen"
-  },
-  {
-    "label": "HELOC Calculators",
-    "url": null,
-    "type": "text",
-    "icon": "Calculator",
-    "children": [
-      {
-        "label": "Debt Consolidation Savings Calculator",
-        "url": "/calculators/debt-consolidation",
-        "type": "text",
-        "icon": "Percent"
-      },
-      {
-        "label": "Home Equity Estimator",
-        "url": "/calculators/home-equity-estimator",
-        "type": "text",
-        "icon": "CircleEqual"
-      }
-    ]
-  },
-  {
-    "label": "About",
-    "url": "/about",
-    "type": "text",
-    "icon": "Info"
-  },
-  {
-    "label": "Blog",
-    "url": "/blog",
-    "type": "text",
-    "icon": "Notebook"
-  },
-  {
-    "label": "Get Started",
-    "url": "/get-started",
-    "type": "cta-button",
-    "icon": "ArrowRightCircle"
-  }
+	{
+		"label": "HELOC 101",
+		"url": "/heloc-101",
+		"type": "text",
+		"icon": "BookOpen"
+	},
+	{
+		"label": "HELOC Calculators",
+		"url": null,
+		"type": "text",
+		"icon": "Calculator",
+		"children": [
+			{
+				"label": "Debt Consolidation Savings Calculator",
+				"url": "/calculators/debt-consolidation",
+				"type": "text",
+				"icon": "Percent"
+			},
+			{
+				"label": "Home Equity Estimator",
+				"url": "/calculators/home-equity-estimator",
+				"type": "text",
+				"icon": "CircleEqual"
+			}
+		]
+	},
+	{
+		"label": "About",
+		"url": "/about",
+		"type": "text",
+		"icon": "Info"
+	},
+	{
+		"label": "Blog",
+		"url": "/blog",
+		"type": "text",
+		"icon": "Notebook"
+	},
+	{
+		"label": "Get Started",
+		"url": "https://ratequote-heloc360.secure-clix.com/",
+		"type": "cta-button",
+		"icon": "ArrowRightCircle"
+	}
 ]
