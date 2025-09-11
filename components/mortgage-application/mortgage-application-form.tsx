@@ -404,7 +404,7 @@ export default function MortgageApplicationForm() {
 				if (process.env.NODE_ENV !== "production") {
 					console.log("Proxy response data:", responseData);
 				}
-				router.push("https://ratequote-heloc360.secure-clix.com/");
+				router.push("https://get-started.heloc360.com/");
 			} else {
 				const errorData = await response.json();
 				console.error("Proxy error:", errorData);

@@ -60,7 +60,7 @@ export default function HomePage() {
 						aria-label='Get pre-qualified for a HELOC - Free and confidential'
 						asChild
 					>
-						<Link href='https://ratequote-heloc360.secure-clix.com/'>
+						<Link href='https://get-started.heloc360.com/'>
 							Get Pre-Qualified
 						</Link>
 					</Button>

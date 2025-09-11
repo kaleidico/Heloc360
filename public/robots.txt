@@ -66,7 +66,7 @@ Allow: /calculators/
 Allow: /about
 Allow: /blog/
 Allow: /contact
-Allow: https://ratequote-heloc360.secure-clix.com/
+Allow: https://get-started.heloc360.com/
 Allow: /meet-our-team/
 Allow: /privacy
 Allow: /terms

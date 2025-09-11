@@ -46,7 +46,7 @@ HELOC360 uses a sitemap index structure for better organization and scalability.
 -   About: `https://heloc360.com/about` (Priority: 0.7)
 -   Blog: `https://heloc360.com/blog` (Priority: 0.8)
 -   Contact: `https://heloc360.com/contact` (Priority: 0.6)
--   Get Started: `https://ratequote-heloc360.secure-clix.com/` (Priority: 0.9)
+-   Get Started: `https://get-started.heloc360.com/` (Priority: 0.9)
 -   Legal Pages: `https://heloc360.com/privacy`, `/terms`, etc. (Priority: 0.3)
 
 ### Blog Posts

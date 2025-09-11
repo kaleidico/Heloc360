@@ -74,7 +74,7 @@ export default async function AboutPage() {
 									className='bg-white text-[#1b75bc] hover:bg-gray-100'
 									asChild
 								>
-									<Link href='https://ratequote-heloc360.secure-clix.com/'>
+									<Link href='https://get-started.heloc360.com/'>
 										Get Started Today
 									</Link>
 								</Button>
@@ -661,7 +661,7 @@ export default async function AboutPage() {
 								className='bg-white text-[#1b75bc] hover:bg-gray-100'
 								asChild
 							>
-								<Link href='https://ratequote-heloc360.secure-clix.com/'>
+								<Link href='https://get-started.heloc360.com/'>
 									Get Pre-Qualified
 								</Link>
 							</Button>

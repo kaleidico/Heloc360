@@ -144,12 +144,12 @@ CONTENTFUL_HOST=cdn.contentful.com
 
 ### Accessing the Form
 
-Navigate to `https://ratequote-heloc360.secure-clix.com/` to access the form.
+Navigate to `https://get-started.heloc360.com/` to access the form.
 
 ### Testing the Form
 
 1. Start the development server: `npm run dev`
-2. Visit `https://ratequote-heloc360.secure-clix.com/`
+2. Visit `https://get-started.heloc360.com/`
 3. Fill out the form step by step
 4. Submit to see the confirmation page
 
@@ -158,7 +158,7 @@ Navigate to `https://ratequote-heloc360.secure-clix.com/` to access the form.
 Test tracking functionality by adding UTM parameters to the URL:
 
 ```
-https://ratequote-heloc360.secure-clix.com/?utm_source=google&utm_medium=cpc&utm_campaign=test&gclid=test123
+https://get-started.heloc360.com/?utm_source=google&utm_medium=cpc&utm_campaign=test&gclid=test123
 ```
 
 ## 📊 Data Submission
