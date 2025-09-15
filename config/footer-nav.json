@@ -44,15 +44,9 @@
 		},
 		{
 			"label": "Home Equity Estimator",
-			"url": "/calculators/home-equity",
+			"url": "/calculators/home-equity-estimator",
 			"type": "text",
 			"icon": "CircleEqual"
-		},
-		{
-			"label": "All Calculators",
-			"url": "/calculators",
-			"type": "text",
-			"icon": "List"
 		}
 	],
 	"aboutUs": [
