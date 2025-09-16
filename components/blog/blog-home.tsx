@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -37,13 +38,41 @@ const POSTS_PER_PAGE = 12;
 
 export default function BlogHome({
 	initialPosts,
+	initialPage = 1,
+	initialSearch = "",
+	initialCategory = "",
 }: {
 	initialPosts: BlogPost[];
+	initialPage?: number;
+	initialSearch?: string;
+	initialCategory?: string;
 }) {
+	const router = useRouter();
+	const searchParams = useSearchParams();
 	const blogPosts = initialPosts;
-	const [currentPage, setCurrentPage] = useState(1);
-	const [searchTerm, setSearchTerm] = useState("");
-	const [selectedCategory, setSelectedCategory] = useState("");
+	const [currentPage, setCurrentPage] = useState(initialPage);
+	const [searchTerm, setSearchTerm] = useState(initialSearch);
+	const [selectedCategory, setSelectedCategory] = useState(initialCategory);
+
+	// Sync state with URL parameters when they change
+	useEffect(() => {
+		const search = searchParams.get("search") || "";
+		const category = searchParams.get("category") || "";
+
+		// Get page from URL path, not query params
+		const pathname = window.location.pathname;
+		let pageNum = 1;
+		if (pathname === "/blog") {
+			pageNum = 1;
+		} else {
+			const match = pathname.match(/\/blog\/page\/(\d+)/);
+			pageNum = match ? parseInt(match[1]) : 1;
+		}
+
+		setSearchTerm(search);
+		setSelectedCategory(category);
+		setCurrentPage(pageNum);
+	}, [searchParams]);
 
 	// Filter posts based on search term and category
 	const filteredPosts = useMemo(() => {
@@ -104,16 +133,40 @@ export default function BlogHome({
 
 	const featuredPosts = blogPosts.filter((post) => post.featured).slice(0, 3);
 
+	// Function to update URL with current state (shallow routing for smooth pagination)
+	const updateURL = (page: number, search: string, category: string) => {
+		const params = new URLSearchParams();
+
+		if (search.trim()) params.set("search", search.trim());
+		if (category && category !== "all") params.set("category", category);
+
+		const queryString = params.toString();
+		const baseURL = page === 1 ? "/blog" : `/blog/page/${page}`;
+		const newURL = queryString ? `${baseURL}?${queryString}` : baseURL;
+
+		// Use shallow routing to update URL without page refresh
+		router.replace(newURL, { scroll: false, shallow: true });
+	};
+
+	// Handle page change
+	const handlePageChange = (page: number) => {
+		setCurrentPage(page);
+		updateURL(page, searchTerm, selectedCategory);
+	};
+
 	// Reset to first page when search changes
 	const handleSearchChange = (value: string) => {
 		setSearchTerm(value);
 		setCurrentPage(1);
+		updateURL(1, value, selectedCategory);
 	};
 
 	// Handle category change
 	const handleCategoryChange = (category: string) => {
-		setSelectedCategory(category === "all" ? "" : category);
+		const newCategory = category === "all" ? "" : category;
+		setSelectedCategory(newCategory);
 		setCurrentPage(1);
+		updateURL(1, searchTerm, newCategory);
 	};
 
 	// Clear all filters
@@ -121,6 +174,7 @@ export default function BlogHome({
 		setSearchTerm("");
 		setSelectedCategory("");
 		setCurrentPage(1);
+		updateURL(1, "", "");
 	};
 
 	return (
@@ -296,7 +350,7 @@ export default function BlogHome({
 									<BlogPagination
 										currentPage={currentPage}
 										totalPages={totalPages}
-										onPageChange={setCurrentPage}
+										onPageChange={handlePageChange}
 									/>
 								)}
 							</>

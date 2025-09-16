@@ -12,4 +12,8 @@
     <loc>https://heloc360.com/sitemap-team.xml</loc>
     <lastmod>2024-01-15</lastmod>
   </sitemap>
+  <sitemap>
+    <loc>https://heloc360.com/sitemap-blog-pagination.xml</loc>
+    <lastmod>2025-01-16</lastmod>
+  </sitemap>
 </sitemapindex>
