@@ -32,6 +32,10 @@ type BlogPostFields = {
   excerpt?: string
   publishDate: string
   featureImage?: ContentfulSysLink
+  seoTitle?: string
+  seoDescription?: string
+  seoKeyword?: string
+  focusKeywords?: string[]
 }
 
 type TeamMemberFields = {
@@ -156,7 +160,10 @@ async function mapEntryToBlogPost(
     featuredImage = '/placeholder.svg'
   }
   
-  const excerpt = content ? content.slice(0, 220).trim() + (content.length > 220 ? '…' : '') : ''
+  // Use seoDescription from Contentful if available, otherwise fall back to content slice or excerpt field
+  const excerpt = fields.seoDescription || 
+                  fields.excerpt || 
+                  (content ? content.slice(0, 220).trim() + (content.length > 220 ? '…' : '') : '')
 
   // Heuristically mark as featured if a category named "Featured" is present
   const featured = categories.map((c) => c.toLowerCase()).includes('featured')
@@ -173,6 +180,7 @@ async function mapEntryToBlogPost(
     tags,
     featuredImage,
     featured,
+    seoTitle: fields.seoTitle,
   }
 }
 

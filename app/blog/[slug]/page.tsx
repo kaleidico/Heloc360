@@ -26,14 +26,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
   }
 
+  // Use seoTitle if available, otherwise fall back to regular title with suffix
+  const metaTitle = post.seoTitle || `${post.title} | HELOC360 Blog`
+  const ogTitle = post.seoTitle || post.title
+
   return {
-    title: `${post.title} | HELOC360 Blog`,
+    title: metaTitle,
     description: post.excerpt,
     alternates: {
       canonical: `https://heloc360.com/blog/${post.slug}`,
     },
     openGraph: {
-      title: post.title,
+      title: ogTitle,
       description: post.excerpt,
       images: [post.featuredImage],
       type: "article",
@@ -41,7 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title: post.title,
+      title: ogTitle,
       description: post.excerpt,
       images: [post.featuredImage],
     },
@@ -86,7 +90,7 @@ export default async function BlogPostPage({ params }: Props) {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    headline: post.title,
+    headline: post.seoTitle || post.title,
     description: post.excerpt,
     image: post.featuredImage,
     publisher: {

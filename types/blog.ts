@@ -14,6 +14,7 @@ export interface BlogPost {
   tags: string[]
   featuredImage: string
   featured: boolean
+  seoTitle?: string
 }
 
 export interface BlogCategory {
