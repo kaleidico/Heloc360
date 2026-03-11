@@ -81,7 +81,7 @@ export default async function TeamMemberPage({ params }: Props) {
                       />
                     </div>
                     <CardTitle className="text-2xl text-[#1b75bc]">{member.name}</CardTitle>
-                    <p className="text-[#02c39a] font-semibold text-lg">{member.title}</p>
+                    <p className="text-[#007a5e] font-semibold text-lg">{member.title}</p>
 
                     {member.email && (
                       <div className="flex items-center justify-center text-gray-600 mt-2">
@@ -199,12 +199,12 @@ export default async function TeamMemberPage({ params }: Props) {
                         />
                       </div>
                       <CardTitle className="text-lg text-[#1b75bc]">{otherMember.name}</CardTitle>
-                      <p className="text-[#02c39a] font-medium text-sm">{otherMember.title}</p>
+                      <p className="text-[#007a5e] font-medium text-sm">{otherMember.title}</p>
                     </CardHeader>
                     <CardContent>
                       <p className="text-gray-600 text-sm mb-4 line-clamp-3">{otherMember.bio}</p>
                       <Button variant="outline" size="sm" asChild>
-                        <Link href={`/meet-our-team/${otherMember.slug}`}>Learn More</Link>
+                        <Link href={`/meet-our-team/${otherMember.slug}`} aria-label={`Learn more about ${otherMember.name}`}>Learn More</Link>
                       </Button>
                     </CardContent>
                   </Card>
@@ -216,7 +216,7 @@ export default async function TeamMemberPage({ params }: Props) {
       )}
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-[#1b75bc] to-[#02c39a]">
+      <section className="py-16 bg-gradient-to-r from-[#1b75bc] to-[#007a5e]">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center text-white">
             <h2 className="text-3xl font-bold mb-4">Ready to Work with {member.name.split(" ")[0]}?</h2>

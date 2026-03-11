@@ -27,13 +27,13 @@ export default function Footer() {
 	const getIcon = (iconName: string | null) => {
 		if (!iconName) return null;
 		const IconComponent = iconMap[iconName as keyof typeof iconMap];
-		return IconComponent ? <IconComponent className='w-5 h-5' /> : null;
+		return IconComponent ? <IconComponent className='w-5 h-5' aria-hidden="true" /> : null;
 	};
 
 	return (
 		<footer className='bg-gray-900 text-white'>
 			{/* Main Footer */}
-			<div className='bg-[#02c39a] py-12'>
+			<div className='bg-[#007a5e] py-12'>
 				<div className='container mx-auto px-4'>
 					<div className='grid md:grid-cols-3 gap-8'>
 						{/* Learn More */}

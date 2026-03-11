@@ -27,7 +27,7 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
         <Link href={`/blog/${post.slug}`}>
           <Image
             src={post.featuredImage || "/placeholder.svg"}
-            alt={post.title}
+            alt={post.featureImageAlt || post.title}
             width={500}
             height={300}
             className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-200"
@@ -42,7 +42,7 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
 
       <CardHeader className="flex-shrink-0">
         <div className="mb-2">
-          <span className="inline-block bg-[#02c39a] text-white px-2 py-1 rounded-full text-xs font-medium">
+          <span className="inline-block bg-[#007a5e] text-white px-2 py-1 rounded-full text-xs font-medium">
             {decodeHtmlEntities(post.category)}
           </span>
         </div>

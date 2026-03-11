@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import dynamic from "next/dynamic"
-import SEOHead from "@/components/seo-head"
 
 const DebtConsolidationCalculator = dynamic(
   () => import("@/components/calculators/debt-consolidation-calculator").then(mod => ({ default: mod.DebtConsolidationCalculator })),
@@ -14,17 +13,27 @@ export const metadata: Metadata = {
   description:
     "Calculate potential savings by consolidating high-interest debt with a HELOC. See monthly payment reductions and total interest savings over time.",
   keywords: "debt consolidation calculator, HELOC savings, debt payoff calculator, interest savings",
+  alternates: {
+    canonical: "https://heloc360.com/calculators/debt-consolidation",
+  },
+  openGraph: {
+    title: "Debt Consolidation Savings Calculator | HELOC360",
+    description:
+      "Calculate potential savings by consolidating high-interest debt with a HELOC. See monthly payment reductions and total interest savings over time.",
+    url: "https://heloc360.com/calculators/debt-consolidation",
+    siteName: "HELOC360",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Debt Consolidation Savings Calculator | HELOC360",
+    description:
+      "Calculate potential savings by consolidating high-interest debt with a HELOC. See monthly payment reductions and total interest savings over time.",
+  },
 }
 
 export default function DebtConsolidationCalculatorPage() {
   return (
-    <>
-      <SEOHead
-        title="Debt Consolidation Savings Calculator"
-        description="Calculate potential savings by consolidating high-interest debt with a HELOC. See monthly payment reductions and total interest savings over time."
-        canonical="/calculators/debt-consolidation"
-      />
-
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
         <section className="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-16">
@@ -35,7 +44,7 @@ export default function DebtConsolidationCalculatorPage() {
                 See how much you could save by consolidating high-interest debt with a HELOC
               </p>
               <div className="bg-blue-800/30 rounded-lg p-6 text-left max-w-2xl mx-auto">
-                <h3 className="font-semibold mb-3">Calculate Your Potential Savings:</h3>
+                <h2 className="font-semibold mb-3">Calculate Your Potential Savings:</h2>
                 <ul className="space-y-2 text-blue-100">
                   <li>• Monthly payment reduction</li>
                   <li>• Total interest savings over time</li>
@@ -96,6 +105,5 @@ export default function DebtConsolidationCalculatorPage() {
           </div>
         </section>
       </div>
-    </>
   )
 }

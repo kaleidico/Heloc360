@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/select";
 import type { BlogPost } from "@/types/blog";
 import { ALLOWED_CATEGORIES } from "@/config/blog";
+import MailingListForm from "@/components/mailing-list-form";
 
 const BlogCard = dynamic(() => import("@/components/blog/blog-card"), {
 	loading: () => (
@@ -179,7 +180,7 @@ export default function BlogHome({
 
 	return (
 		<>
-			<section className='bg-gradient-to-r from-[#1b75bc] to-[#02c39a] py-16'>
+			<section className='bg-gradient-to-r from-[#1b75bc] to-[#007a5e] py-16'>
 				<div className='container mx-auto px-4'>
 					<div className='max-w-4xl mx-auto text-center text-white'>
 						<h1 className='text-4xl md:text-5xl font-bold mb-6'>
@@ -262,6 +263,7 @@ export default function BlogHome({
 											handleSearchChange(e.target.value)
 										}
 										className='pl-10 pr-10'
+										aria-label='Search blog posts'
 									/>
 								</div>
 
@@ -302,7 +304,7 @@ export default function BlogHome({
 
 							{/* Filter Status */}
 							{(searchTerm || selectedCategory) && (
-								<div className='mt-4 p-3 bg-gradient-to-r from-[#1b75bc]/10 to-[#02c39a]/10 border border-[#1b75bc]/20 rounded-lg'>
+								<div className='mt-4 p-3 bg-gradient-to-r from-[#1b75bc]/10 to-[#007a5e]/10 border border-[#1b75bc]/20 rounded-lg'>
 									<div className='flex items-center gap-2 text-[#1b75bc] font-medium'>
 										<div className='w-2 h-2 bg-[#02c39a] rounded-full'></div>
 										{searchTerm && selectedCategory && (
@@ -312,7 +314,7 @@ export default function BlogHome({
 													"{searchTerm}"
 												</span>{" "}
 												in{" "}
-												<span className='bg-[#02c39a] text-white px-2 py-1 rounded-md text-sm font-semibold'>
+												<span className='bg-[#007a5e] text-white px-2 py-1 rounded-md text-sm font-semibold'>
 													{selectedCategory}
 												</span>
 											</>
@@ -328,7 +330,7 @@ export default function BlogHome({
 										{!searchTerm && selectedCategory && (
 											<>
 												Showing{" "}
-												<span className='bg-[#02c39a] text-white px-2 py-1 rounded-md text-sm font-semibold'>
+												<span className='bg-[#007a5e] text-white px-2 py-1 rounded-md text-sm font-semibold'>
 													{selectedCategory}
 												</span>{" "}
 												articles
@@ -395,7 +397,7 @@ export default function BlogHome({
 				</div>
 			</section>
 
-			<section className='py-16 bg-gradient-to-r from-[#1b75bc] to-[#02c39a]'>
+			<section className='py-16 bg-gradient-to-r from-[#1b75bc] to-[#007a5e]'>
 				<div className='container mx-auto px-4'>
 					<div className='max-w-3xl mx-auto text-center text-white'>
 						<h2 className='text-3xl font-bold mb-4'>
@@ -405,18 +407,8 @@ export default function BlogHome({
 							Get the latest tips, market updates, and success
 							stories delivered to your inbox.
 						</p>
-						<div className='flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto'>
-							<input
-								type='email'
-								placeholder='Enter your email'
-								className='flex-1 px-4 py-3 rounded-lg text-gray-900 placeholder-gray-500'
-							/>
-							<Button
-								size='lg'
-								className='bg-white text-[#1b75bc] hover:bg-gray-100 px-8'
-							>
-								Subscribe
-							</Button>
+						<div className='max-w-md mx-auto'>
+							<MailingListForm />
 						</div>
 						<p className='text-sm mt-4 opacity-80'>
 							No spam, unsubscribe at any time. Read our{" "}

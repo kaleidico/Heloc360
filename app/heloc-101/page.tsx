@@ -23,6 +23,20 @@ export const metadata: Metadata = {
 	alternates: {
 		canonical: "https://heloc360.com/heloc-101",
 	},
+	openGraph: {
+		title: "HELOC 101: Complete Guide to Home Equity Lines of Credit",
+		description:
+			"Learn everything about HELOCs - how they work, benefits, risks, qualification requirements, and whether a Home Equity Line of Credit is right for you.",
+		url: "https://heloc360.com/heloc-101",
+		siteName: "HELOC360",
+		type: "website",
+	},
+	twitter: {
+		card: "summary_large_image",
+		title: "HELOC 101: Complete Guide to Home Equity Lines of Credit",
+		description:
+			"Learn everything about HELOCs - how they work, benefits, risks, qualification requirements, and whether a Home Equity Line of Credit is right for you.",
+	},
 };
 
 const heloc101FAQs: FAQItem[] = [
@@ -57,7 +71,7 @@ export default function HELOC101Page() {
 	return (
 		<>
 			{/* Hero Section */}
-			<section className='bg-gradient-to-r from-[#1b75bc] to-[#02c39a] py-16'>
+			<section className='bg-gradient-to-r from-[#1b75bc] to-[#007a5e] py-16'>
 				<div className='container mx-auto px-4'>
 					<div className='max-w-4xl mx-auto text-center text-white'>
 						<h1 className='text-4xl md:text-5xl font-bold mb-6'>
@@ -798,7 +812,7 @@ export default function HELOC101Page() {
 			/>
 
 			{/* CTA Section */}
-			<section className='py-16 bg-gradient-to-r from-[#1b75bc] to-[#02c39a]'>
+			<section className='py-16 bg-gradient-to-r from-[#1b75bc] to-[#007a5e]'>
 				<div className='container mx-auto px-4'>
 					<div className='max-w-3xl mx-auto text-center text-white'>
 						<h2 className='text-3xl font-bold mb-4'>

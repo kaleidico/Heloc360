@@ -13,6 +13,7 @@ export interface BlogPost {
   category: string
   tags: string[]
   featuredImage: string
+  featureImageAlt?: string
   featured: boolean
   seoTitle?: string
 }

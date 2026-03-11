@@ -18,7 +18,7 @@ export default function PrivacyPolicyPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <section className="bg-gradient-to-r from-[#1b75bc] to-[#02c39a] py-12">
+      <section className="bg-gradient-to-r from-[#1b75bc] to-[#007a5e] py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center text-white">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
@@ -41,7 +41,7 @@ export default function PrivacyPolicyPage() {
                 href="https://myperfectleads.com/"
                 target="_blank"
                 rel="noreferrer noopener"
-                className="text-[#1b75bc] hover:text-[#02c39a] transition-colors"
+                className="text-[#1b75bc] hover:text-[#007a5e] transition-colors"
               >
                 My Perfect Leads, LLC
               </a>
@@ -137,13 +137,13 @@ export default function PrivacyPolicyPage() {
 
             <p className="text-lg leading-relaxed mb-8">
               You can stop these calls and emails by opting out of these prescreened credit offers. Simply call{" "}
-              <a href="tel:3132640470" className="text-[#1b75bc] hover:text-[#02c39a] transition-colors">
+              <a href="tel:3132640470" className="text-[#1b75bc] hover:text-[#007a5e] transition-colors">
                 (313) 264-0470
               </a>{" "}
               or email{" "}
               <a
                 href="mailto:compliance@heloc360.com"
-                className="text-[#1b75bc] hover:text-[#02c39a] transition-colors"
+                className="text-[#1b75bc] hover:text-[#007a5e] transition-colors"
               >
                 compliance@heloc360.com
               </a>
@@ -289,7 +289,7 @@ export default function PrivacyPolicyPage() {
                   href="https://www.mozilla.org/"
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="text-[#1b75bc] hover:text-[#02c39a] transition-colors"
+                  className="text-[#1b75bc] hover:text-[#007a5e] transition-colors"
                 >
                   Mozilla
                 </a>
@@ -298,7 +298,7 @@ export default function PrivacyPolicyPage() {
                   href="https://www.apple.com/"
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="text-[#1b75bc] hover:text-[#02c39a] transition-colors"
+                  className="text-[#1b75bc] hover:text-[#007a5e] transition-colors"
                 >
                   Apple
                 </a>
@@ -307,7 +307,7 @@ export default function PrivacyPolicyPage() {
                   href="https://www.microsoft.com/"
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="text-[#1b75bc] hover:text-[#02c39a] transition-colors"
+                  className="text-[#1b75bc] hover:text-[#007a5e] transition-colors"
                 >
                   Microsoft
                 </a>
@@ -406,7 +406,7 @@ export default function PrivacyPolicyPage() {
                 communications or by sending an email to{" "}
                 <a
                   href="mailto:compliance@heloc360.com"
-                  className="text-[#1b75bc] hover:text-[#02c39a] transition-colors"
+                  className="text-[#1b75bc] hover:text-[#007a5e] transition-colors"
                 >
                   compliance@heloc360.com
                 </a>
@@ -457,11 +457,11 @@ export default function PrivacyPolicyPage() {
               have provided to us. You may review and update information stored in your application online until you
               submit your application. Once you have submitted your application, you may only change the information by
               directly contacting our mortgage department at{" "}
-              <a href="tel:3132640470" className="text-[#1b75bc] hover:text-[#02c39a] transition-colors">
+              <a href="tel:3132640470" className="text-[#1b75bc] hover:text-[#007a5e] transition-colors">
                 (313) 264-0470
               </a>{" "}
               or emailing us at{" "}
-              <a href="mailto:help@heloc360.com" className="text-[#1b75bc] hover:text-[#02c39a] transition-colors">
+              <a href="mailto:help@heloc360.com" className="text-[#1b75bc] hover:text-[#007a5e] transition-colors">
                 help@heloc360.com
               </a>
               .
@@ -484,7 +484,7 @@ export default function PrivacyPolicyPage() {
             </p>
 
             {/* Contact Section */}
-            <div className="bg-gradient-to-r from-[#1b75bc]/10 to-[#02c39a]/10 p-8 rounded-lg mt-12">
+            <div className="bg-gradient-to-r from-[#1b75bc]/10 to-[#007a5e]/10 p-8 rounded-lg mt-12">
               <h3 className="text-xl font-semibold text-[#1b75bc] mb-4">Questions About This Policy?</h3>
               <p className="text-lg leading-relaxed mb-4">
                 If you have any questions about our privacy policy or how we handle your personal information, please
@@ -513,7 +513,7 @@ export default function PrivacyPolicyPage() {
                 from time to time, and we will post any changes on this page.
               </p>
               <p className="text-sm text-gray-600 mt-2">
-                <Link href="/" className="text-[#1b75bc] hover:text-[#02c39a] transition-colors">
+                <Link href="/" className="text-[#1b75bc] hover:text-[#007a5e] transition-colors">
                   Return to Home
                 </Link>
               </p>

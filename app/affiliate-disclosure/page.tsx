@@ -19,7 +19,7 @@ export default function AffiliateDisclosurePage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <section className="bg-gradient-to-r from-[#1b75bc] to-[#02c39a] py-12">
+      <section className="bg-gradient-to-r from-[#1b75bc] to-[#007a5e] py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center text-white">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
@@ -44,7 +44,7 @@ export default function AffiliateDisclosurePage() {
                   href="https://myperfectleads.com/"
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="text-[#1b75bc] hover:text-[#02c39a] transition-colors inline-flex items-center gap-1"
+                  className="text-[#1b75bc] hover:text-[#007a5e] transition-colors inline-flex items-center gap-1"
                 >
                   My Perfect Leads, LLC
                   <ExternalLink className="w-4 h-4" />
@@ -69,7 +69,7 @@ export default function AffiliateDisclosurePage() {
             </div>
 
             {/* Our Commitment */}
-            <div className="bg-gradient-to-r from-[#1b75bc]/10 to-[#02c39a]/10 p-8 rounded-lg mb-12">
+            <div className="bg-gradient-to-r from-[#1b75bc]/10 to-[#007a5e]/10 p-8 rounded-lg mb-12">
               <h2 className="text-2xl font-bold text-[#1b75bc] mb-6 flex items-center gap-3">
                 <Heart className="w-6 h-6" />
                 Our Commitment to You
@@ -236,7 +236,7 @@ export default function AffiliateDisclosurePage() {
             </div>
 
             {/* Contact Section */}
-            <div className="bg-gradient-to-r from-[#1b75bc]/10 to-[#02c39a]/10 p-8 rounded-lg">
+            <div className="bg-gradient-to-r from-[#1b75bc]/10 to-[#007a5e]/10 p-8 rounded-lg">
               <h3 className="text-xl font-semibold text-[#1b75bc] mb-4">
                 Questions About Our Affiliate Relationships?
               </h3>
@@ -267,7 +267,7 @@ export default function AffiliateDisclosurePage() {
                 disclosure from time to time, and we will post any changes on this page.
               </p>
               <p className="text-sm text-gray-600 mt-2">
-                <Link href="/" className="text-[#1b75bc] hover:text-[#02c39a] transition-colors">
+                <Link href="/" className="text-[#1b75bc] hover:text-[#007a5e] transition-colors">
                   Return to Home
                 </Link>
               </p>

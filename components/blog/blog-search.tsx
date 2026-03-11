@@ -113,7 +113,7 @@ export default function BlogSearch({
             </span>
           )}
           {selectedCategory && (
-            <span className="inline-flex items-center gap-1 px-3 py-1 bg-[#02c39a] text-white rounded-full text-sm">
+            <span className="inline-flex items-center gap-1 px-3 py-1 bg-[#007a5e] text-white rounded-full text-sm">
               {selectedCategory}
               <button
                 onClick={() => onCategoryChange("")}

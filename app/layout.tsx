@@ -106,9 +106,9 @@ export const metadata: Metadata = {
     canonical: "https://heloc360.com",
   },
   verification: {
-    google: "your-google-verification-code",
-    yandex: "your-yandex-verification-code",
-    yahoo: "your-yahoo-verification-code",
+    google: "KONfGE1Ipq2IMzNtKuAAeIWG-8Nr7FqnIwcwEySOkg0",
+    yandex: "", // TODO: Add Yandex verification code
+    yahoo: "", // TODO: Add Yahoo verification code
   },
   category: "finance",
     generator: 'v0.dev'
@@ -124,7 +124,7 @@ const structuredData = {
   url: "https://heloc360.com",
   logo: "https://heloc360.com/images/heloc360-logo.webp",
   image: "https://heloc360.com/images/og-image.jpg",
-  telephone: "+1-800-HELOC360",
+  telephone: "+1-800-HELOC360", // TODO: Replace with real phone number
   email: "info@heloc360.com",
   address: {
     "@type": "PostalAddress",
@@ -184,10 +184,9 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
 
-        {/* Security Headers */}
-        <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
-        <meta httpEquiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
-        <meta httpEquiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()" />
+        {/* Preconnect to Contentful CDN */}
+        <link rel="preconnect" href="https://images.ctfassets.net" />
+        <link rel="preconnect" href="https://assets.ctfassets.net" />
       </head>
       <body className={`${inter.className} antialiased`}>
         {/* Skip to main content for accessibility */}

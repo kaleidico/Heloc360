@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import dynamic from "next/dynamic"
-import SEOHead from "@/components/seo-head"
 
 const HomeEquityEstimatorCalculator = dynamic(
   () => import("@/components/calculators/home-equity-estimator-calculator"),
@@ -15,22 +14,27 @@ export const metadata: Metadata = {
     "Calculate your home equity and potential HELOC borrowing power. Get instant estimates based on your home value, mortgage balance, and loan-to-value ratios.",
   keywords:
     "home equity calculator, HELOC calculator, home value estimator, loan to value calculator, equity calculator",
+  alternates: {
+    canonical: "https://heloc360.com/calculators/home-equity-estimator",
+  },
   openGraph: {
     title: "Home Equity Estimator Calculator | HELOC360",
     description:
       "Calculate your home equity and potential HELOC borrowing power. Get instant estimates based on your home value, mortgage balance, and loan-to-value ratios.",
+    url: "https://heloc360.com/calculators/home-equity-estimator",
+    siteName: "HELOC360",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Home Equity Estimator Calculator | HELOC360",
+    description:
+      "Calculate your home equity and potential HELOC borrowing power. Get instant estimates based on your home value, mortgage balance, and loan-to-value ratios.",
   },
 }
 
 export default function HomeEquityEstimatorPage() {
   return (
-    <>
-      <SEOHead
-        title="Home Equity Estimator Calculator | HELOC360"
-        description="Calculate your home equity and potential HELOC borrowing power. Get instant estimates based on your home value, mortgage balance, and loan-to-value ratios."
-        keywords="home equity calculator, HELOC calculator, home value estimator, loan to value calculator, equity calculator"
-      />
       <div className="min-h-screen bg-gray-50">
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-7xl mx-auto">
@@ -108,6 +112,5 @@ export default function HomeEquityEstimatorPage() {
           </div>
         </div>
       </div>
-    </>
   )
 }

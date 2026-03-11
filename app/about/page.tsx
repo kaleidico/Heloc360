@@ -22,6 +22,20 @@ export const metadata: Metadata = {
 	alternates: {
 		canonical: "https://heloc360.com/about",
 	},
+	openGraph: {
+		title: "About HELOC360 - Your Trusted Home Equity Partner",
+		description:
+			"Learn about HELOC360's mission to simplify home equity access. Meet our team of experts dedicated to helping homeowners unlock their home's potential.",
+		url: "https://heloc360.com/about",
+		siteName: "HELOC360",
+		type: "website",
+	},
+	twitter: {
+		card: "summary_large_image",
+		title: "About HELOC360 - Your Trusted Home Equity Partner",
+		description:
+			"Learn about HELOC360's mission to simplify home equity access. Meet our team of experts dedicated to helping homeowners unlock their home's potential.",
+	},
 };
 
 const companyStats = [
@@ -54,7 +68,7 @@ export default async function AboutPage() {
 	return (
 		<div>
 			{/* Hero Section */}
-			<section className='relative py-20 bg-gradient-to-r from-[#1b75bc] to-[#02c39a] overflow-hidden'>
+			<section className='relative py-20 bg-gradient-to-r from-[#1b75bc] to-[#007a5e] overflow-hidden'>
 				<div className='container mx-auto px-4'>
 					<div className='grid lg:grid-cols-2 gap-12 items-center'>
 						<div className='text-white'>
@@ -166,21 +180,21 @@ export default async function AboutPage() {
 								</p>
 								<div className='space-y-3'>
 									<div className='flex items-start gap-3'>
-										<CheckCircle className='w-5 h-5 text-[#02c39a] mt-1 flex-shrink-0' />
+										<CheckCircle className='w-5 h-5 text-[#007a5e] mt-1 flex-shrink-0' />
 										<span className='text-gray-700'>
 											Founded in 2020 by mortgage industry
 											veterans
 										</span>
 									</div>
 									<div className='flex items-start gap-3'>
-										<CheckCircle className='w-5 h-5 text-[#02c39a] mt-1 flex-shrink-0' />
+										<CheckCircle className='w-5 h-5 text-[#007a5e] mt-1 flex-shrink-0' />
 										<span className='text-gray-700'>
 											Helped over 10,000 homeowners access
 											their equity
 										</span>
 									</div>
 									<div className='flex items-start gap-3'>
-										<CheckCircle className='w-5 h-5 text-[#02c39a] mt-1 flex-shrink-0' />
+										<CheckCircle className='w-5 h-5 text-[#007a5e] mt-1 flex-shrink-0' />
 										<span className='text-gray-700'>
 											Partnered with 50+ vetted lenders
 											nationwide
@@ -243,7 +257,7 @@ export default async function AboutPage() {
 							<Card className='text-center border-t-4 border-t-[#02c39a]'>
 								<CardHeader>
 									<div className='w-12 h-12 bg-[#02c39a]/10 rounded-lg flex items-center justify-center mx-auto mb-4'>
-										<Heart className='w-6 h-6 text-[#02c39a]' />
+										<Heart className='w-6 h-6 text-[#007a5e]' />
 									</div>
 									<CardTitle className='text-xl'>
 										Customer First
@@ -366,6 +380,7 @@ export default async function AboutPage() {
 												<Link
 													key={member.id}
 													href={`/meet-our-team/${member.slug}`}
+													aria-label={`Learn more about ${member.name}`}
 												>
 													<Card className='text-center hover:shadow-lg transition-all duration-200 cursor-pointer group h-full flex flex-col'>
 														<CardHeader className='flex-shrink-0'>
@@ -388,10 +403,10 @@ export default async function AboutPage() {
 																	quality={70}
 																/>
 															</div>
-															<CardTitle className='text-xl text-[#1b75bc] group-hover:text-[#02c39a] transition-colors h-14 flex items-center justify-center'>
+															<CardTitle className='text-xl text-[#1b75bc] group-hover:text-[#007a5e] transition-colors h-14 flex items-center justify-center'>
 																{member.name}
 															</CardTitle>
-															<p className='text-[#02c39a] font-medium h-6 flex items-center justify-center'>
+															<p className='text-[#007a5e] font-medium h-6 flex items-center justify-center'>
 																{member.title}
 															</p>
 														</CardHeader>
@@ -399,7 +414,7 @@ export default async function AboutPage() {
 															<p className='text-gray-600 text-sm leading-relaxed mb-4 line-clamp-4'>
 																{member.bio}
 															</p>
-															<div className='inline-flex items-center text-[#1b75bc] group-hover:text-[#02c39a] transition-colors text-sm font-medium justify-center'>
+															<div className='inline-flex items-center text-[#1b75bc] group-hover:text-[#007a5e] transition-colors text-sm font-medium justify-center'>
 																<Users className='w-4 h-4 mr-2' />
 																Learn More
 															</div>
@@ -459,6 +474,7 @@ export default async function AboutPage() {
 													<Link
 														key={member.id}
 														href={`/meet-our-team/${member.slug}`}
+														aria-label={`Learn more about ${member.name}`}
 													>
 														<Card className='text-center hover:shadow-lg transition-all duration-200 cursor-pointer group h-full flex flex-col'>
 															<CardHeader className='flex-shrink-0'>
@@ -483,12 +499,12 @@ export default async function AboutPage() {
 																		}
 																	/>
 																</div>
-																<CardTitle className='text-xl text-[#1b75bc] group-hover:text-[#02c39a] transition-colors h-14 flex items-center justify-center'>
+																<CardTitle className='text-xl text-[#1b75bc] group-hover:text-[#007a5e] transition-colors h-14 flex items-center justify-center'>
 																	{
 																		member.name
 																	}
 																</CardTitle>
-																<p className='text-[#02c39a] font-medium h-6 flex items-center justify-center'>
+																<p className='text-[#007a5e] font-medium h-6 flex items-center justify-center'>
 																	{
 																		member.title
 																	}
@@ -498,7 +514,7 @@ export default async function AboutPage() {
 																<p className='text-gray-600 text-sm leading-relaxed mb-4 line-clamp-4'>
 																	{member.bio}
 																</p>
-																<div className='inline-flex items-center text-[#1b75bc] group-hover:text-[#02c39a] transition-colors text-sm font-medium justify-center'>
+																<div className='inline-flex items-center text-[#1b75bc] group-hover:text-[#007a5e] transition-colors text-sm font-medium justify-center'>
 																	<Users className='w-4 h-4 mr-2' />
 																	Learn More
 																</div>
@@ -542,7 +558,7 @@ export default async function AboutPage() {
 							connections they need to make informed financial
 							decisions and achieve their goals.
 						</p>
-						<div className='bg-gradient-to-r from-[#1b75bc]/10 to-[#02c39a]/10 p-8 rounded-lg'>
+						<div className='bg-gradient-to-r from-[#1b75bc]/10 to-[#007a5e]/10 p-8 rounded-lg'>
 							<h3 className='text-2xl font-semibold text-[#1b75bc] mb-4'>
 								What This Means for You
 							</h3>
@@ -645,7 +661,7 @@ export default async function AboutPage() {
 			</section>
 
 			{/* CTA Section */}
-			<section className='py-16 bg-gradient-to-r from-[#1b75bc] to-[#02c39a]'>
+			<section className='py-16 bg-gradient-to-r from-[#1b75bc] to-[#007a5e]'>
 				<div className='container mx-auto px-4'>
 					<div className='max-w-3xl mx-auto text-center text-white'>
 						<h2 className='text-3xl font-bold mb-4'>

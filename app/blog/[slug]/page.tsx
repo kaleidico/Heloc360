@@ -133,7 +133,7 @@ export default async function BlogPostPage({ params }: Props) {
           <div className="max-w-4xl mx-auto">
             {/* Category Badge */}
             <div className="mb-4">
-              <span className="inline-block bg-[#02c39a] text-white px-3 py-1 rounded-full text-sm font-medium">
+              <span className="inline-block bg-[#007a5e] text-white px-3 py-1 rounded-full text-sm font-medium">
                 {decodeHtmlEntities(post.category)}
               </span>
             </div>
@@ -165,7 +165,7 @@ export default async function BlogPostPage({ params }: Props) {
             <div className="relative w-full h-64 md:h-96 mb-8 rounded-lg overflow-hidden">
               <Image
                 src={post.featuredImage || "/placeholder.svg"}
-                alt={post.title}
+                alt={post.featureImageAlt || post.title}
                 fill
                 className="object-cover"
                 priority

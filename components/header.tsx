@@ -10,6 +10,7 @@ import type { NavigationItem } from "@/types/navigation"
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [openDropdown, setOpenDropdown] = useState<number | null>(null)
 
   // Transform navigation data
   const transformNavigationData = (): NavigationItem[] => {
@@ -23,6 +24,15 @@ export default function Header() {
 
   const navigationItems = transformNavigationData()
   const ctaButtons = getCTAButtons()
+
+  const handleDropdownKeyDown = (e: React.KeyboardEvent, index: number) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault()
+      setOpenDropdown(openDropdown === index ? null : index)
+    } else if (e.key === "Escape") {
+      setOpenDropdown(null)
+    }
+  }
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
@@ -42,20 +52,41 @@ export default function Header() {
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-8">
             {navigationItems.map((item, index) => (
-              <div key={index} className="relative group">
+              <div key={index} className="relative group focus-within:block">
                 {item.children ? (
                   <>
-                    <button className="flex items-center text-gray-700 hover:text-[#1b75bc] transition-colors">
+                    <button
+                      className="flex items-center text-gray-700 hover:text-[#1b75bc] transition-colors"
+                      aria-haspopup="true"
+                      aria-expanded={openDropdown === index}
+                      onClick={() => setOpenDropdown(openDropdown === index ? null : index)}
+                      onKeyDown={(e) => handleDropdownKeyDown(e, index)}
+                    >
                       <span>{item.label}</span>
                       <ChevronDown className="w-4 h-4 ml-1" />
                     </button>
-                    <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-lg border opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                    <div
+                      className={`absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-lg border transition-all duration-200 ${
+                        openDropdown === index
+                          ? "opacity-100 visible"
+                          : "opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible"
+                      }`}
+                    >
                       <div className="p-2">
                         {item.children.map((child, childIndex) => (
                           <Link
                             key={childIndex}
                             href={child.url || "#"}
                             className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-50 rounded transition-colors"
+                            onBlur={(e) => {
+                              // Close dropdown when focus leaves the last child
+                              if (childIndex === (item.children?.length ?? 0) - 1) {
+                                const relatedTarget = e.relatedTarget as HTMLElement | null
+                                if (!relatedTarget || !e.currentTarget.parentElement?.parentElement?.contains(relatedTarget)) {
+                                  setOpenDropdown(null)
+                                }
+                              }
+                            }}
                           >
                             <span>{child.label}</span>
                           </Link>
@@ -89,7 +120,12 @@ export default function Header() {
           ))}
 
           {/* Mobile Menu Button */}
-          <button className="lg:hidden p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          <button
+            className="lg:hidden p-2"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle navigation menu"
+            aria-expanded={isMenuOpen}
+          >
             {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>

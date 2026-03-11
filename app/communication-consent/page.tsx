@@ -19,7 +19,7 @@ export default function CommunicationConsentPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <section className="bg-gradient-to-r from-[#1b75bc] to-[#02c39a] py-12">
+      <section className="bg-gradient-to-r from-[#1b75bc] to-[#007a5e] py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center text-white">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">Communication Consent</h1>
@@ -40,11 +40,11 @@ export default function CommunicationConsentPage() {
                   <h2 className="text-xl font-semibold text-[#1b75bc] mb-4">Your Communication Consent</h2>
                   <p className="text-lg leading-relaxed text-gray-700">
                     By submitting your contact information you agree to our{" "}
-                    <Link href="/terms" className="text-[#1b75bc] hover:text-[#02c39a] transition-colors underline">
+                    <Link href="/terms" className="text-[#1b75bc] hover:text-[#007a5e] transition-colors underline">
                       Terms of Use
                     </Link>{" "}
                     and our{" "}
-                    <Link href="/privacy" className="text-[#1b75bc] hover:text-[#02c39a] transition-colors underline">
+                    <Link href="/privacy" className="text-[#1b75bc] hover:text-[#007a5e] transition-colors underline">
                       Security and Privacy Policy
                     </Link>
                     . You also expressly consent to having us, our affiliates, and our partners contact you about your
@@ -119,7 +119,7 @@ export default function CommunicationConsentPage() {
               <div className="flex items-start gap-3">
                 <Shield className="w-6 h-6 text-[#02c39a] mt-1 flex-shrink-0" />
                 <div>
-                  <h3 className="text-lg font-semibold text-[#02c39a] mb-2">Your Choice</h3>
+                  <h3 className="text-lg font-semibold text-[#007a5e] mb-2">Your Choice</h3>
                   <p className="text-gray-700 leading-relaxed">
                     <strong>
                       You do not have to agree to receive calls or messages as a condition of getting services from
@@ -245,7 +245,7 @@ export default function CommunicationConsentPage() {
             </div>
 
             {/* Contact Section */}
-            <div className="bg-gradient-to-r from-[#1b75bc]/10 to-[#02c39a]/10 p-8 rounded-lg">
+            <div className="bg-gradient-to-r from-[#1b75bc]/10 to-[#007a5e]/10 p-8 rounded-lg">
               <h3 className="text-xl font-semibold text-[#1b75bc] mb-4">Questions About Communication Consent?</h3>
               <p className="text-lg leading-relaxed mb-6">
                 If you have questions about our communication practices, want to update your preferences, or need to opt
@@ -274,7 +274,7 @@ export default function CommunicationConsentPage() {
                 this policy from time to time, and we will post any changes on this page.
               </p>
               <p className="text-sm text-gray-600 mt-2">
-                <Link href="/" className="text-[#1b75bc] hover:text-[#02c39a] transition-colors">
+                <Link href="/" className="text-[#1b75bc] hover:text-[#007a5e] transition-colors">
                   Return to Home
                 </Link>
               </p>

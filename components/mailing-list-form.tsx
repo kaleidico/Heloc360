@@ -125,7 +125,7 @@ export default function MailingListForm() {
 				</div>
 				<Button
 					size='lg'
-					className='w-full bg-[#02c39a] hover:bg-[#00a896] text-white mt-4'
+					className='w-full bg-[#007a5e] hover:bg-[#00664e] text-white mt-4'
 					type='submit'
 					aria-label='Subscribe to mailing list'
 				>
@@ -164,7 +164,7 @@ export default function MailingListForm() {
 			</div>
 			<Button
 				size='lg'
-				className='w-full bg-[#02c39a] hover:bg-[#00a896] text-white mt-4'
+				className='w-full bg-[#007a5e] hover:bg-[#00664e] text-white mt-4'
 				type='submit'
 				aria-label='Subscribe to mailing list'
 				disabled={isSubmitting}

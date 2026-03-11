@@ -117,19 +117,6 @@ Disallow: /
 User-agent: Omgilibot
 Disallow: /
 
-# Block social media crawlers (optional - remove if you want social sharing)
-User-agent: facebookexternalhit
-Disallow: /
-
-User-agent: Twitterbot
-Disallow: /
-
-User-agent: LinkedInBot
-Disallow: /
-
-User-agent: WhatsApp
-Disallow: /
-
 # Block archive and backup crawlers
 User-agent: ia_archiver
 Disallow: /

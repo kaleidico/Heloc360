@@ -19,7 +19,7 @@ export default function TermsOfUsePage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <section className="bg-gradient-to-r from-[#1b75bc] to-[#02c39a] py-12">
+      <section className="bg-gradient-to-r from-[#1b75bc] to-[#007a5e] py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center text-white">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">Navigate Your Journey Understanding Terms of Use</h1>
@@ -400,7 +400,7 @@ export default function TermsOfUsePage() {
                       <p className="font-medium">By Email:</p>
                       <a
                         href="mailto:help@heloc360.com"
-                        className="text-[#1b75bc] hover:text-[#02c39a] transition-colors"
+                        className="text-[#1b75bc] hover:text-[#007a5e] transition-colors"
                       >
                         help@heloc360.com
                       </a>
@@ -420,7 +420,7 @@ export default function TermsOfUsePage() {
               </p>
               <p className="text-lg leading-relaxed">
                 To make such a request, please send an email to{" "}
-                <a href="mailto:help@heloc360.com" className="text-[#1b75bc] hover:text-[#02c39a] transition-colors">
+                <a href="mailto:help@heloc360.com" className="text-[#1b75bc] hover:text-[#007a5e] transition-colors">
                   help@heloc360.com
                 </a>{" "}
                 or write us at the address above.
@@ -433,7 +433,7 @@ export default function TermsOfUsePage() {
               <p className="text-lg leading-relaxed">
                 The Company is an equal opportunity employer. Any complaints or concerns about the Company's employment
                 practices may be directed to the Director of Human Resources at{" "}
-                <a href="tel:313-488-5625" className="text-[#1b75bc] hover:text-[#02c39a] transition-colors">
+                <a href="tel:313-488-5625" className="text-[#1b75bc] hover:text-[#007a5e] transition-colors">
                   313-488-5625
                 </a>
                 .
@@ -441,7 +441,7 @@ export default function TermsOfUsePage() {
             </div>
 
             {/* Contact Section */}
-            <div className="bg-gradient-to-r from-[#1b75bc]/10 to-[#02c39a]/10 p-8 rounded-lg">
+            <div className="bg-gradient-to-r from-[#1b75bc]/10 to-[#007a5e]/10 p-8 rounded-lg">
               <h3 className="text-xl font-semibold text-[#1b75bc] mb-4">Questions About These Terms?</h3>
               <p className="text-lg leading-relaxed mb-6">
                 If you have any questions about these terms of use or need clarification on any provisions, please don't
@@ -470,7 +470,7 @@ export default function TermsOfUsePage() {
                 from time to time, and we will post any changes on this page.
               </p>
               <p className="text-sm text-gray-600 mt-2">
-                <Link href="/" className="text-[#1b75bc] hover:text-[#02c39a] transition-colors">
+                <Link href="/" className="text-[#1b75bc] hover:text-[#007a5e] transition-colors">
                   Return to Home
                 </Link>
               </p>

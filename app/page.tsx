@@ -56,7 +56,7 @@ export default function HomePage() {
 					</p>
 					<Button
 						size='lg'
-						className='bg-[#02c39a] hover:bg-[#00a896] text-white px-8 py-3 text-lg rounded-lg'
+						className='bg-[#007a5e] hover:bg-[#00664e] text-white px-8 py-3 text-lg rounded-lg'
 						aria-label='Get pre-qualified for a HELOC - Free and confidential'
 						asChild
 					>
@@ -193,7 +193,7 @@ export default function HomePage() {
 							<CardHeader>
 								<div className='w-16 h-16 bg-[#02c39a]/10 rounded-full flex items-center justify-center mx-auto mb-4'>
 									<span
-										className='text-2xl font-bold text-[#02c39a]'
+										className='text-2xl font-bold text-[#007a5e]'
 										aria-label='Step 2'
 									>
 										2

@@ -96,6 +96,12 @@ function getAssetUrlById(assets: ContentfulAsset[] | undefined, id?: string): st
   return rawUrl.startsWith('//') ? `https:${rawUrl}` : rawUrl
 }
 
+function getAssetDescriptionById(assets: ContentfulAsset[] | undefined, id?: string): string | undefined {
+  if (!assets || !id) return undefined
+  const asset = assets.find((a) => a.sys.id === id)
+  return asset?.fields?.description || undefined
+}
+
 // Fallback: fetch asset directly if not included in collection response
 async function fetchAssetUrlById(assetId: string): Promise<string | ''> {
   try {
@@ -168,6 +174,9 @@ async function mapEntryToBlogPost(
   // Heuristically mark as featured if a category named "Featured" is present
   const featured = categories.map((c) => c.toLowerCase()).includes('featured')
 
+  // Get alt text from asset description, falling back to title
+  const featureImageAlt = getAssetDescriptionById(assets, featuredImageId)
+
   return {
     id: entry.sys.id,
     title: fields.title,
@@ -179,6 +188,7 @@ async function mapEntryToBlogPost(
     category,
     tags,
     featuredImage,
+    featureImageAlt,
     featured,
     seoTitle: fields.seoTitle,
   }
