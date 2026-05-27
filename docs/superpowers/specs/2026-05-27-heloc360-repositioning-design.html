@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HELOC360 — Repositioning & Redesign Design Spec</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy-900: #00274C;
+      --navy-700: #003a6e;
+      --blue-500: #1b75bc;
+      --blue-50: #eff6ff;
+      --green-600: #007a5e;
+      --green-400: #02c39a;
+      --green-50: #f0fdf4;
+      --amber-500: #f59e0b;
+      --amber-50: #fff7ed;
+      --maize-400: #FFCB05;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-500: #6b7280;
+      --gray-700: #374151;
+      --gray-900: #0f172a;
+      --red-500: #ef4444;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: #fafafa;
+      color: var(--gray-900);
+      line-height: 1.65;
+      margin: 0;
+      padding: 0;
+      font-size: 16px;
+    }
+    .doc-shell {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      gap: 48px;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+    @media (max-width: 900px) {
+      .doc-shell { grid-template-columns: 1fr; gap: 0; padding: 0 20px; }
+    }
+
+    /* ===== Sidebar / TOC ===== */
+    .sidebar {
+      padding: 40px 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      border-right: 1px solid var(--gray-200);
+      padding-right: 24px;
+    }
+    @media (max-width: 900px) {
+      .sidebar {
+        position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--gray-200);
+        padding: 16px 0;
+      }
+    }
+    .brand {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--navy-900);
+      letter-spacing: -0.4px;
+      margin-bottom: 4px;
+    }
+    .brand span { color: var(--green-600); }
+    .brand-sub {
+      font-size: 11px;
+      color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 24px;
+    }
+    .toc-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--gray-500);
+      font-weight: 700;
+      margin: 24px 0 10px;
+    }
+    .toc {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 24px 0;
+      font-size: 13px;
+    }
+    .toc li { margin: 0; }
+    .toc a {
+      display: block;
+      padding: 6px 10px;
+      color: var(--gray-700);
+      text-decoration: none;
+      border-radius: 5px;
+      border-left: 2px solid transparent;
+      transition: all 0.15s;
+    }
+    .toc a:hover {
+      background: var(--blue-50);
+      color: var(--blue-500);
+      border-left-color: var(--blue-500);
+    }
+    .toc .toc-num {
+      display: inline-block;
+      width: 22px;
+      color: var(--gray-500);
+      font-variant-numeric: tabular-nums;
+      font-weight: 600;
+    }
+    .meta-block {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 11px;
+      color: var(--gray-700);
+      line-height: 1.7;
+    }
+    .meta-block strong { color: var(--navy-900); }
+    .meta-block .status-pill {
+      display: inline-block;
+      background: var(--amber-500);
+      color: white;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+    }
+
+    /* ===== Main content ===== */
+    main { padding: 40px 0 80px; max-width: 800px; }
+
+    .doc-title {
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--navy-900);
+      margin: 0 0 8px 0;
+      letter-spacing: -0.8px;
+      line-height: 1.15;
+    }
+    .doc-deck {
+      font-size: 17px;
+      color: var(--gray-500);
+      margin: 0 0 32px;
+      line-height: 1.5;
+    }
+
+    section.spec {
+      margin: 56px 0;
+      scroll-margin-top: 24px;
+    }
+    section.spec:first-of-type { margin-top: 16px; }
+    section.spec h2 {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--navy-900);
+      letter-spacing: -0.4px;
+      margin: 0 0 8px 0;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--gray-200);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      background: var(--navy-900);
+      color: var(--maize-400);
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      flex-shrink: 0;
+    }
+
+    section.spec h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--navy-900);
+      margin: 28px 0 10px;
+    }
+
+    section.spec p {
+      margin: 0 0 14px;
+      color: var(--gray-700);
+    }
+    section.spec strong { color: var(--navy-900); font-weight: 700; }
+    section.spec em { color: var(--gray-700); }
+
+    section.spec ul, section.spec ol {
+      margin: 0 0 16px;
+      padding-left: 22px;
+      color: var(--gray-700);
+    }
+    section.spec li { margin-bottom: 4px; }
+
+    section.spec a {
+      color: var(--blue-500);
+      text-decoration: none;
+      border-bottom: 1px dotted var(--blue-500);
+    }
+
+    /* ===== Tables ===== */
+    table.spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 18px 0;
+      font-size: 14px;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+      border: 1px solid var(--gray-200);
+    }
+    table.spec-table th, table.spec-table td {
+      padding: 11px 14px;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    table.spec-table th {
+      background: var(--gray-50);
+      color: var(--navy-900);
+      font-weight: 700;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+    table.spec-table tr:last-child td { border-bottom: 0; }
+    table.spec-table tr:nth-child(even) td { background: #fcfcfc; }
+    table.spec-table td { color: var(--gray-700); }
+    table.spec-table td strong { color: var(--navy-900); }
+
+    /* ===== Code & sitemap ===== */
+    code, pre {
+      font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+      font-size: 13px;
+    }
+    p code, li code, td code {
+      background: var(--gray-100);
+      color: var(--navy-700);
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-size: 0.9em;
+    }
+    pre.sitemap {
+      background: var(--navy-900);
+      color: #d1d5db;
+      padding: 20px 24px;
+      border-radius: 10px;
+      overflow-x: auto;
+      font-size: 12.5px;
+      line-height: 1.7;
+      margin: 18px 0;
+    }
+    pre.sitemap .domain { color: var(--maize-400); font-weight: 700; }
+    pre.sitemap .branch { color: var(--green-400); }
+    pre.sitemap .leaf { color: var(--gray-300); }
+    pre.sitemap .note { color: var(--gray-500); font-style: italic; }
+    pre.sitemap .phase1 { background: rgba(255,203,5,0.18); padding: 1px 5px; border-radius: 3px; color: var(--maize-400); }
+    pre.sitemap .phase2 { background: rgba(2,195,154,0.18); padding: 1px 5px; border-radius: 3px; color: var(--green-400); }
+    pre.sitemap .phase3 { background: rgba(255,255,255,0.10); padding: 1px 5px; border-radius: 3px; color: var(--gray-300); }
+    .sitemap-legend {
+      display: flex;
+      gap: 18px;
+      font-size: 12px;
+      color: var(--gray-500);
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .sitemap-legend .dot { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+
+    /* ===== Callouts ===== */
+    .callout {
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 18px 0;
+      font-size: 14px;
+      border-left: 4px solid;
+      line-height: 1.6;
+    }
+    .callout.info { background: var(--blue-50); border-color: var(--blue-500); color: #1e3a5f; }
+    .callout.warn { background: var(--amber-50); border-color: var(--amber-500); color: #7c2d12; }
+    .callout.ok { background: var(--green-50); border-color: var(--green-600); color: #064e3b; }
+    .callout strong { color: inherit; font-weight: 700; }
+    .callout-label {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-right: 8px;
+      padding: 2px 7px;
+      border-radius: 3px;
+    }
+    .callout.info .callout-label { background: var(--blue-500); color: white; }
+    .callout.warn .callout-label { background: var(--amber-500); color: white; }
+    .callout.ok .callout-label { background: var(--green-600); color: white; }
+
+    /* ===== Phase pills ===== */
+    .phase-pill {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 3px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .phase-pill.p1 { background: #fef3c7; color: #92400e; }
+    .phase-pill.p2 { background: #d1fae5; color: #065f46; }
+    .phase-pill.p3 { background: var(--gray-100); color: var(--gray-700); }
+
+    /* ===== Token palette ===== */
+    .palette-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .palette-swatch {
+      width: 22px; height: 22px; border-radius: 4px;
+      border: 1px solid var(--gray-200);
+      flex-shrink: 0;
+    }
+
+    /* ===== Footer ===== */
+    .doc-footer {
+      margin-top: 80px;
+      padding-top: 24px;
+      border-top: 1px solid var(--gray-200);
+      font-size: 12px;
+      color: var(--gray-500);
+      text-align: center;
+    }
+
+    /* ===== Print ===== */
+    @media print {
+      .sidebar { display: none; }
+      .doc-shell { display: block; padding: 0; }
+      body { background: white; font-size: 11pt; }
+      section.spec { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="doc-shell">
+
+  <!-- ===================== SIDEBAR ===================== -->
+  <aside class="sidebar">
+    <div class="brand">HELOC<span>360</span></div>
+    <div class="brand-sub">Design Spec</div>
+
+    <div class="meta-block">
+      <strong>Date</strong> · 2026-05-27<br>
+      <strong>Status</strong> · <span class="status-pill">DRAFT</span><br>
+      <strong>Stack</strong> · Next.js 15 · TS · Tailwind v3<br>
+      <strong>Repo</strong> · <code style="font-size:10px">nextjs-heloc360</code>
+    </div>
+
+    <div class="toc-title">Sections</div>
+    <ul class="toc">
+      <li><a href="#sec1"><span class="toc-num">01</span>Overview &amp; position</a></li>
+      <li><a href="#sec2"><span class="toc-num">02</span>Goals &amp; metrics</a></li>
+      <li><a href="#sec3"><span class="toc-num">03</span>Non-goals</a></li>
+      <li><a href="#sec4"><span class="toc-num">04</span>Information architecture</a></li>
+      <li><a href="#sec5"><span class="toc-num">05</span>Homepage</a></li>
+      <li><a href="#sec6"><span class="toc-num">06</span>Spoke template</a></li>
+      <li><a href="#sec7"><span class="toc-num">07</span>Calculator-as-form</a></li>
+      <li><a href="#sec8"><span class="toc-num">08</span>Lead form &amp; legacy</a></li>
+      <li><a href="#sec9"><span class="toc-num">09</span>Brand voice</a></li>
+      <li><a href="#sec10"><span class="toc-num">10</span>Color &amp; visual</a></li>
+      <li><a href="#sec11"><span class="toc-num">11</span>Navigation &amp; frame</a></li>
+      <li><a href="#sec12"><span class="toc-num">12</span>Phasing</a></li>
+      <li><a href="#sec13"><span class="toc-num">13</span>Tracking</a></li>
+      <li><a href="#sec14"><span class="toc-num">14</span>Open questions</a></li>
+      <li><a href="#appA"><span class="toc-num">A</span>Assets to salvage</a></li>
+      <li><a href="#appB"><span class="toc-num">B</span>Out of scope</a></li>
+    </ul>
+  </aside>
+
+  <!-- ===================== MAIN ===================== -->
+  <main>
+
+    <h1 class="doc-title">HELOC360 — Repositioning &amp; Redesign</h1>
+    <p class="doc-deck">A complete repositioning of <code>heloc360.com</code> from generic HELOC matchmaker to vertical-by-vertical educator-advisor marketplace, designed across three build phases.</p>
+
+    <!-- ===== 01 ===== -->
+    <section class="spec" id="sec1">
+      <h2><span class="section-num">01</span>Overview &amp; strategic position</h2>
+      <p>HELOC360 is repositioning from a generic HELOC-matching service into <strong>a vertical-by-vertical educator-advisor marketplace</strong>. The site stops competing with LendingTree/Bankrate on rate-table breadth and starts competing on use-case specialization and educator voice.</p>
+
+      <table class="spec-table">
+        <tr><th style="width:25%">Layer</th><th>Position</th></tr>
+        <tr><td>Strategic</td><td>Vertical use-case marketplace (5 verticals)</td></tr>
+        <tr><td>Brand voice</td><td>Educator-advisor — <em>"The HELOC advisor, not the HELOC salesman."</em></td></tr>
+        <tr><td>Homepage pattern</td><td>Hybrid hero — use-case pills + universal borrowing-power calculator</td></tr>
+        <tr><td>Conversion pattern</td><td>Calculator-as-form, progressive disclosure, single CTA per page</td></tr>
+      </table>
+
+      <div class="callout info"><span class="callout-label">Why this combination</span> LendingTree/Bankrate cannot adopt educator voice without burning their rate-marketplace brand. Figure/Aven cannot adopt multi-lender match without becoming a marketplace themselves. Vertical specialization compounds CPL efficiency on paid channels and lets each spoke own its own SEO cluster.</div>
+    </section>
+
+    <!-- ===== 02 ===== -->
+    <section class="spec" id="sec2">
+      <h2><span class="section-num">02</span>Goals &amp; success metrics</h2>
+      <p><strong>Primary goal:</strong> Increase qualified HELOC lead volume from the site.</p>
+      <p><strong>Secondary goals:</strong></p>
+      <ul>
+        <li>Lower blended cost-per-lead on paid channels (via better post-click conversion + use-case Quality Score gains)</li>
+        <li>Build organic traffic foundation across 5 vertical content clusters</li>
+        <li>Establish measurable lead funnel from day one of relaunch</li>
+      </ul>
+      <h3>Success metrics</h3>
+      <p>Phase 1 establishes the baseline; metrics tracked thereafter.</p>
+      <ul>
+        <li>Funnel step conversion: <code>pageview → pill_click → calc_start → calc_complete → email_capture → lender_match</code></li>
+        <li>Lead value per source/medium</li>
+        <li>Pages-per-session and time-to-first-key-event by source</li>
+        <li>Organic impressions/clicks per spoke (Search Console)</li>
+      </ul>
+      <div class="callout warn"><span class="callout-label">No baseline</span> GA4 currently has no useful data. Phase 1 deliverables include re-instrumentation so the first 30 days post-relaunch establish the measurement floor.</div>
+    </section>
+
+    <!-- ===== 03 ===== -->
+    <section class="spec" id="sec3">
+      <h2><span class="section-num">03</span>Non-goals</h2>
+      <ul>
+        <li>Not becoming a direct lender. Routing stays through the existing lender network.</li>
+        <li>Not maintaining the external <code>get-started.heloc360.com</code> subdomain. The on-domain calculator-as-form replaces it.</li>
+        <li>Not preserving the 9-step monolithic form (<code>app/mortgage-application</code>). Field-level logic salvaged; UX retired.</li>
+        <li>Not building investor/broker B2B funnels in this scope. "Broker" borrower type is dropped from the site.</li>
+        <li>Not changing the lender network commercial structure in this scope.</li>
+      </ul>
+    </section>
+
+    <!-- ===== 04 ===== -->
+    <section class="spec" id="sec4">
+      <h2><span class="section-num">04</span>Information architecture</h2>
+
+      <div class="sitemap-legend">
+        <span><span class="dot" style="background:#FFCB05"></span>Phase 1 — 4-6 weeks</span>
+        <span><span class="dot" style="background:#02c39a"></span>Phase 2 — 3-4 weeks</span>
+        <span><span class="dot" style="background:#9ca3af"></span>Phase 3 — 3-4 weeks</span>
+      </div>
+
+<pre class="sitemap"><span class="domain">heloc360.com/</span>                              <span class="note">brand hub + universal calculator</span>
+<span class="branch">├── /debt-consolidation</span>                    <span class="phase1">PHASE 1</span>
+<span class="leaf">│   ├── /calculator</span>
+<span class="leaf">│   ├── /vs-personal-loan</span>
+<span class="leaf">│   ├── /vs-balance-transfer</span>
+<span class="leaf">│   ├── /credit-card-payoff</span>
+<span class="leaf">│   ├── /medical-debt</span>
+<span class="leaf">│   └── /[state]</span>                           <span class="phase3">PHASE 3 (programmatic)</span>
+<span class="branch">├── /home-renovation</span>                       <span class="phase1">PHASE 1</span>
+<span class="leaf">│   ├── /calculator</span>
+<span class="leaf">│   ├── /vs-cash-out-refi</span>
+<span class="leaf">│   ├── /kitchen-remodel</span>
+<span class="leaf">│   ├── /adu-construction</span>
+<span class="leaf">│   ├── /roi-by-project</span>
+<span class="leaf">│   └── /[state]</span>                           <span class="phase3">PHASE 3</span>
+<span class="branch">├── /retirement-equity</span>                     <span class="phase2">PHASE 2</span>
+<span class="leaf">│   ├── /calculator</span>
+<span class="leaf">│   ├── /vs-reverse-mortgage</span>
+<span class="leaf">│   ├── /aging-in-place-remodel</span>
+<span class="leaf">│   └── /social-security-bridge</span>
+<span class="branch">├── /heloc-101</span>                             <span class="phase2">PHASE 2 (revamp)</span>
+<span class="leaf">│   ├── /how-it-works</span>
+<span class="leaf">│   ├── /draw-period-explained</span>
+<span class="leaf">│   ├── /qualification-requirements</span>
+<span class="leaf">│   ├── /rate-types</span>
+<span class="leaf">│   └── /heloc-vs-[X]</span>                      <span class="note">(comparison cluster)</span>
+<span class="branch">├── /self-employed-heloc</span>                   <span class="phase3">PHASE 3</span>
+<span class="leaf">│   ├── /calculator</span>
+<span class="leaf">│   ├── /bank-statement-loans</span>
+<span class="leaf">│   └── /1099-borrowers</span>
+<span class="branch">├── /calculators</span>                           <span class="note">hub of all calculators</span>
+<span class="branch">├── /rates</span>                                 <span class="phase2">PHASE 2</span>  <span class="note">today's HELOC rates</span>
+<span class="branch">├── /blog</span>                                  <span class="note">keep; retag content into spokes</span>
+<span class="branch">├── /meet-our-team</span>                         <span class="note">advisor faces — refresh</span>
+<span class="branch">└── /about, /contact, /privacy, /terms, ...</span></pre>
+
+      <h3>Routing rules</h3>
+      <ul>
+        <li>The 5 hero pills route to <code>/debt-consolidation</code>, <code>/home-renovation</code>, <code>/retirement-equity</code>, <code>/heloc-101</code> (first-time tappers entry), and <code>/self-employed-heloc</code> respectively. Pre-tag URL params so the calculator on the spoke knows its context.</li>
+        <li>Every calculator lives at <code>/[spoke]/calculator</code> and is also linked from <code>/calculators</code>.</li>
+        <li>Sitemap routes (<code>sitemap.ts</code>, <code>sitemap-blog-pagination.xml</code>, <code>sitemap-posts.xml</code>, <code>sitemap-team.xml</code>) get expanded to include all new URLs.</li>
+      </ul>
+    </section>
+
+    <!-- ===== 05 ===== -->
+    <section class="spec" id="sec5">
+      <h2><span class="section-num">05</span>Homepage design</h2>
+      <p><strong>Pattern:</strong> Hybrid hero. Use-case pills + universal borrowing-power calculator visible above the fold.</p>
+
+      <h3>Above the fold</h3>
+      <ul>
+        <li>Eyebrow: <code>THE HELOC ADVISOR</code> (small caps, primary blue)</li>
+        <li>H1: <strong>What do you want to do with your home equity?</strong></li>
+        <li>Subhead: <em>"Tell us your reason. We'll match you with vetted lenders who specialize in exactly that — and walk you through the trade-offs before you commit."</em></li>
+        <li>5 use-case pills (single row on desktop, wraps on mobile):
+          <ul>
+            <li>💳 Pay off debt → <code>/debt-consolidation</code></li>
+            <li>🔨 Renovate my home → <code>/home-renovation</code></li>
+            <li>🌅 Plan for retirement → <code>/retirement-equity</code></li>
+            <li>🏠 First time tapping equity → <code>/heloc-101</code></li>
+            <li>📊 I'm self-employed → <code>/self-employed-heloc</code></li>
+          </ul>
+        </li>
+        <li>Divider line: <code>— or estimate your borrowing power —</code></li>
+        <li>Universal calculator widget (collapsed, 2 fields visible): Home value, Mortgage balance, CTA <code>See how much you can unlock →</code></li>
+        <li>Trust strip (single line, small): <code>4.8 average · 1,200+ reviews · NMLS-licensed lender network · Free advisor call</code></li>
+      </ul>
+
+      <h3>Below the fold (in order)</h3>
+      <ol>
+        <li>"How it works" — 3-step educator framing (Tell us your reason → See your numbers → Get matched)</li>
+        <li>Advisor face strip — real photos linking to <code>/meet-our-team</code></li>
+        <li>Use-case detail cards — same 5, but expanded: 1-sentence problem + 1-sentence outcome + "Learn more →"</li>
+        <li>"How HELOC360 is different" — 3 bullets, advisor-voice differentiators (no fees, no obligation, real humans)</li>
+        <li>FAQ block — reuse <code>home-faq.tsx</code> component, content updated to advisor voice</li>
+        <li>Footer (see §11)</li>
+      </ol>
+
+      <h3>Removed from current homepage</h3>
+      <ul>
+        <li>The mailing-list-form section as a primary CTA. (Moves to exit-intent + footer + post-end with a lead magnet — see §8.)</li>
+        <li>The external <code>https://get-started.heloc360.com/</code> CTA. (Calculator replaces it.)</li>
+        <li>The "Benefits of HELOCs" generic icon grid. (Use-case cards now carry that job, in context.)</li>
+      </ul>
+    </section>
+
+    <!-- ===== 06 ===== -->
+    <section class="spec" id="sec6">
+      <h2><span class="section-num">06</span>Spoke page template</h2>
+      <p>One template, parameterized per vertical. Pattern lives at <code>app/[spoke]/page.tsx</code> (or per-route file).</p>
+
+      <h3>Above the fold</h3>
+      <ul>
+        <li>Breadcrumb: <code>Home · Use cases · [Vertical name]</code></li>
+        <li>H1: Use-case-specific outcome (not feature). Examples:
+          <ul>
+            <li><code>/debt-consolidation</code>: "Roll your high-interest debt into one lower-interest payment."</li>
+            <li><code>/home-renovation</code>: "Fund your renovation without touching your low-rate mortgage."</li>
+            <li><code>/retirement-equity</code>: "Turn your home into income — without selling it or signing a reverse mortgage."</li>
+          </ul>
+        </li>
+        <li>Subhead: 1-2 sentences, names the savings/outcome and previews the advisor framing.</li>
+      </ul>
+
+      <h3>Body — two-column grid (desktop)</h3>
+      <table class="spec-table">
+        <tr>
+          <th style="width:55%">Left column (1.4fr — educator content)</th>
+          <th>Right column (1fr — sticky calculator-as-form)</th>
+        </tr>
+        <tr>
+          <td><strong>"How much could you save?"</strong> — 1 paragraph explaining the math, invites use of the calc</td>
+          <td>Use-case-specific calculator. Inputs vary by spoke.</td>
+        </tr>
+        <tr>
+          <td><strong>"When [use case] makes sense"</strong> — 3-4 bulleted criteria</td>
+          <td>Live calculation display ("You'd save $X" / "You could borrow $Y")</td>
+        </tr>
+        <tr>
+          <td><strong>"The N risks we'll talk you through"</strong> — explicit risks named. <em>The educator-voice differentiator.</em></td>
+          <td>Stage 3 contact capture appears in-place after value shown</td>
+        </tr>
+        <tr>
+          <td><strong>"Recently helped"</strong> — one in-line testimonial tagged to this use case</td>
+          <td>"Get matched with a lender →"</td>
+        </tr>
+        <tr>
+          <td>Related comparison links — internal SEO crosslinks (<code>vs-personal-loan</code>, <code>vs-cash-out-refi</code>, etc.)</td>
+          <td>Disclosure: "No credit pull. We share your info only after you approve a lender."</td>
+        </tr>
+      </table>
+
+      <h3>Below the fold</h3>
+      <ul>
+        <li>Expanded FAQ for this use case (5-8 Q&amp;As, FAQPage schema)</li>
+        <li>Lender network strip (logos / count / NMLS)</li>
+        <li>Secondary CTA strip: "Prefer to talk? Schedule a 15-min advisor call →"</li>
+      </ul>
+
+      <p><strong>Mobile:</strong> Single column. Calculator sits below H1/subhead but above educator content (so it's reachable without scrolling past prose).</p>
+
+      <div class="callout info"><span class="callout-label">Writer brief — required per spoke</span> Outcome H1 · Math-savings subhead · 3-4 "When this makes sense" criteria · <strong>3 explicit risks (non-negotiable)</strong> · 1 use-case-tagged testimonial · 5-8 FAQs · Comparison crosslinks</div>
+    </section>
+
+    <!-- ===== 07 ===== -->
+    <section class="spec" id="sec7">
+      <h2><span class="section-num">07</span>Calculator-as-form — 4-stage progressive flow</h2>
+      <p>The conversion engine. Replaces both the external pre-qual form and the in-repo 9-step form.</p>
+
+      <table class="spec-table">
+        <tr><th>Stage</th><th>Inputs</th><th>UX</th><th>Lead state</th></tr>
+        <tr>
+          <td><strong>1. Equity</strong></td>
+          <td>Home value, mortgage balance, property zip (auto state)</td>
+          <td>Shown immediately in any hero. No commitment. Calc shows estimated equity + borrowing power.</td>
+          <td>Anonymous — session-only</td>
+        </tr>
+        <tr>
+          <td><strong>2. Vertical</strong></td>
+          <td>Use-case-specific. <em>Debt:</em> total debt + avg APR. <em>Reno:</em> project budget + timeline. <em>Retire:</em> monthly income need.</td>
+          <td>Stage 2 fields appear inline after stage 1 completes. Result panel updates ("You'd save $X" / "You could afford a $Y project").</td>
+          <td>Segmented — session + 1st-party cookie</td>
+        </tr>
+        <tr>
+          <td><strong>3. Contact capture</strong></td>
+          <td>First name, email, opt-in to "Send my full report"</td>
+          <td>Email gate appears below the result. hCaptcha fires here only.</td>
+          <td><strong>Cold lead</strong> — pushed to nurture sequence + pixel fires</td>
+        </tr>
+        <tr>
+          <td><strong>4. Lender match</strong></td>
+          <td>Phone, credit range (self-report), income range, timeline</td>
+          <td>Inline expand on success of stage 3. Optional escalation.</td>
+          <td><strong>Hot lead</strong> — routed to lender(s) + primary conversion event</td>
+        </tr>
+      </table>
+
+      <h3>Implementation notes</h3>
+      <ul>
+        <li>Stage 1+2 happen inside the calculator UI; no page navigation between them.</li>
+        <li>Stage 3 is the first form-submit event.</li>
+        <li>Stage 4 is the optional escalation. A clear "skip — just send me the report" path exists; those leads stay cold.</li>
+        <li>All stages persist to session storage so users returning later resume in place.</li>
+        <li>Salvage from <code>app/mortgage-application</code>: Zod schemas, currency masking, phone masking, zip lookup, hCaptcha integration. Discard the 9-step shell.</li>
+      </ul>
+
+      <div class="callout warn"><span class="callout-label">Retire</span> The pre-qual subdomain <code>get-started.heloc360.com</code> is retired. All references in the existing codebase (e.g., the homepage <em>Get Pre-Qualified</em> button) get rewritten to point at the universal calculator anchor or the relevant spoke calculator.</div>
+    </section>
+
+    <!-- ===== 08 ===== -->
+    <section class="spec" id="sec8">
+      <h2><span class="section-num">08</span>Lead form &amp; legacy retirement</h2>
+      <table class="spec-table">
+        <tr><th style="width:30%">Decision</th><th>Action</th></tr>
+        <tr><td>External pre-qual subdomain</td><td>Retire <code>get-started.heloc360.com</code>. All inbound links rewritten on-domain.</td></tr>
+        <tr><td>Existing 9-step form</td><td>Salvage validation + field components; discard 9-step shell. Re-mount inside calculator-as-form.</td></tr>
+        <tr><td>Borrower-type segmentation (current: 6 types)</td><td>Drop <strong>Broker</strong> and both <strong>Investor</strong> types (US + non-US) — none have a dedicated spoke in this scope, and §3 excludes investor/broker funnels. Keep <strong>Homeowner</strong> and <strong>Self-employed</strong> (the latter has its own Phase 3 spoke). "Other" becomes a free-form advisor-call CTA.</td></tr>
+        <tr><td>Mailing list capture</td><td>Pull off homepage hero. New placement: (a) exit-intent modal with lead magnet <em>"The 7-page HELOC decision guide"</em>, (b) footer column, (c) end of every blog post.</td></tr>
+        <tr><td>Phone collection</td><td>Optional at stage 3, required at stage 4. Phone-only leads bypass calculator via sticky "Talk to advisor" CTA in nav.</td></tr>
+        <tr><td>hCaptcha</td><td>Keep. Applied at stage 3 only — funnel above remains friction-free.</td></tr>
+      </table>
+    </section>
+
+    <!-- ===== 09 ===== -->
+    <section class="spec" id="sec9">
+      <h2><span class="section-num">09</span>Brand voice &amp; writing guide</h2>
+      <p><strong>Selected voice:</strong> <em>Plainspoken expert</em> — direct, NPR-esque, financial-journalist tone. <strong>Default until user confirms otherwise at spec review.</strong></p>
+
+      <div class="callout info">
+        <span class="callout-label">Reference</span>
+        <strong>Homepage H1:</strong> "What do you want to do with your home equity?"<br>
+        <strong>Subhead:</strong> "Tell us your reason. We'll match you with vetted lenders who specialize in exactly that — and walk you through the trade-offs before you commit."
+      </div>
+
+      <h3>Voice rules</h3>
+      <table class="spec-table">
+        <tr><th style="width:50%; color:var(--green-600)">Do</th><th style="color:var(--red-500)">Don't</th></tr>
+        <tr><td>Frame decisions ("here's how to know if…")</td><td>Frame sales ("apply now in 60 seconds!")</td></tr>
+        <tr><td>Name risks explicitly</td><td>Hide risks in fine print</td></tr>
+        <tr><td>Use exact numbers when possible ("at 22% APR, $48k of debt costs you…")</td><td>Use vague hype ("save thousands!")</td></tr>
+        <tr><td>Explain finance terms in line</td><td>Drop finance jargon untranslated</td></tr>
+        <tr><td>One CTA per page section</td><td>Stack competing CTAs</td></tr>
+        <tr><td>Treat users as capable adults</td><td>Use "secure your future!" emotional pressure</td></tr>
+      </table>
+
+      <ul>
+        <li><strong>Spoke pages:</strong> The non-negotiable block is <em>"The N risks we'll talk you through."</em> Naming risks is what separates HELOC360 from rate marketplaces. Every spoke must include it.</li>
+        <li><strong>Email nurture:</strong> Same rules. Subject lines are statements or questions, not exclamations. CTAs are verbs ("See your numbers") not pleas ("Don't miss out!").</li>
+        <li><strong>Legal disclosures:</strong> Plain English first, regulatory language second. The advisor frame extends here too.</li>
+      </ul>
+    </section>
+
+    <!-- ===== 10 ===== -->
+    <section class="spec" id="sec10">
+      <h2><span class="section-num">10</span>Color &amp; visual style</h2>
+      <p><strong>Selected palette:</strong> A — Refined current. Same hue family as today, deeper navy as primary anchor.</p>
+
+      <table class="spec-table">
+        <tr><th>Role</th><th>Token</th><th>Hex</th><th>Use</th></tr>
+        <tr><td><div class="palette-row"><span class="palette-swatch" style="background:#00274C"></span> Primary (anchor)</div></td><td><code>--color-primary-900</code></td><td><code>#00274C</code></td><td>Headlines, dark backgrounds, footer</td></tr>
+        <tr><td><div class="palette-row"><span class="palette-swatch" style="background:#1b75bc"></span> Primary (accent)</div></td><td><code>--color-primary-500</code></td><td><code>#1b75bc</code></td><td>Links, secondary buttons, section H2s</td></tr>
+        <tr><td><div class="palette-row"><span class="palette-swatch" style="background:#007a5e"></span> Action (CTA)</div></td><td><code>--color-action-600</code></td><td><code>#007a5e</code></td><td>All primary CTAs</td></tr>
+        <tr><td><div class="palette-row"><span class="palette-swatch" style="background:#02c39a"></span> Action (success)</div></td><td><code>--color-action-400</code></td><td><code>#02c39a</code></td><td>Success states, savings amounts on spoke calcs</td></tr>
+        <tr><td><div class="palette-row"><span class="palette-swatch" style="background:#FFCB05"></span> Warning / pillar</div></td><td><code>--color-pillar-500</code></td><td><code>#FFCB05</code></td><td>Phase 1 markers, lead-magnet badges (sparingly)</td></tr>
+        <tr><td><div class="palette-row"><span class="palette-swatch" style="background:#f9fafb"></span> Surface</div></td><td><code>--color-surface-50</code></td><td><code>#f9fafb</code></td><td>Section background tones</td></tr>
+        <tr><td><div class="palette-row"><span class="palette-swatch" style="background:#0f172a"></span> Text</div></td><td><code>--color-text-900</code></td><td><code>#0f172a</code></td><td>Body</td></tr>
+        <tr><td><div class="palette-row"><span class="palette-swatch" style="background:#6b7280"></span> Text-muted</div></td><td><code>--color-text-500</code></td><td><code>#6b7280</code></td><td>Captions, legal, breadcrumbs</td></tr>
+      </table>
+
+      <ul>
+        <li><strong>Typography:</strong> Inter (already in <code>app/layout.tsx</code>). Headline weights: 800. Body: 400/500. Display sizes scale with Tailwind's defaults.</li>
+        <li><strong>Component library:</strong> Continue using existing shadcn/ui components in <code>components/ui/</code>. No re-platforming.</li>
+        <li><strong>Imagery direction:</strong> Replace stock-housing photos with photos that include people — homeowners at kitchen tables, advisors on calls, hands signing. Educator voice depends on humans being visible.</li>
+      </ul>
+    </section>
+
+    <!-- ===== 11 ===== -->
+    <section class="spec" id="sec11">
+      <h2><span class="section-num">11</span>Navigation &amp; site frame</h2>
+
+      <h3>Header (every page)</h3>
+      <pre class="sitemap" style="background:#fff;color:var(--gray-900);border:1px solid var(--gray-200);box-shadow:0 1px 2px rgba(0,0,0,0.04)">[HELOC360 logo]   How it works · HELOC 101 · Calculators · Rates · Blog        [Talk to an advisor →]</pre>
+      <ul>
+        <li>No mega-menu for "Use cases" — verticals reachable via homepage pills and footer.</li>
+        <li>Sticky on scroll. Compact mode after 200px scroll.</li>
+      </ul>
+
+      <h3>Sticky bottom-of-viewport CTA (mobile + desktop)</h3>
+      <ul>
+        <li>Appears after 30% page scroll.</li>
+        <li>Two buttons: <code>📞 Talk to advisor</code> · <code>See my borrowing power</code>.</li>
+        <li>Dismissable. Re-appears on next session.</li>
+        <li>Suppressed while any modal/form is open.</li>
+      </ul>
+
+      <h3>Footer — 5 columns</h3>
+      <ol>
+        <li><strong>Use cases</strong> — all 5 spokes + <code>/heloc-101</code></li>
+        <li><strong>Calculators</strong> — every calculator linked</li>
+        <li><strong>Resources</strong> — Blog, Rates, Glossary, State guides</li>
+        <li><strong>Company</strong> — About, Team, Contact, Press</li>
+        <li><strong>Legal &amp; disclosures</strong> — Privacy, Terms, Affiliate disclosure, Communication consent, NMLS, BBB</li>
+      </ol>
+      <p>Above the columns: mailing-list signup with lead magnet (<em>"The 7-page HELOC decision guide"</em>).</p>
+
+      <h3>Mobile</h3>
+      <ul>
+        <li>Header collapses to logo + hamburger + "Advisor" CTA pill.</li>
+        <li>Hamburger reveals same nav items + footer items.</li>
+        <li>Sticky CTA on bottom of viewport.</li>
+      </ul>
+    </section>
+
+    <!-- ===== 12 ===== -->
+    <section class="spec" id="sec12">
+      <h2><span class="section-num">12</span>Phasing &amp; deliverables</h2>
+
+      <h3><span class="phase-pill p1">Phase 1</span> 4-6 weeks · "The new HELOC360"</h3>
+      <ul>
+        <li>Homepage hybrid hero</li>
+        <li><code>/debt-consolidation</code> spoke (template + content)</li>
+        <li><code>/home-renovation</code> spoke (template + content)</li>
+        <li>Universal borrowing-power calculator</li>
+        <li>4-stage calculator-as-form pattern</li>
+        <li>Lead form replacement (kills 9-step + external subdomain)</li>
+        <li>Brand voice applied sitewide on touched pages</li>
+        <li>Color/visual style applied via Tailwind config</li>
+        <li>Header + footer + sticky CTA</li>
+        <li>Analytics + tracking foundation (see §13)</li>
+        <li>Retire <code>get-started.heloc360.com</code></li>
+        <li>Mailing list lead magnet + exit-intent</li>
+        <li>All sitemap routes updated</li>
+      </ul>
+
+      <h3><span class="phase-pill p2">Phase 2</span> 3-4 weeks · "Scale to four spokes"</h3>
+      <ul>
+        <li><code>/retirement-equity</code> spoke</li>
+        <li><code>/heloc-101</code> revamp (new hub + ~6 supporting articles)</li>
+        <li><code>/rates</code> page with today's HELOC rates widget</li>
+        <li>First wave of comparison pages (~12 articles, "HELOC vs X")</li>
+        <li>FAQ schema + AEO/AIO optimization on top-volume pages</li>
+        <li>Email nurture sequences per spoke</li>
+        <li>Internal lead dashboard (see §13)</li>
+      </ul>
+
+      <h3><span class="phase-pill p3">Phase 3</span> 3-4 weeks · "Scale + niche"</h3>
+      <ul>
+        <li><code>/self-employed-heloc</code> spoke</li>
+        <li>Programmatic <code>/[spoke]/[state]</code> pages (~250 URLs)</li>
+        <li>Paid landing page templates per spoke</li>
+        <li>Short-form video pipeline</li>
+        <li>Lender API integration polish</li>
+        <li>A/B test infrastructure (Vercel + Edge Config)</li>
+      </ul>
+
+      <div class="callout info"><span class="callout-label">Plan scope</span> The implementation plan derived from this spec will cover <strong>Phase 1 only</strong>. Phase 2 and Phase 3 are committed at the design level but get their own plans when Phase 1 ships and we have measurement data.</div>
+    </section>
+
+    <!-- ===== 13 ===== -->
+    <section class="spec" id="sec13">
+      <h2><span class="section-num">13</span>Tracking &amp; analytics foundation (Phase 1)</h2>
+      <table class="spec-table">
+        <tr><th style="width:25%">Surface</th><th>Purpose</th></tr>
+        <tr><td>GA4 (re-instrumented)</td><td>Sessions, source/medium, funnel events: <code>pill_click</code>, <code>calc_start</code>, <code>calc_complete</code>, <code>email_capture</code>, <code>lender_match</code></td></tr>
+        <tr><td>Google Tag Manager</td><td>Tag central. Already on the site (Kaleidico GTM). Add the funnel tags.</td></tr>
+        <tr><td>Server-side conversion API</td><td>Meta CAPI + Google Enhanced Conversions, so paid attribution survives ATT/cookie loss.</td></tr>
+        <tr><td>Vercel Analytics + Speed Insights</td><td>Core Web Vitals. Finance pages target LCP &lt;2.5s.</td></tr>
+        <tr><td>Microsoft Clarity</td><td>Session recording on homepage + spoke calculators. First 2 weeks post-launch are critical.</td></tr>
+        <tr><td>Search Console</td><td>Existing property under <code>kaleidico@gmail.com</code>. Confirm verification post-relaunch and capture baseline.</td></tr>
+        <tr><td>Internal lead dashboard</td><td>Phase 2 — admin view of leads with spoke, value-stage, lender routing.</td></tr>
+        <tr><td>A/B test infra</td><td>Phase 3 — Vercel + Edge Config.</td></tr>
+      </table>
+      <ul>
+        <li><strong>Event naming convention:</strong> <code>funnel.{spoke}.{stage}</code> — e.g., <code>funnel.debt_consolidation.calc_complete</code>, <code>funnel.universal.email_capture</code>. Spoke "universal" for homepage entries.</li>
+        <li><strong>No PII to GA4:</strong> Email/phone are hashed before any third-party send. PII stays in first-party DB + lender CRM only.</li>
+      </ul>
+    </section>
+
+    <!-- ===== 14 ===== -->
+    <section class="spec" id="sec14">
+      <h2><span class="section-num">14</span>Open questions &amp; deferred decisions</h2>
+      <table class="spec-table">
+        <tr><th>Item</th><th>Default</th><th>Resolve by</th></tr>
+        <tr><td>Brand voice final pick</td><td>Plainspoken expert (B)</td><td>User confirmation at spec review</td></tr>
+        <tr><td>Lender network changes per use case</td><td>No change in scope</td><td>Phase 2 (after first-month data)</td></tr>
+        <tr><td>Specific lead-magnet content ("7-page HELOC decision guide")</td><td>Title locked; content to be written</td><td>Phase 1 mid-build</td></tr>
+        <tr><td>Programmatic <code>/[state]</code> legal review (per-state disclosures)</td><td>Hold until Phase 3</td><td>Phase 3 kickoff</td></tr>
+        <tr><td>Recent-activity ticker on hero</td><td>Not in Phase 1</td><td>Phase 3 (if approved at retro)</td></tr>
+      </table>
+    </section>
+
+    <!-- ===== Appendix A ===== -->
+    <section class="spec" id="appA">
+      <h2><span class="section-num">A</span>Existing assets to salvage</h2>
+      <ul>
+        <li><code>components/ui/*</code> — shadcn/ui primitives. No changes.</li>
+        <li><code>app/mortgage-application/*</code> — Zod schemas, currency mask, phone mask, zip lookup, hCaptcha wiring. Keep field-level logic, discard 9-step shell.</li>
+        <li><code>components/home-faq.tsx</code> — keep component, replace content per voice guide.</li>
+        <li><code>components/header.tsx</code>, <code>components/footer.tsx</code> — rebuild per §11.</li>
+        <li><code>components/mailing-list-form.tsx</code> — keep, relocate (see §8).</li>
+        <li><code>app/calculators/*</code> (debt-consolidation, home-equity-estimator) — incorporate into spoke calculators; current pages become 301 redirects or absorbed into <code>/calculators</code> hub.</li>
+        <li><code>app/heloc-101/page.tsx</code> — Phase 2 revamp.</li>
+        <li><code>app/blog/*</code> — keep CMS, retag content into spokes.</li>
+        <li><code>lib/tracking.ts</code> + <code>components/tracking-provider.tsx</code> — extend, don't replace.</li>
+        <li><code>sitemap.ts</code> — update for new URLs.</li>
+      </ul>
+    </section>
+
+    <!-- ===== Appendix B ===== -->
+    <section class="spec" id="appB">
+      <h2><span class="section-num">B</span>Out of scope explicitly</h2>
+      <ul>
+        <li>Trust-signal placement matrix as a standalone deliverable. (Signals still appear in mockups inline. Per-page audits happen during Phase 1 content production.)</li>
+        <li>Backend lender CRM integration changes.</li>
+        <li>Authentication/account creation for returning users.</li>
+        <li>Spanish-language version.</li>
+        <li>Mobile app.</li>
+        <li>Accessibility audit beyond WCAG 2.1 AA baseline (which Phase 1 must hit anyway).</li>
+      </ul>
+    </section>
+
+    <p class="doc-footer">
+      HELOC360 Repositioning &amp; Redesign · v1 draft · 2026-05-27<br>
+      Source: <code>docs/superpowers/specs/2026-05-27-heloc360-repositioning-design.md</code>
+    </p>
+
+  </main>
+
+</div>
+
+</body>
+</html>
