@@ -62,7 +62,36 @@ const config: Config = {
   				'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
   				border: 'hsl(var(--sidebar-border))',
   				ring: 'hsl(var(--sidebar-ring))'
-  			}
+  			},
+  			brand: {
+  				navy: '#00274C',
+  				blue: '#1b75bc',
+  				'blue-dark': '#155a91',
+  				green: '#007a5e',
+  				'green-dark': '#006650',
+  				mint: '#02c39a',
+  				maize: '#FFCB05',
+  			},
+  			surface: {
+  				50:  '#f9fafb',
+  				100: '#f3f4f6',
+  				200: '#e5e7eb',
+  			},
+  			ink: {
+  				900: '#0f172a',
+  				700: '#374151',
+  				500: '#6b7280',
+  				400: '#9ca3af',
+  			},
+  		},
+  		fontFamily: {
+  			sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+  		},
+  		fontSize: {
+  			'display-xl': ['3.5rem',  { lineHeight: '1.05', letterSpacing: '-0.025em', fontWeight: '800' }],
+  			'display-lg': ['2.75rem', { lineHeight: '1.08', letterSpacing: '-0.020em', fontWeight: '800' }],
+  			'display-md': ['2.25rem', { lineHeight: '1.10', letterSpacing: '-0.015em', fontWeight: '800' }],
+  			'display-sm': ['1.75rem', { lineHeight: '1.15', letterSpacing: '-0.010em', fontWeight: '700' }],
   		},
   		borderRadius: {
   			lg: 'var(--radius)',
