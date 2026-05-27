@@ -85,7 +85,6 @@ heloc360.com/                              brand hub + universal calculator
 │   ├── /bank-statement-loans
 │   └── /1099-borrowers
 ├── /calculators                           hub of all calculators
-├── /rates                                 PHASE 2 (today's HELOC rates widget)
 ├── /blog                                  keep — retag content into spokes
 ├── /meet-our-team                         keep — refresh
 └── /about, /contact, /privacy, /terms, /affiliate-disclosure, /communication-consent
@@ -113,10 +112,11 @@ heloc360.com/                              brand hub + universal calculator
   - 🏠 First time tapping equity → `/heloc-101`
   - 📊 I'm self-employed → `/self-employed-heloc`
 - Divider line: `— or estimate your borrowing power —`
-- Universal calculator widget (collapsed, 2 fields visible):
+- Universal calculator widget — this is Step 1 of the pre-qual form (§7), surfaced inline:
+  - Property ZIP (auto-fills city/state)
   - Home value
   - Mortgage balance
-  - CTA: `See how much you can unlock →`
+  - CTA: `See how much you can unlock →` — on click, shows equity readout and reveals Step 2 contact fields
 - Trust strip (single line, small): `4.8 average · 1,200+ reviews · NMLS-licensed lender network · Free advisor call`
 
 **Below the fold (in order):**
@@ -148,12 +148,12 @@ One template, parameterized per vertical. Pattern lives at `app/[spoke]/page.tsx
 
 **Body (two-column grid, desktop):**
 
-| Left column (1.4fr — educator content) | Right column (1fr — sticky calculator-as-form) |
+| Left column (1.4fr — educator content) | Right column (1fr — sticky pre-qual form) |
 |---|---|
-| **"How much could you save?"** — 1 paragraph explaining the math, invites use of the calc | Use-case-specific calculator. Inputs vary by spoke. |
-| **"When [use case] makes sense"** — 3-4 bulleted criteria | Live calculation display ("You'd save $X" / "You could borrow $Y") |
-| **"The N risks we'll talk you through"** — explicit risks named. This is the educator-voice differentiator. | Stage 3 contact capture appears in-place after value shown |
-| **"Recently helped"** — one in-line testimonial tagged to this use case | "Get matched with a lender →" |
+| **"How much could you save?"** — 1 paragraph explaining the math, invites use of the inline calc | Step 1 fields (ZIP, home value, mortgage balance) with a use-case-specific savings/borrowing readout. |
+| **"When [use case] makes sense"** — 3-4 bulleted criteria | Live readout updates as Step 1 fills ("You'd save $X" / "You could borrow $Y") |
+| **"The N risks we'll talk you through"** — explicit risks named. This is the educator-voice differentiator. | Step 2 (name / email / phone / best-time) appears inline after the readout shows |
+| **"Recently helped"** — one in-line testimonial tagged to this use case | "Talk to an advisor →" — single submit |
 | **Related comparison links** — internal SEO crosslinks (`vs-personal-loan`, `vs-cash-out-refi`, etc.) | Disclosure: "No credit pull. We share your info only after you approve a lender." |
 
 **Below the fold:**
@@ -174,25 +174,48 @@ One template, parameterized per vertical. Pattern lives at `app/[spoke]/page.tsx
 
 ---
 
-## 7. Calculator-as-form — progressive 4-stage flow
+## 7. Pre-qual form — 2 steps, 5 questions
 
-The conversion engine. Replaces both the external pre-qual form and the in-repo 9-step form.
+The conversion engine. Replaces both the external pre-qual form and the in-repo 9-step form. Built on one principle: **only ask questions the user can answer from memory in 5 seconds.** Everything else either auto-fills, is inferred from the page URL, or gets collected by the loan officer on the first call.
 
-| Stage | Inputs | UX | Lead state |
-|---|---|---|---|
-| **1. Equity** | Home value, mortgage balance, property zip (auto state) | Shown immediately in any hero. No commitment. Calc shows estimated equity + borrowing power. | Anonymous — session-only |
-| **2. Vertical** | Use-case-specific. Debt: total debt + avg APR. Reno: project budget + timeline. Retire: monthly income need. | Stage 2 fields appear inline after stage 1 completes. Result panel updates ("You'd save $X" / "You could afford a $Y project"). | Segmented — session + first-party cookie |
-| **3. Contact capture** | First name, email, opt-in to "Send my full report" | Email gate appears below the result. hCaptcha fires here only. | Cold lead — pushed to nurture sequence + pixel fires |
-| **4. Lender match** | Phone, credit range (self-report), income range, timeline | Inline expand on success of stage 3. Optional escalation. | Hot lead — routed to lender(s) per use case + primary conversion event |
+### Step 1 — "Tell us about your home"
 
-**Implementation notes:**
-- Stage 1+2 happen inside the calculator UI; no page navigation between them.
-- Stage 3 is the first form-submit event.
-- Stage 4 is the optional escalation. A clear "skip — just send me the report" path exists; those leads stay cold.
-- All stages persist to session storage so users returning later resume in place.
-- Salvage from `app/mortgage-application`: Zod schemas, currency masking, phone masking, zip lookup, hCaptcha integration. Discard the 9-step shell.
+| Field | Behavior |
+|---|---|
+| Property ZIP | Auto-fills city + state on blur. Reuse existing ZIP lookup in `app/mortgage-application`. State drives lender licensing. |
+| Home value (rough estimate) | Helper text: *"Your best guess from Zillow or your last appraisal is fine — we'll firm this up later."* Currency mask. |
+| Mortgage balance | Helper text: *"From your most recent statement — round to the nearest thousand."* Currency mask. |
 
-**The pre-qual subdomain `get-started.heloc360.com` is retired.** All references in the existing codebase (e.g., the homepage `Get Pre-Qualified` button) get rewritten to point at the universal calculator anchor or the relevant spoke calculator.
+On valid completion, the form shows an inline **equity + borrowing-power readout** so the user sees value before committing to Step 2. No page navigation.
+
+### Step 2 — "How should we reach you?"
+
+| Field | Behavior |
+|---|---|
+| First name + last name | Single row, two fields. |
+| Email | Required. |
+| Phone + best time to call | Phone required. Best-time selector is one-tap chips (`Mornings · Afternoons · Evenings · Anytime`). |
+
+hCaptcha fires once on Step 2 submit. Submit triggers the primary conversion event.
+
+### Context the form never asks (URL-inferred or pre-tagged)
+
+| Context | Source |
+|---|---|
+| Use case (debt / reno / retirement / first-time / self-employed) | Page URL (spoke) or homepage pill click. Saved as a hidden field. |
+| State for lender routing | ZIP lookup result. |
+| UTM parameters | Captured silently on first pageview. |
+| Borrower type, employment, income range, credit range, DTI | **Not asked.** Loan officer collects on the first call. |
+
+### Confirmation
+
+On submit, user sees: *"A HELOC360 advisor will call you in [X hours]."* The SLA copy is pulled from a single config value so we can change it without redeploying.
+
+### Implementation notes
+
+- Salvage from `app/mortgage-application`: Zod schemas, currency mask, phone mask, ZIP lookup, hCaptcha integration. Discard the 9-step shell.
+- The 2-step UI is a single page with progressive reveal — not separate routes. Form state persists to session storage so a back/forward navigation doesn't lose entered data.
+- **The pre-qual subdomain `get-started.heloc360.com` is retired.** All references in the existing codebase (e.g., the homepage `Get Pre-Qualified` button) get rewritten to point at this on-domain form or the relevant spoke entry.
 
 ---
 
@@ -201,11 +224,11 @@ The conversion engine. Replaces both the external pre-qual form and the in-repo 
 | Decision | Action |
 |---|---|
 | External pre-qual subdomain | Retire `get-started.heloc360.com`. All inbound links rewritten on-domain. |
-| Existing 9-step form | Salvage validation + field components; discard 9-step shell. Re-mount inside calculator-as-form. |
+| Existing 9-step form | Salvage Zod schemas, currency mask, phone mask, ZIP lookup, and hCaptcha integration. Discard the 9-step shell. Re-mount field-level logic inside the 2-step pre-qual form (§7). |
 | Borrower-type segmentation (current: 6 types) | Drop **Broker** and both **Investor** types (US + non-US) — none have a dedicated spoke in this scope, and §3 excludes investor/broker funnels. Keep **Homeowner** and **Self-employed** (the latter has its own Phase 3 spoke). "Other" becomes a free-form advisor-call CTA. |
 | Mailing list capture | Pull off homepage hero. New placement: (a) exit-intent modal with lead magnet *"The 7-page HELOC decision guide"*, (b) footer column, (c) end of every blog post. |
-| Phone collection | Optional at stage 3, required at stage 4. Phone-only leads bypass calculator via sticky "Talk to advisor" CTA in nav. |
-| hCaptcha | Keep. Applied at stage 3 only — funnel above remains friction-free. |
+| Phone collection | Required on Step 2 of the pre-qual form. Phone-only leads still have a sticky "Talk to advisor" CTA in the nav for tap-to-call. |
+| hCaptcha | Keep. Applied once on Step 2 submit — Step 1 (equity readout) remains friction-free. |
 
 ---
 
@@ -262,9 +285,9 @@ The conversion engine. Replaces both the external pre-qual form and the in-repo 
 
 **Header (every page):**
 ```
-[HELOC360 logo]   How it works · HELOC 101 · Calculators · Rates · Blog        [Talk to an advisor →]
+[HELOC360 logo]   How it works · HELOC 101 · Calculators · Blog        [Talk to an advisor →]
 ```
-- No mega-menu for "Use cases" — verticals reachable via homepage pills and footer.
+- **No mega menus anywhere on the site, at any nav level.** Use simple dropdowns where needed (e.g., a `Calculators ▾` dropdown listing all calculators). Verticals are reachable via homepage pills and the footer; not the top nav.
 - Sticky on scroll. Compact mode after 200px scroll.
 
 **Sticky bottom-of-viewport CTA (mobile + desktop):**
@@ -276,7 +299,7 @@ The conversion engine. Replaces both the external pre-qual form and the in-repo 
 **Footer (5 columns):**
 1. Use cases — all 5 spokes + `/heloc-101`
 2. Calculators — every calculator linked
-3. Resources — Blog, Rates, Glossary, State guides
+3. Resources — Blog, Glossary, State guides
 4. Company — About, Team, Contact, Press
 5. Legal & disclosures — Privacy, Terms, Affiliate disclosure, Communication consent, NMLS, BBB
 
@@ -297,7 +320,7 @@ Above the columns: mailing-list signup with lead magnet ("The 7-page HELOC decis
 - `/debt-consolidation` spoke (template + content)
 - `/home-renovation` spoke (template + content)
 - Universal borrowing-power calculator
-- 4-stage calculator-as-form pattern
+- 2-step pre-qual form (5 questions, on-domain)
 - Lead form replacement (kills 9-step + external subdomain)
 - Brand voice applied sitewide on touched pages
 - Color/visual style applied via Tailwind config
@@ -311,7 +334,6 @@ Above the columns: mailing-list signup with lead magnet ("The 7-page HELOC decis
 
 - `/retirement-equity` spoke
 - `/heloc-101` revamp (new hub + ~6 supporting articles)
-- `/rates` page with today's HELOC rates widget
 - First wave of comparison pages (~12 articles, "HELOC vs X")
 - FAQ schema + AEO/AIO optimization on top-volume pages
 - Email nurture sequences per spoke

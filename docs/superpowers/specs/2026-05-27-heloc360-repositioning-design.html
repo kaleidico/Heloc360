@@ -381,7 +381,7 @@
       <li><a href="#sec4"><span class="toc-num">04</span>Information architecture</a></li>
       <li><a href="#sec5"><span class="toc-num">05</span>Homepage</a></li>
       <li><a href="#sec6"><span class="toc-num">06</span>Spoke template</a></li>
-      <li><a href="#sec7"><span class="toc-num">07</span>Calculator-as-form</a></li>
+      <li><a href="#sec7"><span class="toc-num">07</span>Pre-qual form</a></li>
       <li><a href="#sec8"><span class="toc-num">08</span>Lead form &amp; legacy</a></li>
       <li><a href="#sec9"><span class="toc-num">09</span>Brand voice</a></li>
       <li><a href="#sec10"><span class="toc-num">10</span>Color &amp; visual</a></li>
@@ -490,7 +490,6 @@
 <span class="leaf">│   ├── /bank-statement-loans</span>
 <span class="leaf">│   └── /1099-borrowers</span>
 <span class="branch">├── /calculators</span>                           <span class="note">hub of all calculators</span>
-<span class="branch">├── /rates</span>                                 <span class="phase2">PHASE 2</span>  <span class="note">today's HELOC rates</span>
 <span class="branch">├── /blog</span>                                  <span class="note">keep; retag content into spokes</span>
 <span class="branch">├── /meet-our-team</span>                         <span class="note">advisor faces — refresh</span>
 <span class="branch">└── /about, /contact, /privacy, /terms, ...</span></pre>
@@ -523,7 +522,7 @@
           </ul>
         </li>
         <li>Divider line: <code>— or estimate your borrowing power —</code></li>
-        <li>Universal calculator widget (collapsed, 2 fields visible): Home value, Mortgage balance, CTA <code>See how much you can unlock →</code></li>
+        <li>Universal calculator widget — this is Step 1 of the pre-qual form (§7), surfaced inline. Fields: Property ZIP (auto-fills city/state), Home value, Mortgage balance. CTA <code>See how much you can unlock →</code> reveals the equity readout and Step 2 contact fields.</li>
         <li>Trust strip (single line, small): <code>4.8 average · 1,200+ reviews · NMLS-licensed lender network · Free advisor call</code></li>
       </ul>
 
@@ -567,23 +566,23 @@
       <table class="spec-table">
         <tr>
           <th style="width:55%">Left column (1.4fr — educator content)</th>
-          <th>Right column (1fr — sticky calculator-as-form)</th>
+          <th>Right column (1fr — sticky pre-qual form)</th>
         </tr>
         <tr>
-          <td><strong>"How much could you save?"</strong> — 1 paragraph explaining the math, invites use of the calc</td>
-          <td>Use-case-specific calculator. Inputs vary by spoke.</td>
+          <td><strong>"How much could you save?"</strong> — 1 paragraph explaining the math, invites use of the inline calc</td>
+          <td>Step 1 fields (ZIP, home value, mortgage balance) with a use-case-specific savings/borrowing readout.</td>
         </tr>
         <tr>
           <td><strong>"When [use case] makes sense"</strong> — 3-4 bulleted criteria</td>
-          <td>Live calculation display ("You'd save $X" / "You could borrow $Y")</td>
+          <td>Live readout updates as Step 1 fills ("You'd save $X" / "You could borrow $Y")</td>
         </tr>
         <tr>
           <td><strong>"The N risks we'll talk you through"</strong> — explicit risks named. <em>The educator-voice differentiator.</em></td>
-          <td>Stage 3 contact capture appears in-place after value shown</td>
+          <td>Step 2 (name / email / phone / best-time) appears inline after the readout shows</td>
         </tr>
         <tr>
           <td><strong>"Recently helped"</strong> — one in-line testimonial tagged to this use case</td>
-          <td>"Get matched with a lender →"</td>
+          <td>"Talk to an advisor →" — single submit</td>
         </tr>
         <tr>
           <td>Related comparison links — internal SEO crosslinks (<code>vs-personal-loan</code>, <code>vs-cash-out-refi</code>, etc.)</td>
@@ -605,47 +604,46 @@
 
     <!-- ===== 07 ===== -->
     <section class="spec" id="sec7">
-      <h2><span class="section-num">07</span>Calculator-as-form — 4-stage progressive flow</h2>
-      <p>The conversion engine. Replaces both the external pre-qual form and the in-repo 9-step form.</p>
+      <h2><span class="section-num">07</span>Pre-qual form — 2 steps, 5 questions</h2>
+      <p>The conversion engine. Replaces both the external pre-qual form and the in-repo 9-step form. Built on one principle: <strong>only ask questions the user can answer from memory in 5 seconds.</strong> Everything else either auto-fills, is inferred from the page URL, or gets collected by the loan officer on the first call.</p>
 
+      <h3>Step 1 — "Tell us about your home"</h3>
       <table class="spec-table">
-        <tr><th>Stage</th><th>Inputs</th><th>UX</th><th>Lead state</th></tr>
-        <tr>
-          <td><strong>1. Equity</strong></td>
-          <td>Home value, mortgage balance, property zip (auto state)</td>
-          <td>Shown immediately in any hero. No commitment. Calc shows estimated equity + borrowing power.</td>
-          <td>Anonymous — session-only</td>
-        </tr>
-        <tr>
-          <td><strong>2. Vertical</strong></td>
-          <td>Use-case-specific. <em>Debt:</em> total debt + avg APR. <em>Reno:</em> project budget + timeline. <em>Retire:</em> monthly income need.</td>
-          <td>Stage 2 fields appear inline after stage 1 completes. Result panel updates ("You'd save $X" / "You could afford a $Y project").</td>
-          <td>Segmented — session + 1st-party cookie</td>
-        </tr>
-        <tr>
-          <td><strong>3. Contact capture</strong></td>
-          <td>First name, email, opt-in to "Send my full report"</td>
-          <td>Email gate appears below the result. hCaptcha fires here only.</td>
-          <td><strong>Cold lead</strong> — pushed to nurture sequence + pixel fires</td>
-        </tr>
-        <tr>
-          <td><strong>4. Lender match</strong></td>
-          <td>Phone, credit range (self-report), income range, timeline</td>
-          <td>Inline expand on success of stage 3. Optional escalation.</td>
-          <td><strong>Hot lead</strong> — routed to lender(s) + primary conversion event</td>
-        </tr>
+        <tr><th>Field</th><th>Behavior</th></tr>
+        <tr><td>Property ZIP</td><td>Auto-fills city + state on blur. Reuse existing ZIP lookup in <code>app/mortgage-application</code>. State drives lender licensing.</td></tr>
+        <tr><td>Home value (rough estimate)</td><td>Helper: <em>"Your best guess from Zillow or your last appraisal is fine — we'll firm this up later."</em> Currency mask.</td></tr>
+        <tr><td>Mortgage balance</td><td>Helper: <em>"From your most recent statement — round to the nearest thousand."</em> Currency mask.</td></tr>
       </table>
+      <p>On valid completion, the form shows an inline <strong>equity + borrowing-power readout</strong> so the user sees value before committing to Step 2. No page navigation.</p>
+
+      <h3>Step 2 — "How should we reach you?"</h3>
+      <table class="spec-table">
+        <tr><th>Field</th><th>Behavior</th></tr>
+        <tr><td>First name + last name</td><td>Single row, two fields.</td></tr>
+        <tr><td>Email</td><td>Required.</td></tr>
+        <tr><td>Phone + best time to call</td><td>Phone required. Best-time selector: one-tap chips (<code>Mornings · Afternoons · Evenings · Anytime</code>).</td></tr>
+      </table>
+      <p>hCaptcha fires once on Step 2 submit. Submit triggers the primary conversion event.</p>
+
+      <h3>Context the form never asks (URL-inferred or pre-tagged)</h3>
+      <table class="spec-table">
+        <tr><th>Context</th><th>Source</th></tr>
+        <tr><td>Use case (debt / reno / retirement / first-time / self-employed)</td><td>Page URL (spoke) or homepage pill click. Saved as a hidden field.</td></tr>
+        <tr><td>State for lender routing</td><td>ZIP lookup result.</td></tr>
+        <tr><td>UTM parameters</td><td>Captured silently on first pageview.</td></tr>
+        <tr><td>Borrower type, employment, income range, credit range, DTI</td><td><strong>Not asked.</strong> Loan officer collects on the first call.</td></tr>
+      </table>
+
+      <h3>Confirmation</h3>
+      <p>On submit, user sees: <em>"A HELOC360 advisor will call you in [X hours]."</em> The SLA copy is pulled from a single config value so we can change it without redeploying.</p>
 
       <h3>Implementation notes</h3>
       <ul>
-        <li>Stage 1+2 happen inside the calculator UI; no page navigation between them.</li>
-        <li>Stage 3 is the first form-submit event.</li>
-        <li>Stage 4 is the optional escalation. A clear "skip — just send me the report" path exists; those leads stay cold.</li>
-        <li>All stages persist to session storage so users returning later resume in place.</li>
-        <li>Salvage from <code>app/mortgage-application</code>: Zod schemas, currency masking, phone masking, zip lookup, hCaptcha integration. Discard the 9-step shell.</li>
+        <li>Salvage from <code>app/mortgage-application</code>: Zod schemas, currency mask, phone mask, ZIP lookup, hCaptcha integration. Discard the 9-step shell.</li>
+        <li>The 2-step UI is a single page with progressive reveal — not separate routes. Form state persists to session storage so back/forward navigation doesn't lose entered data.</li>
       </ul>
 
-      <div class="callout warn"><span class="callout-label">Retire</span> The pre-qual subdomain <code>get-started.heloc360.com</code> is retired. All references in the existing codebase (e.g., the homepage <em>Get Pre-Qualified</em> button) get rewritten to point at the universal calculator anchor or the relevant spoke calculator.</div>
+      <div class="callout warn"><span class="callout-label">Retire</span> The pre-qual subdomain <code>get-started.heloc360.com</code> is retired. All references in the existing codebase (e.g., the homepage <em>Get Pre-Qualified</em> button) get rewritten to point at this on-domain form or the relevant spoke entry.</div>
     </section>
 
     <!-- ===== 08 ===== -->
@@ -654,11 +652,11 @@
       <table class="spec-table">
         <tr><th style="width:30%">Decision</th><th>Action</th></tr>
         <tr><td>External pre-qual subdomain</td><td>Retire <code>get-started.heloc360.com</code>. All inbound links rewritten on-domain.</td></tr>
-        <tr><td>Existing 9-step form</td><td>Salvage validation + field components; discard 9-step shell. Re-mount inside calculator-as-form.</td></tr>
+        <tr><td>Existing 9-step form</td><td>Salvage Zod schemas, currency mask, phone mask, ZIP lookup, and hCaptcha integration. Discard the 9-step shell. Re-mount field-level logic inside the 2-step pre-qual form (§7).</td></tr>
         <tr><td>Borrower-type segmentation (current: 6 types)</td><td>Drop <strong>Broker</strong> and both <strong>Investor</strong> types (US + non-US) — none have a dedicated spoke in this scope, and §3 excludes investor/broker funnels. Keep <strong>Homeowner</strong> and <strong>Self-employed</strong> (the latter has its own Phase 3 spoke). "Other" becomes a free-form advisor-call CTA.</td></tr>
         <tr><td>Mailing list capture</td><td>Pull off homepage hero. New placement: (a) exit-intent modal with lead magnet <em>"The 7-page HELOC decision guide"</em>, (b) footer column, (c) end of every blog post.</td></tr>
-        <tr><td>Phone collection</td><td>Optional at stage 3, required at stage 4. Phone-only leads bypass calculator via sticky "Talk to advisor" CTA in nav.</td></tr>
-        <tr><td>hCaptcha</td><td>Keep. Applied at stage 3 only — funnel above remains friction-free.</td></tr>
+        <tr><td>Phone collection</td><td>Required on Step 2 of the pre-qual form. Phone-only leads still have a sticky "Talk to advisor" CTA in the nav for tap-to-call.</td></tr>
+        <tr><td>hCaptcha</td><td>Keep. Applied once on Step 2 submit — Step 1 (equity readout) remains friction-free.</td></tr>
       </table>
     </section>
 
@@ -720,9 +718,9 @@
       <h2><span class="section-num">11</span>Navigation &amp; site frame</h2>
 
       <h3>Header (every page)</h3>
-      <pre class="sitemap" style="background:#fff;color:var(--gray-900);border:1px solid var(--gray-200);box-shadow:0 1px 2px rgba(0,0,0,0.04)">[HELOC360 logo]   How it works · HELOC 101 · Calculators · Rates · Blog        [Talk to an advisor →]</pre>
+      <pre class="sitemap" style="background:#fff;color:var(--gray-900);border:1px solid var(--gray-200);box-shadow:0 1px 2px rgba(0,0,0,0.04)">[HELOC360 logo]   How it works · HELOC 101 · Calculators · Blog        [Talk to an advisor →]</pre>
       <ul>
-        <li>No mega-menu for "Use cases" — verticals reachable via homepage pills and footer.</li>
+        <li><strong>No mega menus anywhere on the site, at any nav level.</strong> Use simple dropdowns where needed (e.g., a <code>Calculators ▾</code> dropdown listing all calculators). Verticals reachable via homepage pills and footer; not the top nav.</li>
         <li>Sticky on scroll. Compact mode after 200px scroll.</li>
       </ul>
 
@@ -738,7 +736,7 @@
       <ol>
         <li><strong>Use cases</strong> — all 5 spokes + <code>/heloc-101</code></li>
         <li><strong>Calculators</strong> — every calculator linked</li>
-        <li><strong>Resources</strong> — Blog, Rates, Glossary, State guides</li>
+        <li><strong>Resources</strong> — Blog, Glossary, State guides</li>
         <li><strong>Company</strong> — About, Team, Contact, Press</li>
         <li><strong>Legal &amp; disclosures</strong> — Privacy, Terms, Affiliate disclosure, Communication consent, NMLS, BBB</li>
       </ol>
@@ -762,7 +760,7 @@
         <li><code>/debt-consolidation</code> spoke (template + content)</li>
         <li><code>/home-renovation</code> spoke (template + content)</li>
         <li>Universal borrowing-power calculator</li>
-        <li>4-stage calculator-as-form pattern</li>
+        <li>2-step pre-qual form (5 questions, on-domain)</li>
         <li>Lead form replacement (kills 9-step + external subdomain)</li>
         <li>Brand voice applied sitewide on touched pages</li>
         <li>Color/visual style applied via Tailwind config</li>
@@ -777,7 +775,6 @@
       <ul>
         <li><code>/retirement-equity</code> spoke</li>
         <li><code>/heloc-101</code> revamp (new hub + ~6 supporting articles)</li>
-        <li><code>/rates</code> page with today's HELOC rates widget</li>
         <li>First wave of comparison pages (~12 articles, "HELOC vs X")</li>
         <li>FAQ schema + AEO/AIO optimization on top-volume pages</li>
         <li>Email nurture sequences per spoke</li>
