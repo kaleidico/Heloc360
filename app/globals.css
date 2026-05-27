@@ -43,6 +43,13 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    --brand-navy: #00274C;
+    --brand-blue: #1b75bc;
+    --brand-blue-dark: #155a91;
+    --brand-green: #007a5e;
+    --brand-green-dark: #006650;
+    --brand-mint: #02c39a;
+    --brand-maize: #FFCB05;
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -77,6 +84,13 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    --brand-navy: #00274C;
+    --brand-blue: #1b75bc;
+    --brand-blue-dark: #155a91;
+    --brand-green: #007a5e;
+    --brand-green-dark: #006650;
+    --brand-mint: #02c39a;
+    --brand-maize: #FFCB05;
   }
 }
 
@@ -88,7 +102,7 @@
     @apply bg-background text-foreground;
   }
   *:focus-visible {
-    outline: 2px solid #1b75bc;
+    outline: 2px solid var(--brand-blue);
     outline-offset: 2px;
   }
 }
