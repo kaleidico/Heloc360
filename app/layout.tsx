@@ -11,6 +11,10 @@ const ScrollToTop = dynamic(() => import("@/components/scroll-to-top"), {
   loading: () => null,
 })
 
+const StickyCta = dynamic(() => import("@/components/sticky-cta"), {
+  loading: () => null,
+})
+
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
@@ -209,6 +213,7 @@ export default function RootLayout({
         </main>
 
         <Footer />
+        <StickyCta />
 
         {/* Google Analytics - Replace with your GA4 ID */}
         {/* Temporarily disabled for performance optimization */}
