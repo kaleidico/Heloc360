@@ -13,16 +13,26 @@ export interface FooterNavigationItem {
   icon: string | null
 }
 
+export interface FooterCompanyInfo {
+  tagline: string
+  callToAction: string
+  description: string
+  legalDisclaimer: string
+}
+
+export interface FooterMailingList {
+  heading: string
+  subheading: string
+  ctaLabel: string
+}
+
 export interface FooterNavigation {
-  companyInfo: {
-    tagline: string
-    callToAction: string
-    description: string
-    legalDisclaimer: string
-  }
+  companyInfo: FooterCompanyInfo
+  mailingList: FooterMailingList
   socialMedia: FooterNavigationItem[]
-  learnMore: FooterNavigationItem[]
-  tools: FooterNavigationItem[]
-  aboutUs: FooterNavigationItem[]
-  bottomFooterRow: FooterNavigationItem[]
+  useCases: FooterNavigationItem[]
+  calculators: FooterNavigationItem[]
+  resources: FooterNavigationItem[]
+  company: FooterNavigationItem[]
+  legal: FooterNavigationItem[]
 }
