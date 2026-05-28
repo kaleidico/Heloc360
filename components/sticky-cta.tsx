@@ -9,6 +9,7 @@ const DISMISS_KEY = "stickyCta:dismissed"
 export default function StickyCta() {
   const [visible, setVisible] = useState(false)
   const [dismissed, setDismissed] = useState(false)
+  const [suppressed, setSuppressed] = useState(false)
 
   useEffect(() => {
     if (typeof window === "undefined") return
@@ -29,12 +30,26 @@ export default function StickyCta() {
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
+  useEffect(() => {
+    if (typeof document === "undefined") return
+    const check = () => {
+      setSuppressed(document.body.dataset.suppressStickyCta === "1")
+    }
+    check()
+    const observer = new MutationObserver(check)
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["data-suppress-sticky-cta"],
+    })
+    return () => observer.disconnect()
+  }, [])
+
   const dismiss = () => {
     sessionStorage.setItem(DISMISS_KEY, "1")
     setDismissed(true)
   }
 
-  if (dismissed || !visible) return null
+  if (dismissed || suppressed || !visible) return null
 
   return (
     <div
