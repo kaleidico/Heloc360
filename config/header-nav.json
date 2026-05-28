@@ -1,46 +1,46 @@
 [
 	{
+		"label": "How it works",
+		"url": "/#how-it-works",
+		"type": "text",
+		"icon": null
+	},
+	{
 		"label": "HELOC 101",
 		"url": "/heloc-101",
 		"type": "text",
-		"icon": "BookOpen"
+		"icon": null
 	},
 	{
-		"label": "HELOC Calculators",
+		"label": "Calculators",
 		"url": null,
 		"type": "text",
-		"icon": "Calculator",
+		"icon": null,
 		"children": [
 			{
-				"label": "Debt Consolidation Savings Calculator",
+				"label": "Debt Consolidation Savings",
 				"url": "/calculators/debt-consolidation",
 				"type": "text",
-				"icon": "Percent"
+				"icon": null
 			},
 			{
 				"label": "Home Equity Estimator",
 				"url": "/calculators/home-equity-estimator",
 				"type": "text",
-				"icon": "CircleEqual"
+				"icon": null
 			}
 		]
-	},
-	{
-		"label": "About",
-		"url": "/about",
-		"type": "text",
-		"icon": "Info"
 	},
 	{
 		"label": "Blog",
 		"url": "/blog",
 		"type": "text",
-		"icon": "Notebook"
+		"icon": null
 	},
 	{
-		"label": "Get Started",
-		"url": "https://get-started.heloc360.com/",
+		"label": "Talk to an advisor",
+		"url": "/contact",
 		"type": "cta-button",
-		"icon": "ArrowRightCircle"
+		"icon": null
 	}
 ]
