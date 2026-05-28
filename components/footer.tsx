@@ -1,168 +1,130 @@
-import Link from "next/link";
-import {
-	BookOpen,
-	Calculator,
-	CircleEqual,
-	Info,
-	Users,
-	Notebook,
-} from "lucide-react";
-import footerNavData from "@/config/footer-nav.json";
-import type { FooterNavigation } from "@/types/navigation";
+import Link from "next/link"
+import { Facebook, Twitter, Linkedin, Mail } from "lucide-react"
+import footerNavData from "@/config/footer-nav.json"
+import type { FooterNavigation, FooterNavigationItem } from "@/types/navigation"
 
-// Icon mapping
-const iconMap = {
-	BookOpen,
-	Calculator,
-	CircleEqual,
-	Info,
-	Users,
-	Notebook,
-};
+// lucide-react exports use "Linkedin" (lowercase d), not "LinkedIn". Keep
+// the icon string in config/footer-nav.json matching this casing.
+const socialIconMap = { Facebook, Twitter, Linkedin, Mail }
+
+function FooterColumn({
+  heading,
+  items,
+}: {
+  heading: string
+  items: FooterNavigationItem[]
+}) {
+  return (
+    <div>
+      <h3 className="text-sm font-semibold uppercase tracking-wider text-brand-maize mb-3">
+        {heading}
+      </h3>
+      <ul className="space-y-2">
+        {items.map((item, i) => (
+          <li key={i}>
+            <Link
+              href={item.url}
+              className="text-sm text-white/80 hover:text-white transition-colors"
+            >
+              {item.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
 
 export default function Footer() {
-	const footerData: FooterNavigation = footerNavData;
+  const data: FooterNavigation = footerNavData as FooterNavigation
 
-	// Get icon component
-	const getIcon = (iconName: string | null) => {
-		if (!iconName) return null;
-		const IconComponent = iconMap[iconName as keyof typeof iconMap];
-		return IconComponent ? <IconComponent className='w-5 h-5' aria-hidden="true" /> : null;
-	};
+  return (
+    <footer className="bg-brand-navy text-white">
+      {/* Mailing list row (lead magnet) */}
+      <div className="border-b border-white/10">
+        <div className="container mx-auto px-4 py-10">
+          <div className="grid md:grid-cols-2 gap-6 items-center">
+            <div>
+              <h2 className="text-display-sm text-white mb-2">
+                {data.mailingList.heading}
+              </h2>
+              <p className="text-sm text-white/70">{data.mailingList.subheading}</p>
+            </div>
+            <form
+              className="flex flex-col sm:flex-row gap-2"
+              onSubmit={(e) => e.preventDefault()}
+              aria-label="Mailing list signup"
+            >
+              <input
+                type="email"
+                required
+                placeholder="you@example.com"
+                className="flex-1 px-4 py-3 rounded-md bg-white text-ink-900 placeholder:text-ink-400 focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                aria-label="Email address"
+              />
+              <button
+                type="submit"
+                className="bg-brand-green hover:bg-brand-green-dark text-white font-semibold px-6 py-3 rounded-md transition-colors"
+              >
+                {data.mailingList.ctaLabel}
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
 
-	return (
-		<footer className='bg-gray-900 text-white'>
-			{/* Main Footer */}
-			<div className='bg-[#007a5e] py-12'>
-				<div className='container mx-auto px-4'>
-					<div className='grid md:grid-cols-3 gap-8'>
-						{/* Learn More */}
-						<div>
-							<h3 className='text-lg font-semibold mb-4'>
-								Learn More
-							</h3>
-							<ul className='space-y-2'>
-								{footerData.learnMore.map((item, index) => (
-									<li key={index}>
-										<Link
-											href={item.url}
-											className='flex items-center hover:text-white/80 transition-colors'
-										>
-											{getIcon(item.icon)}
-											<span
-												className={
-													item.icon ? "ml-2" : ""
-												}
-											>
-												{item.label}
-											</span>
-										</Link>
-									</li>
-								))}
-							</ul>
-						</div>
+      {/* 5-column nav */}
+      <div className="container mx-auto px-4 py-12">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+          <FooterColumn heading="Use cases" items={data.useCases} />
+          <FooterColumn heading="Calculators" items={data.calculators} />
+          <FooterColumn heading="Resources" items={data.resources} />
+          <FooterColumn heading="Company" items={data.company} />
+          <FooterColumn heading="Legal" items={data.legal} />
+        </div>
+      </div>
 
-						{/* Tools */}
-						<div>
-							<h3 className='text-lg font-semibold mb-4'>
-								Tools
-							</h3>
-							<ul className='space-y-2'>
-								{footerData.tools.map((item, index) => (
-									<li key={index}>
-										<Link
-											href={item.url}
-											className='flex items-center hover:text-white/80 transition-colors'
-										>
-											{getIcon(item.icon)}
-											<span
-												className={
-													item.icon ? "ml-2" : ""
-												}
-											>
-												{item.label}
-											</span>
-										</Link>
-									</li>
-								))}
-							</ul>
-						</div>
+      {/* Company info + legal */}
+      <div className="bg-black/20 border-t border-white/10">
+        <div className="container mx-auto px-4 py-8">
+          <div className="grid md:grid-cols-3 gap-6 text-sm">
+            <div className="md:col-span-2">
+              <p className="text-white/80 leading-relaxed">{data.companyInfo.description}</p>
+            </div>
+            <div>
+              <p className="text-white/50 text-xs leading-relaxed">
+                {data.companyInfo.legalDisclaimer}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
 
-						{/* About Us */}
-						<div>
-							<h3 className='text-lg font-semibold mb-4'>
-								About Us
-							</h3>
-							<ul className='space-y-2'>
-								{footerData.aboutUs.map((item, index) => (
-									<li key={index}>
-										<Link
-											href={item.url}
-											className='flex items-center hover:text-white/80 transition-colors'
-										>
-											{getIcon(item.icon)}
-											<span
-												className={
-													item.icon ? "ml-2" : ""
-												}
-											>
-												{item.label}
-											</span>
-										</Link>
-									</li>
-								))}
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			{/* Company Info & Legal Section */}
-			<div className='bg-gray-800 py-8'>
-				<div className='container mx-auto px-4'>
-					<div className='grid md:grid-cols-2 gap-8'>
-						{/* Company Info */}
-						<div>
-							<h3 className='text-xl font-bold text-white mb-4'>
-								{footerData.companyInfo.callToAction}
-							</h3>
-							<p className='text-gray-300 text-sm leading-relaxed'>
-								{footerData.companyInfo.description}
-							</p>
-						</div>
-
-						{/* Legal Disclaimer */}
-						<div>
-							<p className='text-gray-400 text-xs leading-relaxed'>
-								{footerData.companyInfo.legalDisclaimer}
-							</p>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			{/* Bottom Footer */}
-			<div className='bg-gray-900 py-6'>
-				<div className='container mx-auto px-4'>
-					<div className='flex flex-col md:flex-row justify-between items-center'>
-						<p className='text-sm text-gray-400 mb-4 md:mb-0'>
-							© {new Date().getFullYear()} HELOC360. All rights
-							reserved.
-						</p>
-						<div className='flex flex-wrap gap-6 text-sm'>
-							{footerData.bottomFooterRow.map((item, index) => (
-								<Link
-									key={index}
-									href={item.url}
-									className='text-gray-400 hover:text-white/80 transition-colors'
-								>
-									{item.label}
-								</Link>
-							))}
-						</div>
-					</div>
-				</div>
-			</div>
-		</footer>
-	);
+      {/* Bottom bar */}
+      <div className="bg-black/30">
+        <div className="container mx-auto px-4 py-5">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+            <p className="text-xs text-white/60">
+              © {new Date().getFullYear()} HELOC360 · My Perfect Leads, LLC. All rights reserved.
+            </p>
+            <div className="flex gap-4 text-xs">
+              {data.socialMedia.map((s, i) => {
+                const Icon = socialIconMap[s.icon as keyof typeof socialIconMap]
+                return (
+                  <a
+                    key={i}
+                    href={s.url}
+                    className="text-white/60 hover:text-white transition-colors"
+                    aria-label={s.label}
+                  >
+                    {Icon ? <Icon className="w-4 h-4" /> : s.label}
+                  </a>
+                )
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  )
 }
