@@ -70,7 +70,6 @@ export default function Header() {
                   <>
                     <button
                       className="flex items-center text-ink-700 hover:text-brand-blue transition-colors font-medium"
-                      aria-haspopup="true"
                       aria-expanded={openDropdown === index}
                       onClick={() =>
                         setOpenDropdown(openDropdown === index ? null : index)
@@ -91,6 +90,11 @@ export default function Header() {
                           : "opacity-0 invisible"
                       }`}
                       onMouseLeave={() => setOpenDropdown(null)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Escape") {
+                          setOpenDropdown(null)
+                        }
+                      }}
                     >
                       <div className="p-2">
                         {item.children.map((child, childIndex) => (
