@@ -91,6 +91,12 @@ export default function Footer() {
         <div className="container mx-auto px-4 py-8">
           <div className="grid md:grid-cols-3 gap-6 text-sm">
             <div className="md:col-span-2">
+              <p className="text-xs font-semibold uppercase tracking-wider text-brand-maize mb-2">
+                {data.companyInfo.tagline}
+              </p>
+              <p className="text-base font-semibold text-white mb-3">
+                {data.companyInfo.callToAction}
+              </p>
               <p className="text-white/80 leading-relaxed">{data.companyInfo.description}</p>
             </div>
             <div>
