@@ -1,104 +1,47 @@
 {
 	"companyInfo": {
-		"tagline": "Your trusted partner in turning home equity into opportunity",
-		"callToAction": "Make the smart move.",
-		"description": "HELOC360 equips you with the essential tools to secure the ideal loan. HELOC360 is provided by the friendly folks at My Perfect Leads, LLC.",
-		"legalDisclaimer": "This is not an offer to enter into an agreement. Not all customers will qualify. Information, rates and programs are subject to change without notice. All products are subject to credit and property approval. Other restrictions and limitations may apply. Equal Housing Opportunity."
+		"tagline": "The HELOC advisor, not the HELOC salesman.",
+		"callToAction": "Talk to an advisor — not a sales rep.",
+		"description": "HELOC360 helps homeowners decide whether and how to tap their home equity. We connect you with vetted, licensed lenders who specialize in your specific situation — and we'll walk you through the trade-offs before you commit to anything. HELOC360 is provided by My Perfect Leads, LLC.",
+		"legalDisclaimer": "This is not an offer to enter into an agreement. Not all customers will qualify. Information, rates, and programs are subject to change without notice. All products are subject to credit and property approval. Other restrictions and limitations may apply. Equal Housing Opportunity."
+	},
+	"mailingList": {
+		"heading": "Get the 7-page HELOC decision guide.",
+		"subheading": "Plain-English walkthrough of when a HELOC is the right call — and when it isn't. Free, no sales pitch.",
+		"ctaLabel": "Send me the guide"
 	},
 	"socialMedia": [
-		{
-			"label": "Facebook",
-			"url": "https://facebook.com/heloc360",
-			"icon": "Facebook"
-		},
-		{
-			"label": "Twitter",
-			"url": "https://twitter.com/heloc360",
-			"icon": "Twitter"
-		},
-		{
-			"label": "LinkedIn",
-			"url": "https://linkedin.com/company/heloc360",
-			"icon": "Linkedin"
-		},
-		{
-			"label": "Email",
-			"url": "mailto:info@heloc360.com",
-			"icon": "Mail"
-		}
+		{ "label": "Facebook", "url": "https://facebook.com/heloc360", "type": "text", "icon": "Facebook" },
+		{ "label": "Twitter", "url": "https://twitter.com/heloc360", "type": "text", "icon": "Twitter" },
+		{ "label": "LinkedIn", "url": "https://linkedin.com/company/heloc360", "type": "text", "icon": "Linkedin" },
+		{ "label": "Email", "url": "mailto:info@heloc360.com", "type": "email", "icon": "Mail" }
 	],
-	"learnMore": [
-		{
-			"label": "HELOC 101",
-			"url": "/heloc-101",
-			"type": "text",
-			"icon": "BookOpen"
-		}
+	"useCases": [
+		{ "label": "Pay off debt", "url": "/debt-consolidation", "type": "text", "icon": null },
+		{ "label": "Renovate my home", "url": "/home-renovation", "type": "text", "icon": null },
+		{ "label": "Plan for retirement", "url": "/retirement-equity", "type": "text", "icon": null },
+		{ "label": "First time tapping equity", "url": "/heloc-101", "type": "text", "icon": null },
+		{ "label": "I'm self-employed", "url": "/self-employed-heloc", "type": "text", "icon": null }
 	],
-	"tools": [
-		{
-			"label": "Debt Consolidation Calculator",
-			"url": "/calculators/debt-consolidation",
-			"type": "text",
-			"icon": "Calculator"
-		},
-		{
-			"label": "Home Equity Estimator",
-			"url": "/calculators/home-equity-estimator",
-			"type": "text",
-			"icon": "CircleEqual"
-		}
+	"calculators": [
+		{ "label": "Debt Consolidation Savings", "url": "/calculators/debt-consolidation", "type": "text", "icon": null },
+		{ "label": "Home Equity Estimator", "url": "/calculators/home-equity-estimator", "type": "text", "icon": null },
+		{ "label": "All calculators", "url": "/calculators", "type": "text", "icon": null }
 	],
-	"aboutUs": [
-		{
-			"label": "Our Story",
-			"url": "/about",
-			"type": "text",
-			"icon": "Info"
-		},
-		{
-			"label": "Meet the Team",
-			"url": "/about#team",
-			"type": "text",
-			"icon": "Users"
-		},
-		{
-			"label": "Contact Us",
-			"url": "/contact",
-			"type": "text",
-			"icon": "Mail"
-		},
-		{
-			"label": "Blog",
-			"url": "/blog",
-			"type": "text",
-			"icon": "Notebook"
-		}
+	"resources": [
+		{ "label": "HELOC 101", "url": "/heloc-101", "type": "text", "icon": null },
+		{ "label": "Blog", "url": "/blog", "type": "text", "icon": null },
+		{ "label": "Glossary", "url": "/glossary", "type": "text", "icon": null }
 	],
-	"bottomFooterRow": [
-		{
-			"label": "Privacy Policy",
-			"url": "/privacy",
-			"type": "text",
-			"icon": null
-		},
-		{
-			"label": "Terms of Use",
-			"url": "/terms",
-			"type": "text",
-			"icon": null
-		},
-		{
-			"label": "Affiliate Disclosure",
-			"url": "/affiliate-disclosure",
-			"type": "text",
-			"icon": null
-		},
-		{
-			"label": "Communication Consent",
-			"url": "/communication-consent",
-			"type": "text",
-			"icon": null
-		}
+	"company": [
+		{ "label": "About", "url": "/about", "type": "text", "icon": null },
+		{ "label": "Meet our team", "url": "/meet-our-team", "type": "text", "icon": null },
+		{ "label": "Contact", "url": "/contact", "type": "text", "icon": null }
+	],
+	"legal": [
+		{ "label": "Privacy Policy", "url": "/privacy", "type": "text", "icon": null },
+		{ "label": "Terms of Use", "url": "/terms", "type": "text", "icon": null },
+		{ "label": "Affiliate Disclosure", "url": "/affiliate-disclosure", "type": "text", "icon": null },
+		{ "label": "Communication Consent", "url": "/communication-consent", "type": "text", "icon": null }
 	]
 }
