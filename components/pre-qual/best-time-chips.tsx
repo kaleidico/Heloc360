@@ -9,6 +9,26 @@ interface BestTimeChipsProps {
 }
 
 export function BestTimeChips({ value, onChange, error }: BestTimeChipsProps) {
+  const onGroupKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (
+      e.key !== "ArrowLeft" &&
+      e.key !== "ArrowRight" &&
+      e.key !== "ArrowUp" &&
+      e.key !== "ArrowDown"
+    ) {
+      return
+    }
+    e.preventDefault()
+    const currentIndex = value
+      ? BEST_TIME_OPTIONS.indexOf(value)
+      : -1
+    const delta = e.key === "ArrowLeft" || e.key === "ArrowUp" ? -1 : 1
+    const base = currentIndex < 0 ? 0 : currentIndex
+    const next =
+      (base + delta + BEST_TIME_OPTIONS.length) % BEST_TIME_OPTIONS.length
+    onChange(BEST_TIME_OPTIONS[next])
+  }
+
   return (
     <div>
       <p id="bestTime-label" className="text-sm font-medium text-ink-900 mb-2">
@@ -18,16 +38,19 @@ export function BestTimeChips({ value, onChange, error }: BestTimeChipsProps) {
         role="radiogroup"
         aria-labelledby="bestTime-label"
         aria-describedby={error ? "bestTime-error" : undefined}
+        onKeyDown={onGroupKeyDown}
         className="flex flex-wrap gap-2"
       >
-        {BEST_TIME_OPTIONS.map((option) => {
+        {BEST_TIME_OPTIONS.map((option, index) => {
           const selected = value === option
+          const tabbable = selected || (!value && index === 0)
           return (
             <button
               key={option}
               type="button"
               role="radio"
               aria-checked={selected}
+              tabIndex={tabbable ? 0 : -1}
               onClick={() => onChange(option)}
               className={
                 "px-4 py-2 rounded-full text-sm font-medium transition-colors border " +
