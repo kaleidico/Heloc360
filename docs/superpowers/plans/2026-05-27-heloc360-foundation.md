@@ -1008,15 +1008,34 @@ Expected: pass.
   - `/heloc-101` — accessed via top nav
   - Footer links — confirm they point at the right routes (some 404, that's expected and listed in Task 6 notes)
 
-- [ ] **Step 4: Search for any hardcoded `#1b75bc` or `#007a5e` left in components touched by this plan.**
+- [ ] **Step 4: Search for any hardcoded brand-color hexes left in components/layout touched by this plan.**
 
 ```bash
-grep -nE '#1b75bc|#007a5e|#00274C|#02c39a|#FFCB05' components/header.tsx components/footer.tsx components/sticky-cta.tsx
+grep -nE '#1b75bc|#1B75BC|#007a5e|#00274C|#02c39a|#FFCB05' components/header.tsx components/footer.tsx components/sticky-cta.tsx app/layout.tsx
 ```
 
-Expected: 0 results. (All colors should go through brand tokens now.)
+Expected results — **only** these three intentional matches in `app/layout.tsx`:
+- Line ~28: `themeColor` metadata, light scheme (`#1b75bc`)
+- Line ~29: `themeColor` metadata, dark scheme (`#02c39a`)
+- Line ~102: `mask-icon` rel link `color` (`#1b75bc`)
 
-If anything is left, replace it with the corresponding `brand-*` Tailwind class and commit a fix.
+These three are Next.js `Metadata` API values that are serialized into static `<meta>` tags at build time; CSS variables / Tailwind tokens are not resolved in that context, so the hex literals must stay. They are an accepted exception.
+
+**Any other match — including arbitrary-value Tailwind classes like `bg-[#1b75bc]` — is a bug.** Replace with the corresponding `brand-*` Tailwind class and commit a fix.
+
+- [ ] **Step 4a: Verify the known offender in `app/layout.tsx` has been fixed.** The skip-to-content link near line 195 used the arbitrary `bg-[#1b75bc]` Tailwind class — swap it to `bg-brand-blue`:
+
+```bash
+# Before / verification:
+grep -n 'bg-\[#1b75bc\]\|bg-brand-blue' app/layout.tsx
+```
+
+If the `bg-[#1b75bc]` arbitrary-value class is still present, replace it with `bg-brand-blue` and commit:
+
+```bash
+git add app/layout.tsx
+git commit -m "fix(foundation): route layout skip-link bg through brand token"
+```
 
 - [ ] **Step 5: Confirm the working tree is clean.**
 
