@@ -39,7 +39,7 @@
 	},
 	{
 		"label": "Talk to an advisor",
-		"url": "/contact",
+		"url": "/pre-qual",
 		"type": "cta-button",
 		"icon": null
 	}

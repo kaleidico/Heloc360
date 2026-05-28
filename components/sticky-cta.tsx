@@ -59,7 +59,7 @@ export default function StickyCta() {
     >
       <div className="flex items-stretch">
         <Link
-          href="/contact"
+          href="/pre-qual"
           className="flex items-center gap-2 px-4 py-3 text-sm font-semibold hover:bg-white/10 transition-colors"
         >
           <Phone className="w-4 h-4" aria-hidden="true" />
