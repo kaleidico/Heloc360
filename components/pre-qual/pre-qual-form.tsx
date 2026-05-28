@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Phone, Loader2 } from "lucide-react"
@@ -12,7 +12,6 @@ import { getMergedTrackingData } from "@/lib/tracking"
 import {
   PreQualSubmissionSchema,
   type PreQualSubmission,
-  type Step1Values,
   type BestTime,
 } from "@/lib/pre-qual/schema"
 import { formatCurrency, parseCurrency, formatPhoneNumber, normalizeZip } from "@/lib/pre-qual/masks"
@@ -50,6 +49,7 @@ export function PreQualForm({ useCase, hcaptchaSiteKey }: PreQualFormProps) {
   const [submitted, setSubmitted] = useState(false)
   const [hcaptchaToken, setHcaptchaToken] = useState("")
   const [zipLookupPending, setZipLookupPending] = useState(false)
+  const pendingZipRef = useRef<string>("")
 
   // Display strings for the currency-masked inputs (React Hook Form holds the
   // numeric values; these track what the user actually sees in the input).
@@ -150,9 +150,11 @@ export function PreQualForm({ useCase, hcaptchaSiteKey }: PreQualFormProps) {
   const onZipChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const normalized = normalizeZip(e.target.value)
     setValue("zipCode", normalized)
+    pendingZipRef.current = normalized
     if (normalized.length >= 5) {
       setZipLookupPending(true)
       const loc = await lookupZip(normalized)
+      if (pendingZipRef.current !== normalized) return  // newer ZIP in flight — discard
       setZipLookupPending(false)
       if (loc) {
         setValue("city", loc.city)
@@ -196,11 +198,11 @@ export function PreQualForm({ useCase, hcaptchaSiteKey }: PreQualFormProps) {
       }
     })()
     const payload: PreQualSubmission = {
+      ...tracking,
       ...data,
       useCase,
       formType: "pre-qual-v1",
       hcaptchaToken: hcaptchaToken || undefined,
-      ...tracking,
     }
     try {
       const response = await fetch("/api/submit-prequal", {
