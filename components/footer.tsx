@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link"
 import { Facebook, Twitter, Linkedin, Mail } from "lucide-react"
 import footerNavData from "@/config/footer-nav.json"
