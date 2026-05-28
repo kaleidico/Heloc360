@@ -11,13 +11,16 @@ interface HCaptchaProps {
 declare global {
   interface Window {
     hcaptcha: {
-      render: (container: string | HTMLElement, options: any) => string
+      render: (container: string | HTMLElement, options: Record<string, unknown>) => string
       reset: (widgetId: string) => void
+      remove?: (widgetId: string) => void
       getResponse: (widgetId: string) => string
       onReady: (callback: () => void) => void
     }
   }
 }
+
+const SCRIPT_SRC = 'https://js.hcaptcha.com/1/api.js'
 
 export default function HCaptcha({
   onVerify,
@@ -26,61 +29,67 @@ export default function HCaptcha({
 }: HCaptchaProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const widgetIdRef = useRef<string | null>(null)
+  // Hold the latest callbacks in refs so the render effect can stay stable
+  // (sitekey-only deps) without callback identity churn re-mounting the widget.
+  const onVerifyRef = useRef(onVerify)
+  const onExpireRef = useRef(onExpire)
+  onVerifyRef.current = onVerify
+  onExpireRef.current = onExpire
 
   useEffect(() => {
-    // Load hCaptcha script if not already loaded
-    if (!window.hcaptcha) {
-      const script = document.createElement('script')
-      script.src = 'https://js.hcaptcha.com/1/api.js'
-      script.async = true
-      script.defer = true
-      document.head.appendChild(script)
+    let cancelled = false
 
-      script.onload = () => {
-        if (containerRef.current && window.hcaptcha) {
-          widgetIdRef.current = window.hcaptcha.render(containerRef.current, {
-            sitekey: sitekey,
-            theme: 'light',
-            size: 'normal',
-            callback: (token: string) => {
-              onVerify(token)
-            },
-            'expired-callback': () => {
-              onExpire()
-            },
-            'error-callback': () => {
-              onExpire()
-            }
-          })
-        }
-      }
+    const renderWidget = () => {
+      if (cancelled) return
+      if (!containerRef.current || !window.hcaptcha) return
+      // StrictMode double-mounts effects in dev. If our previous mount already
+      // rendered a widget into this container, don't render a second one —
+      // hCaptcha throws "Only one captcha is permitted per parent container."
+      if (containerRef.current.childElementCount > 0) return
+      widgetIdRef.current = window.hcaptcha.render(containerRef.current, {
+        sitekey,
+        theme: 'light',
+        size: 'normal',
+        callback: (token: string) => onVerifyRef.current(token),
+        'expired-callback': () => onExpireRef.current(),
+        'error-callback': () => onExpireRef.current(),
+      })
+    }
+
+    if (window.hcaptcha) {
+      renderWidget()
     } else {
-      // Script already loaded, render immediately
-      if (containerRef.current) {
-        widgetIdRef.current = window.hcaptcha.render(containerRef.current, {
-          sitekey: sitekey,
-          theme: 'light',
-          size: 'normal',
-          callback: (token: string) => {
-            onVerify(token)
-          },
-          'expired-callback': () => {
-            onExpire()
-          },
-          'error-callback': () => {
-            onExpire()
-          }
-        })
+      const existing = document.querySelector<HTMLScriptElement>(`script[src="${SCRIPT_SRC}"]`)
+      if (existing) {
+        existing.addEventListener('load', renderWidget)
+      } else {
+        const script = document.createElement('script')
+        script.src = SCRIPT_SRC
+        script.async = true
+        script.defer = true
+        script.onload = renderWidget
+        document.head.appendChild(script)
       }
     }
 
     return () => {
-      // Cleanup widget on unmount
+      cancelled = true
       if (widgetIdRef.current && window.hcaptcha) {
-        window.hcaptcha.reset(widgetIdRef.current)
+        // `remove()` fully detaches the widget; `reset()` only clears state and
+        // leaves DOM that the next mount would clash with. Some hCaptcha
+        // builds expose only `reset()` — clear the container DOM as a fallback.
+        if (window.hcaptcha.remove) {
+          window.hcaptcha.remove(widgetIdRef.current)
+        } else {
+          window.hcaptcha.reset(widgetIdRef.current)
+        }
+        widgetIdRef.current = null
+      }
+      if (containerRef.current) {
+        containerRef.current.innerHTML = ''
       }
     }
-  }, [sitekey, onVerify, onExpire])
+  }, [sitekey])
 
   return (
     <div className="mt-4">
