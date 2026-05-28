@@ -60,6 +60,9 @@ export const ContextSchema = z.object({
 export const PreQualSubmissionSchema = Step1Schema.merge(Step2Schema)
   .merge(ContextSchema)
   .extend({
+    // Optional in the schema because the server skips verification in dev
+    // (HCAPTCHA_SECRET unset). Effectively required at runtime in production
+    // — see app/api/submit-prequal/route.ts for the gate.
     hcaptchaToken: z.string().optional(),
     formType: z.literal("pre-qual-v1"),
   })

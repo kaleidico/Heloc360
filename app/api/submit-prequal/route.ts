@@ -78,7 +78,6 @@ export async function POST(request: NextRequest) {
   // Forward to the lender webhook. Strip the token from the outbound payload
   // since the lender side doesn't need it after we've verified.
   const { hcaptchaToken: _drop, ...outbound } = data
-  void _drop
 
   try {
     const response = await fetch(LENDER_WEBHOOK_URL, {
