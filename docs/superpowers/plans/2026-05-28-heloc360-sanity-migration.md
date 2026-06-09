@@ -1627,7 +1627,11 @@ if [[ -z "${SANITY_API_WRITE_TOKEN:-}" ]]; then
 fi
 
 echo "Importing $NDJSON to dataset '$DATASET'..."
-npx sanity dataset import "$NDJSON" "$DATASET" --replace --token "$SANITY_API_WRITE_TOKEN"
+# Export SANITY_AUTH_TOKEN so the CLI's pre-import `datasets/read` precheck is authorized
+# even when no `sanity login` has been run on this machine. (The CLI's --token flag alone
+# is NOT respected for that precheck — Sanity CLI 3.99 fails with "User is missing
+# required grant sanity.project.datasets/read" without the env var.)
+SANITY_AUTH_TOKEN="$SANITY_API_WRITE_TOKEN" npx sanity dataset import "$NDJSON" "$DATASET" --replace --token "$SANITY_API_WRITE_TOKEN"
 echo "Import complete."
 ```
 
