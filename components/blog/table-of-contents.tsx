@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { List, ChevronRight } from "lucide-react"
+import type { PortableTextBlock } from "@portabletext/types"
 
 interface TOCItem {
   id: string
@@ -10,41 +11,42 @@ interface TOCItem {
 }
 
 interface TableOfContentsProps {
-  content: string
+  blocks: PortableTextBlock[]
 }
 
-export default function TableOfContents({ content }: TableOfContentsProps) {
-  const [tocItems, setTocItems] = useState<TOCItem[]>([])
+export default function TableOfContents({ blocks }: TableOfContentsProps) {
   const [activeId, setActiveId] = useState<string>("")
 
+  // Derive headings synchronously from the PortableText blocks.
+  // The counter increments ONLY for heading blocks (h2/h3/h4) in document
+  // order, starting at 0 — matching the renderer's heading-{N} contract.
+  const tocItems: TOCItem[] = []
+  let index = 0
+  for (const block of blocks) {
+    if ((block as any)._type !== "block") continue
+    const style = (block as any).style as string | undefined
+    if (style !== "h2" && style !== "h3" && style !== "h4") continue
+
+    const id = `heading-${index++}`
+    const level = parseInt(style.slice(1), 10)
+    const children = ((block as any).children ?? []) as Array<{ text?: unknown }>
+    const text = children
+      .filter((child) => typeof child.text === "string")
+      .map((child) => child.text as string)
+      .join("")
+
+    tocItems.push({ id, text, level })
+  }
+
   useEffect(() => {
-    // Extract headings from markdown content
-    const lines = content.split('\n')
-    const items: TOCItem[] = []
-    let index = 0
-
-    lines.forEach((line) => {
-      const trimmedLine = line.trim()
-      
-      // Check for markdown headings (# ## ### ####)
-      if (trimmedLine.startsWith('#')) {
-        const level = trimmedLine.match(/^#+/)?.[0].length || 2
-        if (level >= 2 && level <= 4) {
-          const text = trimmedLine.replace(/^#+\s*/, '').trim()
-          const id = `heading-${index}`
-          
-          items.push({ id, text, level })
-          index++
-        }
-      }
-    })
-
-    setTocItems(items)
-
-    // Set up intersection observer for active heading after content renders
+    // Set up intersection observer for active heading after content renders.
+    // The observer is created inside a timeout, so capture it in the effect
+    // scope and disconnect it from the effect's own cleanup — returning the
+    // disconnect from the setTimeout callback would never reach React.
+    let observer: IntersectionObserver | null = null
     const timer = setTimeout(() => {
       const headings = document.querySelectorAll("h2, h3, h4")
-      const observer = new IntersectionObserver(
+      observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
@@ -55,13 +57,14 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
         { rootMargin: "-20% 0% -35% 0%" },
       )
 
-      headings.forEach((heading) => observer.observe(heading))
-
-      return () => observer.disconnect()
+      headings.forEach((heading) => observer!.observe(heading))
     }, 100)
 
-    return () => clearTimeout(timer)
-  }, [content])
+    return () => {
+      clearTimeout(timer)
+      observer?.disconnect()
+    }
+  }, [blocks])
 
   const scrollToHeading = (id: string) => {
     const element = document.getElementById(id)

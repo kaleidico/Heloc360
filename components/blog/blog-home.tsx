@@ -101,8 +101,16 @@ export default function BlogHome({
 					return true;
 				}
 
-				// Search in content
-				if (post.content.toLowerCase().includes(searchLower)) {
+				// Search in body (PortableText blocks → flattened text)
+				const bodyText = (post.body || [])
+					.flatMap((block: any) =>
+						(block.children || []).map((child: any) =>
+							typeof child.text === "string" ? child.text : ""
+						)
+					)
+					.join(" ")
+					.toLowerCase();
+				if (bodyText.includes(searchLower)) {
 					return true;
 				}
 

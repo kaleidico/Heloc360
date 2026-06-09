@@ -7,10 +7,9 @@ import TableOfContents from "@/components/blog/table-of-contents"
 import BlogCard from "@/components/blog/blog-card"
 import ShareButton from "@/components/blog/share-button"
 import type { Metadata } from "next"
-import ReactMarkdown from "react-markdown"
-import remarkGfm from "remark-gfm"
+import { PortableText } from "@/components/blog/portable-text"
 
-import { getAllBlogPosts, getBlogPostBySlug } from "@/lib/contentful"
+import { getAllBlogPosts, getBlogPostBySlug } from "@/lib/sanity/api"
 import { decodeHtmlEntities } from "@/lib/utils"
 
 type Props = {
@@ -75,15 +74,6 @@ export default async function BlogPostPage({ params }: Props) {
       month: "long",
       day: "numeric",
     })
-  }
-
-  // Create heading components with sequential IDs
-  let headingIndex = 0
-  const createHeadingComponent = (Tag: 'h2' | 'h3' | 'h4') => {
-    return ({ children, ...props }: any) => {
-      const id = `heading-${headingIndex++}`
-      return <Tag id={id} {...props}>{children}</Tag>
-    }
   }
 
   // Generate structured data for the blog post
@@ -173,23 +163,14 @@ export default async function BlogPostPage({ params }: Props) {
             </div>
 
             {/* Table of Contents */}
-            {post.content && post.content.trim().length > 0 && (
-              <TableOfContents content={post.content} />
+            {post.body && post.body.length > 0 && (
+              <TableOfContents blocks={post.body} />
             )}
 
             {/* Article Content */}
-            {post.content && post.content.trim().length > 0 ? (
+            {post.body && post.body.length > 0 ? (
               <div className="prose-custom" style={{ lineHeight: "1.8" }}>
-                <ReactMarkdown 
-                  remarkPlugins={[remarkGfm]}
-                  components={{
-                    h2: createHeadingComponent('h2'),
-                    h3: createHeadingComponent('h3'),
-                    h4: createHeadingComponent('h4'),
-                  }}
-                >
-                  {post.content}
-                </ReactMarkdown>
+                <PortableText value={post.body} />
               </div>
             ) : (
               <div className="text-center py-12 text-gray-500">

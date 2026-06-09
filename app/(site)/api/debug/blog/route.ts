@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getAllBlogPosts } from '@/lib/contentful'
+import { getAllBlogPosts } from '@/lib/sanity/api'
 
 export const dynamic = 'force-dynamic'
 

@@ -5,7 +5,7 @@ import {
 	getBlogPostBySlug,
 	getAllTeamMembers,
 	getTeamMemberBySlug,
-} from "@/lib/contentful";
+} from "@/lib/sanity/api";
 
 type Props = { params: { slug: string } };
 

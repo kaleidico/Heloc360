@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next'
-import { getAllBlogPosts } from '@/lib/contentful'
-import { getAllTeamMembers } from '@/lib/contentful'
+import { getAllBlogPosts } from '@/lib/sanity/api'
+import { getAllTeamMembers } from '@/lib/sanity/api'
 
 const BASE_URL = 'https://heloc360.com'
 

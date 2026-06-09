@@ -13,7 +13,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getAllTeamMembers } from "@/lib/contentful";
+import { getAllTeamMembers } from "@/lib/sanity/api";
 
 export const metadata: Metadata = {
 	title: "About HELOC360 - Your Trusted Home Equity Partner",

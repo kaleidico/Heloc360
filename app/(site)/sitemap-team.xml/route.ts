@@ -1,4 +1,4 @@
-import { getAllTeamMembers } from '@/lib/contentful'
+import { getAllTeamMembers } from '@/lib/sanity/api'
 
 export async function GET() {
   try {

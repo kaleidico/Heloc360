@@ -1,5 +1,5 @@
 import BlogHome from "@/components/blog/blog-home";
-import { getAllBlogPosts } from "@/lib/contentful";
+import { getAllBlogPosts } from "@/lib/sanity/api";
 import type { Metadata } from "next";
 
 export const revalidate = 86400;

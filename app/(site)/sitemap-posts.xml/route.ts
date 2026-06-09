@@ -1,4 +1,4 @@
-import { getAllBlogPosts } from '@/lib/contentful'
+import { getAllBlogPosts } from '@/lib/sanity/api'
 
 export async function GET() {
   try {

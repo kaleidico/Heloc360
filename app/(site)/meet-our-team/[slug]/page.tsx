@@ -5,7 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
-import { getAllTeamMembers, getTeamMemberBySlug } from "@/lib/contentful"
+import { getAllTeamMembers, getTeamMemberBySlug } from "@/lib/sanity/api"
 
 type Props = {
   params: { slug: string }

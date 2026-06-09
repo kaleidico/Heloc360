@@ -1,4 +1,4 @@
-import { getAllBlogPosts } from "@/lib/contentful";
+import { getAllBlogPosts } from "@/lib/sanity/api";
 import { NextResponse } from "next/server";
 
 export async function GET() {
