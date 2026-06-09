@@ -241,11 +241,29 @@ The `.env.local` change is intentionally NOT committed (`.gitignore` keeps it ou
 - Create: `sanity/schemas/index.ts`
 - Create: `sanity/schemas/blogPost.ts`
 - Create: `sanity/schemas/teamMember.ts`
+- Create: `sanity/schemas/utils.ts`
+
+- [ ] **Step 0a: Create `sanity/schemas/utils.ts`.** Scopes slug-uniqueness validation per document type (Sanity slugs aren't unique by default; Contentful had `unique: true` on `blogPosts.slug` and `teamMembers.slug`).
+
+```ts
+import type { SlugIsUniqueValidator } from 'sanity'
+
+export const isUniqueAcrossAllDocuments: SlugIsUniqueValidator = async (slug, context) => {
+  const { document, getClient } = context
+  const client = getClient({ apiVersion: '2024-12-01' })
+  const id = document?._id?.replace(/^drafts\./, '')
+  const type = document?._type
+  const params = { draft: `drafts.${id}`, published: id, slug, type }
+  const query = `!defined(*[!(_id in [$draft, $published]) && slug.current == $slug && _type == $type][0]._id)`
+  return await client.fetch(query, params)
+}
+```
 
 - [ ] **Step 1: Create `sanity/schemas/blogPost.ts`.**
 
 ```ts
 import { defineType, defineField, defineArrayMember } from 'sanity'
+import { isUniqueAcrossAllDocuments } from './utils'
 
 export const blogPost = defineType({
   name: 'blogPost',
@@ -262,7 +280,7 @@ export const blogPost = defineType({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      options: { source: 'title', maxLength: 96 },
+      options: { source: 'title', maxLength: 96, isUnique: isUniqueAcrossAllDocuments },
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -373,6 +391,7 @@ export const blogPost = defineType({
 
 ```ts
 import { defineType, defineField } from 'sanity'
+import { isUniqueAcrossAllDocuments } from './utils'
 
 export const teamMember = defineType({
   name: 'teamMember',
@@ -389,14 +408,14 @@ export const teamMember = defineType({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      options: { source: 'teamMemberName', maxLength: 96 },
+      options: { source: 'teamMemberName', maxLength: 96, isUnique: isUniqueAcrossAllDocuments },
       validation: (Rule) => Rule.required(),
     }),
     defineField({ name: 'title', title: 'Title', type: 'string' }),
     defineField({ name: 'email', title: 'Email', type: 'string' }),
     defineField({ name: 'phone', title: 'Phone', type: 'string' }),
-    defineField({ name: 'linkedIn', title: 'LinkedIn', type: 'url' }),
-    defineField({ name: 'twitter', title: 'Twitter', type: 'url' }),
+    defineField({ name: 'linkedIn', title: 'LinkedIn', type: 'string' }),
+    defineField({ name: 'twitter', title: 'Twitter', type: 'string' }),
     defineField({ name: 'about', title: 'About', type: 'text', rows: 6 }),
     defineField({
       name: 'photo',
@@ -427,7 +446,7 @@ export const schemaTypes = [blogPost, teamMember]
 
 ```bash
 cd /Volumes/ExternalSSD/Sites/nextjs-heloc360
-npx tsc --noEmit --jsx preserve --moduleResolution bundler --module esnext --target esnext --skipLibCheck sanity/schemas/index.ts sanity/schemas/blogPost.ts sanity/schemas/teamMember.ts
+npx tsc --noEmit --jsx preserve --moduleResolution bundler --module esnext --target esnext --skipLibCheck sanity/schemas/index.ts sanity/schemas/blogPost.ts sanity/schemas/teamMember.ts sanity/schemas/utils.ts
 ```
 
 Expected: no output (no errors). If `sanity` doesn't resolve, the install in Task 1 didn't complete — go back.

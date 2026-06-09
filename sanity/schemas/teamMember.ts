@@ -1,4 +1,5 @@
 import { defineType, defineField } from 'sanity'
+import { isUniqueAcrossAllDocuments } from './utils'
 
 export const teamMember = defineType({
   name: 'teamMember',
@@ -15,14 +16,14 @@ export const teamMember = defineType({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      options: { source: 'teamMemberName', maxLength: 96 },
+      options: { source: 'teamMemberName', maxLength: 96, isUnique: isUniqueAcrossAllDocuments },
       validation: (Rule) => Rule.required(),
     }),
     defineField({ name: 'title', title: 'Title', type: 'string' }),
     defineField({ name: 'email', title: 'Email', type: 'string' }),
     defineField({ name: 'phone', title: 'Phone', type: 'string' }),
-    defineField({ name: 'linkedIn', title: 'LinkedIn', type: 'url' }),
-    defineField({ name: 'twitter', title: 'Twitter', type: 'url' }),
+    defineField({ name: 'linkedIn', title: 'LinkedIn', type: 'string' }),
+    defineField({ name: 'twitter', title: 'Twitter', type: 'string' }),
     defineField({ name: 'about', title: 'About', type: 'text', rows: 6 }),
     defineField({
       name: 'photo',

@@ -1,4 +1,5 @@
 import { defineType, defineField, defineArrayMember } from 'sanity'
+import { isUniqueAcrossAllDocuments } from './utils'
 
 export const blogPost = defineType({
   name: 'blogPost',
@@ -15,7 +16,7 @@ export const blogPost = defineType({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      options: { source: 'title', maxLength: 96 },
+      options: { source: 'title', maxLength: 96, isUnique: isUniqueAcrossAllDocuments },
       validation: (Rule) => Rule.required(),
     }),
     defineField({
