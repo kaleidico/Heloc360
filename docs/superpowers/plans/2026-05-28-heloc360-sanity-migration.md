@@ -525,8 +525,11 @@ git commit -m "feat(sanity): config + CLI config for embedded Studio"
 **Files:**
 - Create: `app/studio/layout.tsx`
 - Create: `app/studio/[[...tool]]/page.tsx`
+- Modify: `next.config.mjs` (add `transpilePackages: ['sanity']`)
 
 The Studio needs its own layout segment to re-export the `metadata` + `viewport` that `next-sanity` provides (which override the site's metadata for this route). Because the Studio is a **nested** layout under `app/layout.tsx` (which already renders `<html><body>`), this file does NOT re-render html/body — doing so would produce duplicate tags and a hydration mismatch. The site chrome is excluded by virtue of `app/studio/` living outside the `(site)` route group (see Task 4.5).
+
+The `transpilePackages: ['sanity']` config is REQUIRED. Without it, Sanity's source code (which uses `styled-components` internally) renders list children without keys, producing a dev-mode React warning ("Each child in a list should have a unique 'key' prop. Check the render method of StyledBox"). The next-sanity docs document this as a required Next.js setup step for embedded Studio.
 
 - [ ] **Step 1: Create `app/studio/layout.tsx`.**
 
@@ -556,6 +559,24 @@ export default function StudioPage() {
   return <NextStudio config={config} />
 }
 ```
+
+- [ ] **Step 2.5: Add `transpilePackages: ['sanity']` to `next.config.mjs`.**
+
+Open `next.config.mjs` and add `transpilePackages: ['sanity'],` near the top of the `nextConfig` object (right after the `trailingSlash` line is a fine spot):
+
+```js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+	poweredByHeader: false,
+	trailingSlash: false,
+	// Required for embedded Sanity Studio: transpile Sanity's source so its
+	// styled-components internals render correctly (otherwise StyledBox emits
+	// list-children without keys and React dev-mode warns).
+	transpilePackages: ['sanity'],
+	// ... rest of existing config unchanged ...
+```
+
+This setting is specifically called out by `next-sanity`'s README for App Router + embedded Studio. Without it, Studio still loads but emits a noisy `Each child in a list should have a unique "key" prop. Check the render method of StyledBox.` warning in the browser console.
 
 - [ ] **Step 3: Boot the dev server and verify the Studio loads.**
 

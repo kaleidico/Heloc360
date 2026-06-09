@@ -2,6 +2,10 @@
 const nextConfig = {
 	poweredByHeader: false,
 	trailingSlash: false,
+	// Required for embedded Sanity Studio: transpile Sanity's source so its
+	// styled-components internals render correctly (otherwise StyledBox emits
+	// list-children without keys and React dev-mode warns).
+	transpilePackages: ['sanity'],
 	async headers() {
 		return [
 			{
