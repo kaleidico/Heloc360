@@ -4,6 +4,44 @@ Per-session work log. Most recent session at the top. Append after each session.
 
 ---
 
+## 2026-06-09 (later) — Executed Tasks 9–15: data-layer cutover + webhook + page-builder foundation
+
+### Session goal
+Resume Subagent-Driven execution after a spend-limit interruption killed the Task 9 dispatch. Carry the migration from the completed data layer (commit `4149ff3`) through the consumer cutover, config swap, webhook receiver, and Phase E page-builder scaffolding — stopping before the irreversible Task 12 deletions until production is verified.
+
+### Tasks completed (each: implementer → review → fix-up → commit)
+
+- **Task 9 — consumer cutover** (`1ab6069`). Swapped 11 `app/**` consumers `@/lib/contentful` → `@/lib/sanity/api`; blog detail page now renders `<PortableText>` (was `<ReactMarkdown>`); `TableOfContents` rewritten to walk PortableText blocks (heading-`{N}` contract preserved). **Code review caught 2 real bugs, both fixed in the commit:**
+  - HIGH: `blog-home.tsx` search still read removed `post.content` → runtime crash on every keystroke (masked by `ignoreBuildErrors`). Now flattens `post.body` blocks.
+  - MED: `TableOfContents` IntersectionObserver was disconnected inside the `setTimeout` callback, so React never ran cleanup — observer leak per navigation. Now disconnects from the effect cleanup.
+- **Task 10 — image config + revalidate** (`b74552d`). `remotePatterns` ctfassets → `cdn.sanity.io`; dropped `export const revalidate = 86400` from 4 page files (revalidation is now webhook-driven). Applied inline (pure mechanical config), build-verified.
+- **Task 11 — webhook receiver** (`b465afe`). `app/api/revalidate/route.ts`: HMAC-SHA256 verify of `sanity-webhook-signature` → `revalidateTag()`. **Review caught a CRITICAL bug in the plan's own code:** it used a **hex** digest, but Sanity's `@sanity/webhook` signs with **base64url** — every real webhook would have 401'd silently. Fixed to base64url and proved it with a signed-request test (valid→200, hex/tampered/missing→401). Steps 4–6 (Vercel env, deploy, Studio webhook config) are Robert's manual gates.
+- **Task 14 — page-builder schema** (`eb0c060`). `page` document + 6 section object types (`hero`, `richText`, `cta`, `featureGrid`, `faq`, `imageWithText`) + registered in `sanity/schemas/index.ts`. Purely additive; build + targeted tsc clean.
+- **Task 15 — SectionRenderer + page route** (`42a1aa3`). 6 section React components, `<SectionRenderer>` (exhaustive `_type` switch, safe default), `lib/sanity/page-{queries,api}.ts` (tagged `['page']`), catch-all `app/(site)/[...slug]/page.tsx`, and surgical add of the `page` tag to the webhook route (base64url fix preserved — verified by grep). Build-tested that `[slug]` + `[...slug]` siblings coexist in Next 15.4 (the more-specific `[slug]` wins single segments), so no route collision.
+
+### Surprises / decisions
+
+- **Plan code had a latent CRITICAL webhook bug (hex vs base64url).** The two-stage review is what caught it — verbatim-from-plan code is not automatically safe.
+- **Task 13 is blocked by Task 12, not independent.** `lib/contentful.ts:5,141` still imports `pickFirstAllowedCategory`/`toAllowedCategoryOrDefault`/`ALLOWED_CATEGORIES` from `config/blog.ts`. Stripping those now breaks the build. Task 13 must follow the Task 12 deletion of `contentful.ts`.
+- **Route group:** the plan's Task 15 said `app/(sanity-page)/[...slug]`; actual implementation placed it at `app/(site)/[...slug]` to share the site chrome and sit beside the legacy `[slug]` handler — build-confirmed compatible.
+
+### Held deliberately (gated on production verification)
+
+- **Task 12 — cutover deletions** (`lib/contentful.ts`, `data/blog-posts.ts`, `scripts/migration/`, dead deps): NOT done. Holding the Contentful fallback intact until the live Vercel deploy is confirmed reading from Sanity. This is the point of no return.
+- **Task 13 — retire runtime category normalization**: blocked by Task 12 (above).
+
+### Robert's manual gates (handed off this session)
+
+1. Add Vercel env vars (Prod + Preview): `NEXT_PUBLIC_SANITY_PROJECT_ID=2a445j5i`, `NEXT_PUBLIC_SANITY_DATASET=production`, `SANITY_API_VERSION=2024-12-01`, `SANITY_WEBHOOK_SECRET=6594666…`. (Read token optional — reads use the public CDN client; `production` dataset is public-read.)
+2. Deploy preview (`git push HEAD:sanity-migration`), verify `/blog`, a post, `/meet-our-team` render from Sanity.
+3. Configure the Studio webhook → `<url>/api/revalidate`, filter `_type in ["blogPost","teamMember","page"]`, secret + signature on.
+4. Confirm prod reads from Sanity → then I run Task 12 cutover + Task 13.
+
+### Commits this session
+`1ab6069` (Task 9) · `b74552d` (Task 10) · `b465afe` (Task 11) · `eb0c060` (Task 14) · `42a1aa3` (Task 15). None pushed.
+
+---
+
 ## 2026-06-09 — Sanity migration plan written (Tasks 1-15) + page-builder scope expansion
 
 ### Session goal
