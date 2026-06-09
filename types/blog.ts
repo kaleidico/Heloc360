@@ -1,9 +1,11 @@
+import type { PortableTextBlock } from '@portabletext/types'
+
 export interface BlogPost {
   id: string
   title: string
   slug: string
   excerpt: string
-  content: string
+  body: PortableTextBlock[]
   author?: {
     name: string
     image: string
