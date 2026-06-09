@@ -6,7 +6,7 @@
 
 **Architecture:** Sanity Studio embeds inside the Next app at `/studio` — no sibling repo. The Sanity cloud project is brand-new and pre-created by Robert in the sanity.io UI; Task 1 fetches its project ID + dataset name and wires env vars rather than running `sanity init`. Two singular-camelCase schemas (`blogPost`, `teamMember`) mirror the Contentful types 1:1 with two surgical exceptions: body content moves from a markdown string field (`content`) to a Portable Text array field (`body`), and `featureImage` becomes a Sanity-native Image type. The migration runs once via Node scripts under `scripts/migration/` (export → asset upload → markdown→PT transform → NDJSON import), then those scripts are deleted post-cutover. Existing 6-canonical-category list and `findBestMatch` logic from `config/blog.ts` is ported into the transform script so data lands clean; a final task removes the runtime fix-up from `config/blog.ts` after migration. Revalidation switches from 24-hour `export const revalidate = 86400` to tag-based: Sanity Studio publish webhook → HMAC-verified `/api/revalidate` route → `revalidateTag('post' | 'team')`.
 
-**Tech Stack:** Next.js 15.4 App Router · React 18 · TypeScript · Sanity v3 (Studio + schemas) · `next-sanity` (Studio mount + helpers) · `@sanity/client` · `@sanity/image-url` · `@portabletext/react` (renderer) · `@sanity/block-tools` + `marked` + `jsdom` (migration-only) · `contentful-export` (migration-only).
+**Tech Stack:** Next.js 15.4 App Router · React 18 · TypeScript · Sanity v3 (Studio + schemas) · `next-sanity` (Studio mount + helpers) · `@sanity/client` · `@sanity/image-url` · `@portabletext/react` (renderer) · `@portabletext/block-tools` + `marked` + `jsdom` (migration-only) · `contentful-export` (migration-only).
 
 **Spec reference:** `docs/superpowers/specs/2026-05-28-contentful-to-sanity-migration.md` — §3 (Contentful surface), §5 (locked decisions), §6 (post-cutover architecture), §7 (phased plan summary), §11 (open questions — all resolved at plan-write time).
 
@@ -54,7 +54,7 @@ These were §11 open questions in the spec; resolved with Robert before plan-wri
 |---|---|---|
 | Studio location | **Embedded** at `app/studio/[[...tool]]/page.tsx` inside `nextjs-heloc360`. | Editors get a single URL (`/studio`) instead of a separate SaaS login. Avoids a sibling `sanity-heloc360` repo. |
 | Schema fidelity | **1:1 mirror** of Contentful with two surgical exceptions. | Decision 2 from spec §5: no field additions, no SEO collapse, no author refs, no category-as-document. |
-| Markdown → PT pipeline | **Convert once at migration time** via `marked` → JSDOM → `@sanity/block-tools.htmlToBlocks`. | Decision 3 from spec §5. Editors then author in the Sanity PT editor; migration script is deleted post-cutover. |
+| Markdown → PT pipeline | **Convert once at migration time** via `marked` → JSDOM → `@portabletext/block-tools.htmlToBlocks`. | Decision 3 from spec §5. Editors then author in the Sanity PT editor; migration script is deleted post-cutover. |
 | Revalidation | **Webhook → `revalidateTag()`** with HMAC-SHA256 verification. | Decision 4 from spec §5. All `export const revalidate = 86400` lines removed (Task 10). |
 | Doc type IDs | **Singular camelCase** (`blogPost`, `teamMember`). | Cleaner; invisible to consumers since GROQ hides type IDs behind function calls. |
 | Body field rename | **`content` (string) → `body` (PortableTextBlock[])**. Same field, new name. | Breaking shape change deserves a clearer name. Easier to grep for migration completeness. |
@@ -116,7 +116,7 @@ These were §11 open questions in the spec; resolved with Robert before plan-wri
 - **Em-dashes** in commit messages and content strings should be real `U+2014`, not `--`.
 - **Don't push intermediate commits during execution.** Push once after the final whole-plan code review (post-Task 13).
 - **Studio CSS:** the Studio route uses its own `app/studio/layout.tsx` that bypasses the global Tailwind layout. If Studio looks unstyled or broken, that layout is the first place to look.
-- **`@sanity/block-tools` requires JSDOM at runtime.** Migration scripts run under Node 20+ with `--experimental-vm-modules` not required — `marked` v12+ and `jsdom` v24+ both work cleanly in ESM.
+- **`@portabletext/block-tools` requires JSDOM at runtime.** Migration scripts run under Node 20+ with `--experimental-vm-modules` not required — `marked` v12+ and `jsdom` v24+ both work cleanly in ESM.
 
 ---
 
@@ -209,7 +209,7 @@ npm install sanity@^3 next-sanity@^9 @sanity/client@^6 @sanity/image-url@^1 @san
 These will all be removed at Task 12 cutover:
 
 ```bash
-npm install --save-dev contentful-export@^7 @sanity/block-tools@^3 @sanity/schema@^3 marked@^12 jsdom@^24
+npm install --save-dev contentful-export@^7 @portabletext/block-tools@^1 @sanity/schema@^3 marked@^12 jsdom@^24
 ```
 
 - [ ] **Step 6: Verify install integrity.**
@@ -219,7 +219,7 @@ node -e "console.log(require('sanity/package.json').version)"
 node -e "console.log(require('@sanity/client/package.json').version)"
 node -e "console.log(require('@portabletext/react/package.json').version)"
 node -e "console.log(require('contentful-export/package.json').version)"
-node -e "console.log(require('@sanity/block-tools/package.json').version)"
+node -e "console.log(require('@portabletext/block-tools/package.json').version)"
 ```
 
 Expected: each prints a real version number (no `Error: Cannot find module`).
@@ -884,7 +884,7 @@ import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { JSDOM } from 'jsdom'
 import { marked } from 'marked'
-import { htmlToBlocks } from '@sanity/block-tools'
+import { htmlToBlocks } from '@portabletext/block-tools'
 import { Schema } from '@sanity/schema'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -2224,13 +2224,13 @@ Expected: deletions of `01-export.mjs`, `02-upload-assets.mjs`, `03-transform.mj
 - [ ] **Step 5: Remove migration-only devDependencies + the dead runtime markdown deps.**
 
 ```bash
-npm uninstall contentful-export @sanity/block-tools @sanity/schema marked jsdom react-markdown remark-gfm
+npm uninstall contentful-export @portabletext/block-tools @sanity/schema marked jsdom react-markdown remark-gfm
 ```
 
 Verify:
 
 ```bash
-grep -E '"(contentful-export|@sanity/block-tools|@sanity/schema|marked|jsdom|react-markdown|remark-gfm)"' package.json
+grep -E '"(contentful-export|@portabletext/block-tools|@sanity/schema|marked|jsdom|react-markdown|remark-gfm)"' package.json
 ```
 
 Expected: no matches.
@@ -3467,7 +3467,7 @@ At this point:
 - Blog posts and team members render from Sanity via `lib/sanity/api`.
 - Edits propagate to live pages in seconds via webhook → `revalidateTag()`, not 24-hour cache.
 - Contentful is archived (deletable after 90 days).
-- The repo no longer depends on `react-markdown`, `remark-gfm`, `contentful-export`, `@sanity/block-tools`, `marked`, or `jsdom`.
+- The repo no longer depends on `react-markdown`, `remark-gfm`, `contentful-export`, `@portabletext/block-tools`, `marked`, or `jsdom`.
 - Tags `sanity-studio-ready` and `sanity-cutover-v1` mark the milestones in git history.
 
 **Hand-off:** This unblocks the rest of HELOC360's content-shaping plans (Plans 3, 4, 6 from the design spec). Future Sanity work:

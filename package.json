@@ -75,7 +75,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@sanity/block-tools": "^3.70.0",
+    "@portabletext/block-tools": "^1.1.38",
     "@sanity/schema": "^3.99.0",
     "@tailwindcss/typography": "^0.5.16",
     "@types/node": "^22",
