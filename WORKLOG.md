@@ -4,6 +4,70 @@ Per-session work log. Most recent session at the top. Append after each session.
 
 ---
 
+## 2026-05-28 (evening) — Contentful → Sanity migration: discovery + decisions locked
+
+### Session goal
+Robert opened a background HQ session and asked for recommendations + a plan to migrate HELOC360's content layer from Contentful to Sanity. Session was renamed mid-flight to `sanity-heloc360`.
+
+### Outcome
+Full discovery of the Contentful surface + 4 architectural decisions locked + a comprehensive migration spec written to `docs/superpowers/specs/2026-05-28-contentful-to-sanity-migration.md`. **No code touched.** Next session expands the 12-task summary into a full task-by-task plan and executes via Subagent-Driven.
+
+### Discovery findings (recorded in spec §3)
+
+- **Two Contentful content types in use:** `blogPosts` (11 fields, body is Markdown in a Long Text field — NOT Rich Text) and `teamMembers` (9 fields).
+- **No Contentful SDK** in `package.json` — `lib/contentful.ts` is 365 lines of hand-rolled REST against `cdn.contentful.com` with 3-attempt 429/5xx retry.
+- **11 consumer files** import from `@/lib/contentful`: 5 app pages, 4 sitemap routes, 1 debug route, 1 legacy slug catcher.
+- **Only one place renders the markdown body:** `app/blog/[slug]/page.tsx:183` (`<ReactMarkdown>`). One swap to `<PortableText>` at migration.
+- **Static fallback** `data/blog-posts.ts` exists for when Contentful returns empty/errors — retained as safety net through cutover, deleted after.
+- `next.config.mjs` already whitelists `images.ctfassets.net`, `assets.ctfassets.net`, `downloads.ctfassets.net` — will be replaced with `cdn.sanity.io`.
+
+### The 4 decisions Robert locked in this session
+
+1. **Studio location** — embedded `/studio` route inside `nextjs-heloc360`. No `sanity-heloc360` sibling dir. Sanity *cloud project* will be named `heloc360`.
+2. **Schemas** — 1:1 mirror of Contentful. Two surgical exceptions: `blogPosts.content` (string Markdown) → `blogPost.body` (Portable Text); doc-type IDs go singular-camelCase. No author refs, no SEO object collapse, categories stay free-text strings.
+3. **Body content** — Markdown → Portable Text conversion at migration time via `marked` → HTML → `@sanity/block-tools.htmlToBlocks`. Editors author in PT going forward.
+4. **Revalidation** — Sanity webhook → `revalidateTag()` in `app/api/revalidate/route.ts`. All `export const revalidate = 86400` lines removed from page files. Time-based fallback gone.
+
+### Phased plan summary (full plan-doc still TBD)
+
+- **Phase A (Tasks 1-4):** Provision Sanity, install deps, write schemas, embed Studio, verify.
+- **Phase B (Tasks 5-7):** `contentful-export` → asset upload → MD-to-PT transform + NDJSON import.
+- **Phase C (Tasks 8-10):** Build `lib/sanity/*`, swap 11 consumers, update `next.config.mjs` + remove time-based revalidation.
+- **Phase D (Tasks 11-12):** Wire webhook, parity-check, cutover (delete `lib/contentful.ts`, archive Contentful space, tag `sanity-cutover-v1`).
+
+12 tasks total. **Subagent-Driven per master rule** — no inline-execution alternative offered.
+
+### Manual-input gates (5 places where Robert is at the keyboard)
+
+- Task 1 — `sanity init` (interactive SSO + project naming)
+- Task 5 — generating `CONTENTFUL_MANAGEMENT_TOKEN` in Contentful UI
+- Task 7 — the 5-10 line category-normalization function (his domain choice)
+- Task 11 — pasting webhook URL + secret into Sanity Studio web UI
+- Task 12 — final parity check go/no-go
+
+### Open questions for next session (spec §11)
+
+1. Existing Sanity org or new?
+2. Vercel project name for env-var + webhook destination?
+3. Production webhook URL — `heloc360.com` vs `www.heloc360.com`?
+4. Editorial freeze window timing?
+5. Canonical category list for the Task 7 transform (the `ALLOWED_CATEGORIES` array in `config/blog.ts` is the current baseline).
+
+### Where to resume next session
+
+1. Read `docs/superpowers/specs/2026-05-28-contentful-to-sanity-migration.md`.
+2. Answer the 5 open questions above (especially Q1 and Q5 — they block Tasks 1 and 7).
+3. Invoke `superpowers:writing-plans` to write the full task-by-task plan at `docs/superpowers/plans/2026-05-XX-heloc360-sanity-migration.md`.
+4. Execute Subagent-Driven.
+
+### Artifacts produced this session
+
+- `docs/superpowers/specs/2026-05-28-contentful-to-sanity-migration.md` — the full migration spec (12 sections, ~15KB).
+- This WORKLOG entry.
+- No commits. Working tree shows two new doc files staged for the next commit.
+
+---
+
 ## 2026-05-28 PM — Plan 2 (Pre-Qual Form) written, executed, shipped, tagged `prequal-v1`
 
 ### Session goal
