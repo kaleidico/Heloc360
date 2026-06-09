@@ -1430,11 +1430,66 @@ const defaultSchema = Schema.compile({
 
 const blockContentType = defaultSchema.get('blogPost').fields.find((f) => f.name === 'body').type
 
+// Contentful CDN URL shape:
+//   https://images.ctfassets.net/<spaceId>/<assetId>/<rev>/<filename>
+// We need the assetId — the second path segment after the host.
+const CTFASSETS_URL_RE = /^(?:https?:)?\/\/(?:images|assets|downloads)\.ctfassets\.net\/[^/]+\/([^/]+)\//
+
+function imageBlockFromImg(el) {
+  const src = el.getAttribute('src') || ''
+  const alt = el.getAttribute('alt') || ''
+  const m = src.match(CTFASSETS_URL_RE)
+  if (!m) {
+    console.warn(`Inline img has non-ctfassets URL — skipping: ${src.slice(0, 100)}`)
+    return null
+  }
+  const cfAssetId = m[1]
+  const mapped = assetMap[cfAssetId]
+  if (!mapped) {
+    console.warn(`Inline img asset ${cfAssetId} not in asset-map — skipping`)
+    return null
+  }
+  return {
+    _type: 'image',
+    asset: { _type: 'reference', _ref: mapped._id },
+    ...(alt ? { alt } : {}),
+  }
+}
+
 function markdownToPortableText(markdown) {
   if (!markdown || typeof markdown !== 'string') return []
   const html = marked.parse(markdown)
   return htmlToBlocks(html, blockContentType, {
     parseHtml: (htmlStr) => new JSDOM(htmlStr).window.document,
+    rules: [
+      // <p> whose only meaningful child is an <img> — promote the image
+      // directly to a top-level block (skip the empty wrapping paragraph).
+      {
+        deserialize(el, _next, block) {
+          if (el.tagName?.toLowerCase() !== 'p') return undefined
+          const kids = Array.from(el.childNodes).filter(
+            (n) =>
+              !(n.nodeType === 3 && !(n.textContent || '').trim()),
+          )
+          if (kids.length !== 1) return undefined
+          const only = kids[0]
+          if (only.nodeType !== 1 || only.tagName?.toLowerCase() !== 'img') return undefined
+          const img = imageBlockFromImg(only)
+          if (!img) return undefined
+          return block(img)
+        },
+      },
+      // Fallback for bare <img> (not wrapped in <p>) — also promote to a
+      // top-level block via the block() wrapper.
+      {
+        deserialize(el, _next, block) {
+          if (el.tagName?.toLowerCase() !== 'img') return undefined
+          const img = imageBlockFromImg(el)
+          if (!img) return undefined
+          return block(img)
+        },
+      },
+    ],
   })
 }
 
