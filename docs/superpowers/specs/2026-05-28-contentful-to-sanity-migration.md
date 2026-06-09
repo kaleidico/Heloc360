@@ -355,3 +355,34 @@ Plan doc should flag each of these with a **`[MANUAL]`** marker so the dispatchi
 5. Execute via Subagent-Driven Development per the master rule.
 
 **Estimated total runtime once execution begins:** 6-10 hours of agent time across the 12 tasks, plus ~1 hour of Robert's keyboard time for the manual-input tasks in §8.2.
+
+---
+
+## 13. Addendum (2026-06-09) — All pages as composable blocks
+
+A master rule was added between spec-write and plan-execute: for every Sanity project, every page is content-managed as editable Gutenberg-like blocks; nothing hardcoded in the frontend. (Memory: `feedback_sanity_everything_in_cms.md`.)
+
+**Scope impact on this migration:**
+
+This original spec covers only `blogPost` and `teamMember` content types — the two Contentful types being retired. HELOC360 also has **10 hardcoded pages** (~3,900 lines of JSX prose) that must eventually become Sanity-managed `page` documents with composable section blocks:
+
+```
+app/page.tsx                                  (524 lines — homepage)
+app/about/page.tsx                            (702 — mixed: team list + prose)
+app/heloc-101/page.tsx                        (852 — long-form explainer)
+app/privacy/page.tsx                          (526 — pure prose)
+app/terms/page.tsx                            (483 — pure prose)
+app/affiliate-disclosure/page.tsx             (280 — pure prose)
+app/communication-consent/page.tsx            (287 — pure prose)
+app/contact/page.tsx                          (29 — form embed)
+app/calculators/debt-consolidation/page.tsx   (109 — calc widget + copy)
+app/calculators/home-equity-estimator/page.tsx (116 — calc widget + copy)
+```
+
+**Resolved approach:**
+
+- **This migration plan extends with Phase E** (Tasks 14-15) — establish the `page` document type, a starter taxonomy of section blocks (`hero`, `richText`, `cta`, `featureGrid`, `faq`, `imageWithText`), a `<SectionRenderer>` component, and a catch-all `/[...slug]` route that serves Sanity-managed pages without colliding with existing hardcoded routes.
+- **Bulk conversion is Plan F** (follow-up plan). Each hardcoded page becomes one or more conversion tasks. The mechanics are documented in this plan's "Hand-off" section.
+- **The catch-all route makes conversions incremental** — delete a hardcoded route file, create a `page` doc with the matching slug, and the catch-all takes over. No big-bang switchover.
+
+**No spec sections need to be re-litigated** — the existing 12 tasks (Tasks 1-13) for blog + team are unchanged. Phase E is additive scaffolding; Phase F is future content-modeling work that warrants its own brainstorming.

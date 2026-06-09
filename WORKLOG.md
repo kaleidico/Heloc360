@@ -4,6 +4,55 @@ Per-session work log. Most recent session at the top. Append after each session.
 
 ---
 
+## 2026-06-09 — Sanity migration plan written (Tasks 1-15) + page-builder scope expansion
+
+### Session goal
+Resume from the 2026-05-28 discovery session. Open questions resolved with Robert, then write the full task-by-task implementation plan per `superpowers:writing-plans`. Mid-plan: a master rule was added — for every Sanity project, every page is content-managed as composable blocks; nothing hardcoded in the frontend. Plan + spec extended to honor that.
+
+### Open questions from spec §11 — resolved
+
+1. **Sanity account/project** — Brand new project, pre-created by Robert in sanity.io UI. Task 1 fetches credentials from sanity.io/manage (no `sanity init`).
+2. **Vercel project name** — `homebuyershaven`, deployed at `homebuyershaven.vercel.app`; custom domain swap to `heloc360.com` is post-migration.
+3. **Production webhook URL** — initially `https://homebuyershaven.vercel.app/api/revalidate`; swap to `heloc360.com` inside Studio settings at go-live.
+4. **Editorial freeze window** — none required (Robert is the only editor).
+5. **Category list** — keep the 6 canonical categories + `findBestMatch` from `config/blog.ts`. Port to migration script in Task 7; delete the runtime version in Task 13.
+
+### Plan written
+
+**`docs/superpowers/plans/2026-05-28-heloc360-sanity-migration.md`** — ~2,500 lines, 15 tasks across 5 phases, 95+ checkbox steps, 13 `[MANUAL]` markers.
+
+- **Phase A — Provision (Tasks 1-4):** env vars + dependencies → schemas (`blogPost`, `teamMember`) → Sanity config files → mount Studio at `/studio`. Tag `sanity-studio-ready`.
+- **Phase B — Migrate data (Tasks 5-7):** export from Contentful via `contentful-export` → upload assets via `@sanity/client` → transform MD→PT via `marked` + `@sanity/block-tools` + JSDOM → `sanity dataset import`. Spot-check 3 representative posts for fidelity.
+- **Phase C — Swap data layer (Tasks 8-10):** build `lib/sanity/{client,image,queries,api}.ts` with 4 drop-in exports → swap 11 consumer files (sed pass) → refactor `TableOfContents` for PortableText → swap `<ReactMarkdown>` for `<PortableText>` → drop time-based `revalidate` → swap `next.config.mjs` remotePatterns.
+- **Phase D — Webhook + cutover (Tasks 11-12):** HMAC-verifying webhook at `/api/revalidate` → Studio webhook config → parity verification → delete `lib/contentful.ts`, archive Contentful space. Tag `sanity-cutover-v1`.
+- **Task 13 — Retire runtime category normalization** since data is canonical post-migration.
+- **Phase E — Page-builder foundation (Tasks 14-15):** `page` document + 6 starter section types (`hero`, `richText`, `cta`, `featureGrid`, `faq`, `imageWithText`) → `<SectionRenderer>` + section components → catch-all `app/(sanity-page)/[...slug]/page.tsx` route → updated revalidate handler with `page` tag. Tag `sanity-page-builder-v1`.
+
+### Discovery surprises caught at plan-write time
+
+1. **`components/blog/table-of-contents.tsx`** parses Markdown headings directly via regex on `content: string`. Not imported via `@/lib/contentful` so a basic import-audit would miss it. Task 9 Step 3 rewrites it as a PortableText block-walker preserving the same `heading-{N}` ID contract.
+2. **10 hardcoded pages (~3,900 lines)** found across `app/` outside the Contentful surface. Triggered the master-rule conversation; spec §13 + Phase E added.
+
+### Mid-session memory rule added
+
+**`feedback_sanity_everything_in_cms.md`** — for ALL Sanity projects, every page is content-managed as editable Gutenberg-like blocks; nothing hardcoded in the frontend. Applied to this plan via Phase E (scaffolding) + Plan F handoff (bulk conversion).
+
+### What's deferred to Plan F
+
+The 10 hardcoded pages (homepage, about, heloc-101, privacy, terms, affiliate-disclosure, communication-consent, contact, 2 calculators) stay hardcoded after this plan. The catch-all route makes future conversions incremental — delete the hardcoded route file, create a `page` doc with matching slug, the catch-all takes over. Plan F brainstorms section taxonomy + drives bulk conversion task-by-task; not in scope here.
+
+### Artifacts produced this session
+
+- `docs/superpowers/plans/2026-05-28-heloc360-sanity-migration.md` — the full implementation plan (15 tasks, 5 phases, ~2,500 lines).
+- `docs/superpowers/specs/2026-05-28-contentful-to-sanity-migration.md` — addendum §13 added covering page-builder scope expansion.
+- This WORKLOG entry.
+
+### Next step
+
+Single docs commit, then dispatch first subagent for Task 1 (env wiring + dependency installs). Task 1's [MANUAL] step needs Robert at sanity.io/manage to fetch project ID + dataset name + tokens.
+
+---
+
 ## 2026-05-28 (evening) — Contentful → Sanity migration: discovery + decisions locked
 
 ### Session goal
