@@ -5,9 +5,10 @@ import { createHmac, timingSafeEqual } from 'node:crypto'
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
-const TAG_BY_TYPE: Record<string, 'post' | 'team'> = {
+const TAG_BY_TYPE: Record<string, 'post' | 'team' | 'page'> = {
   blogPost: 'post',
   teamMember: 'team',
+  page: 'page',
 }
 
 function verifySignature(rawBody: string, header: string | null, secret: string): boolean {
@@ -63,11 +64,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true, tag, type, id: body._id })
   }
 
-  // If the filter is broader, revalidate both tags as a safe default.
+  // If the filter is broader, revalidate all three tags as a safe default.
   revalidateTag('post')
   revalidateTag('team')
-  console.log('revalidated post + team tags (no _type in payload)')
-  return NextResponse.json({ ok: true, revalidated: ['post', 'team'] })
+  revalidateTag('page')
+  console.log('revalidated post + team + page tags (no _type in payload)')
+  return NextResponse.json({ ok: true, revalidated: ['post', 'team', 'page'] })
 }
 
 export async function GET() {
