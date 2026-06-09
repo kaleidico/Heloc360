@@ -595,6 +595,386 @@ git tag -l 'sanity-studio-ready' -n10
 
 ---
 
+## Task 4.5: Route-group refactor — `app/(site)/` for site chrome, bare `app/studio/`
+
+**Why this exists:** Task 4 mounted the Studio at `/studio`, but a smoke test caught that the root `app/layout.tsx` (which has the site Header, Footer, StickyCta, structured data, and global CSS) wraps every route including `/studio`. Nested layouts nest with the root in Next.js App Router — they don't replace it. So the Studio HTTP response includes site chrome, which both looks broken visually and adds the site's global Tailwind/font CSS on top of the Studio's own UI stack.
+
+The standard fix is route groups: move all site routes into `app/(site)/` with a `(site)/layout.tsx` holding the chrome, and trim `app/layout.tsx` to a minimal `<html><body>{children}</body></html>` shell. Route groups are URL-invisible — every site route keeps its existing URL.
+
+This refactor also benefits Phase E (Tasks 14-15) — the catch-all Sanity page route can live at `app/(site)/[...slug]/page.tsx` and automatically inherit site chrome, rather than needing its own duplicate layout.
+
+**Files:**
+- Create: `app/(site)/layout.tsx`
+- Modify: `app/layout.tsx` (trim to minimal)
+- Move (git mv): every directory and file currently in `app/` EXCEPT `layout.tsx`, `globals.css`, and `studio/` into `app/(site)/`. Specifically:
+  - `app/[slug]/` → `app/(site)/[slug]/`
+  - `app/about/` → `app/(site)/about/`
+  - `app/affiliate-disclosure/` → `app/(site)/affiliate-disclosure/`
+  - `app/api/` → `app/(site)/api/`
+  - `app/blog/` → `app/(site)/blog/`
+  - `app/calculators/` → `app/(site)/calculators/`
+  - `app/communication-consent/` → `app/(site)/communication-consent/`
+  - `app/contact/` → `app/(site)/contact/`
+  - `app/heloc-101/` → `app/(site)/heloc-101/`
+  - `app/meet-our-team/` → `app/(site)/meet-our-team/`
+  - `app/pre-qual/` → `app/(site)/pre-qual/`
+  - `app/privacy/` → `app/(site)/privacy/`
+  - `app/terms/` → `app/(site)/terms/`
+  - `app/not-found.tsx` → `app/(site)/not-found.tsx`
+  - `app/not-found-client.tsx` → `app/(site)/not-found-client.tsx`
+  - `app/page.tsx` → `app/(site)/page.tsx`
+  - `app/sitemap.ts` → `app/(site)/sitemap.ts`
+  - `app/sitemap-blog-pagination.xml/` → `app/(site)/sitemap-blog-pagination.xml/`
+  - `app/sitemap-posts.xml/` → `app/(site)/sitemap-posts.xml/`
+  - `app/sitemap-team.xml/` → `app/(site)/sitemap-team.xml/`
+
+After the refactor `app/` contains only: `layout.tsx`, `globals.css`, `studio/`, `(site)/`.
+
+- [ ] **Step 1: Create the `(site)` directory.**
+
+```bash
+cd /Volumes/ExternalSSD/Sites/nextjs-heloc360
+mkdir -p "app/(site)"
+```
+
+- [ ] **Step 2: `git mv` every site route into the group.**
+
+Use `git mv` (not plain `mv`) so git tracks renames and history is preserved:
+
+```bash
+cd /Volumes/ExternalSSD/Sites/nextjs-heloc360
+git mv "app/[slug]" "app/(site)/[slug]"
+git mv app/about "app/(site)/about"
+git mv app/affiliate-disclosure "app/(site)/affiliate-disclosure"
+git mv app/api "app/(site)/api"
+git mv app/blog "app/(site)/blog"
+git mv app/calculators "app/(site)/calculators"
+git mv app/communication-consent "app/(site)/communication-consent"
+git mv app/contact "app/(site)/contact"
+git mv app/heloc-101 "app/(site)/heloc-101"
+git mv app/meet-our-team "app/(site)/meet-our-team"
+git mv app/pre-qual "app/(site)/pre-qual"
+git mv app/privacy "app/(site)/privacy"
+git mv app/terms "app/(site)/terms"
+git mv app/not-found.tsx "app/(site)/not-found.tsx"
+git mv app/not-found-client.tsx "app/(site)/not-found-client.tsx"
+git mv app/page.tsx "app/(site)/page.tsx"
+git mv app/sitemap.ts "app/(site)/sitemap.ts"
+git mv app/sitemap-blog-pagination.xml "app/(site)/sitemap-blog-pagination.xml"
+git mv app/sitemap-posts.xml "app/(site)/sitemap-posts.xml"
+git mv app/sitemap-team.xml "app/(site)/sitemap-team.xml"
+```
+
+Verify what's left at `app/` root:
+
+```bash
+ls -1 app/ | sort
+```
+
+Expected exactly: `(site)`, `globals.css`, `layout.tsx`, `studio`.
+
+- [ ] **Step 3: Create `app/(site)/layout.tsx` with the chrome.**
+
+Move the chrome out of `app/layout.tsx` into this file. The site layout is a SERVER component (no `'use client'`) — it just composes header/footer/main with children inside.
+
+```tsx
+import type React from "react"
+import type { Metadata } from "next"
+import Header from "@/components/header"
+import Footer from "@/components/footer"
+import dynamic from "next/dynamic"
+import TrackingProvider from "@/components/tracking-provider"
+
+const ScrollToTop = dynamic(() => import("@/components/scroll-to-top"), {
+  loading: () => null,
+})
+
+const StickyCta = dynamic(() => import("@/components/sticky-cta"), {
+  loading: () => null,
+})
+
+export const metadata: Metadata = {
+  metadataBase: new URL("https://heloc360.com"),
+  title: {
+    default: "HELOC360 - Your Trusted Partner in Home Equity Lines of Credit",
+    template: "%s | HELOC360",
+  },
+  description:
+    "Turn your home's value into opportunities that work for you. Get pre-qualified for a HELOC with vetted lenders. Expert guidance, simplified process, free & confidential.",
+  keywords: [
+    "HELOC",
+    "Home Equity Line of Credit",
+    "Home Equity",
+    "Debt Consolidation",
+    "Home Improvement Loans",
+    "Second Mortgage",
+    "Home Equity Lenders",
+    "HELOC Calculator",
+    "Home Equity Calculator",
+  ],
+  authors: [{ name: "HELOC360 Team" }],
+  creator: "HELOC360",
+  publisher: "My Perfect Leads, LLC",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://heloc360.com",
+    siteName: "HELOC360",
+    title: "HELOC360 - Your Trusted Partner in Home Equity Lines of Credit",
+    description:
+      "Turn your home's value into opportunities that work for you. Get pre-qualified for a HELOC with vetted lenders.",
+    images: [
+      {
+        url: "/images/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "HELOC360 - Home Equity Line of Credit Services",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "HELOC360 - Your Trusted Partner in Home Equity Lines of Credit",
+    description:
+      "Turn your home's value into opportunities that work for you. Get pre-qualified for a HELOC with vetted lenders.",
+    images: ["/images/twitter-image.jpg"],
+    creator: "@heloc360",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  icons: {
+    icon: [
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+    other: [{ rel: "mask-icon", url: "/safari-pinned-tab.svg", color: "#1b75bc" }],
+  },
+  manifest: "/site.webmanifest",
+  alternates: {
+    canonical: "https://heloc360.com",
+  },
+  verification: {
+    google: "KONfGE1Ipq2IMzNtKuAAeIWG-8Nr7FqnIwcwEySOkg0",
+    yandex: "",
+    yahoo: "",
+  },
+  category: "finance",
+  generator: 'v0.dev'
+}
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "FinancialService",
+  name: "HELOC360",
+  description:
+    "Your trusted partner in turning home equity into opportunity. We help homeowners access Home Equity Lines of Credit through vetted lenders.",
+  url: "https://heloc360.com",
+  logo: "https://heloc360.com/images/heloc360-logo.webp",
+  image: "https://heloc360.com/images/og-image.jpg",
+  telephone: "+1-800-HELOC360",
+  email: "info@heloc360.com",
+  address: {
+    "@type": "PostalAddress",
+    addressCountry: "US",
+  },
+  sameAs: ["https://facebook.com/heloc360", "https://twitter.com/heloc360", "https://linkedin.com/company/heloc360"],
+  serviceType: "Home Equity Line of Credit Services",
+  areaServed: "United States",
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "HELOC Services",
+    itemListElement: [
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "HELOC Pre-Qualification",
+          description: "Free pre-qualification for Home Equity Lines of Credit",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Lender Matching",
+          description: "Connect with vetted HELOC lenders",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "HELOC Education",
+          description: "Educational resources and calculators for HELOCs",
+        },
+      },
+    ],
+  },
+}
+
+export default function SiteLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+
+      {/* Skip to main content for accessibility */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-brand-blue text-white px-4 py-2 rounded-md z-50 focus:z-50"
+      >
+        Skip to main content
+      </a>
+
+      <ScrollToTop />
+      <Header />
+
+      <main id="main-content" className="min-h-screen">
+        <TrackingProvider>{children}</TrackingProvider>
+      </main>
+
+      <Footer />
+      <StickyCta />
+    </>
+  )
+}
+```
+
+- [ ] **Step 4: Trim `app/layout.tsx` to a minimal root.**
+
+Replace the entire file with:
+
+```tsx
+import type React from "react"
+import type { Viewport } from "next"
+import { Inter } from "next/font/google"
+import "./globals.css"
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+  preload: true,
+  fallback: ['system-ui', 'arial'],
+})
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#1b75bc" },
+    { media: "(prefers-color-scheme: dark)", color: "#02c39a" },
+  ],
+}
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" className={inter.variable}>
+      <head>
+        {/* Preconnect to external domains for performance */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+      </head>
+      <body className={`${inter.className} antialiased`}>
+        {children}
+      </body>
+    </html>
+  )
+}
+```
+
+Note: `metadata`, `structuredData`, the skip-to-content link, ScrollToTop, Header, Footer, StickyCta, TrackingProvider, and the `<main>` wrapper all move to `(site)/layout.tsx`. The Contentful preconnects are gone (Task 10 retires them anyway). The Studio route, having no `(site)` wrapper, gets ONLY the minimal root + Sanity's own UI.
+
+- [ ] **Step 5: Build to verify nothing broke.**
+
+In Tab A: kill the dev server. In Tab B:
+
+```bash
+cd /Volumes/ExternalSSD/Sites/nextjs-heloc360
+rm -rf .next
+npm run build
+```
+
+Expected: build succeeds. Route table prints every existing URL exactly as before (route groups are URL-invisible). The `/studio` route also appears.
+
+- [ ] **Step 6: Smoke-test routes.**
+
+In Tab A:
+
+```bash
+npm run dev
+```
+
+Capture the chosen port from the dev server log. In Tab B (substitute the port if it auto-incremented):
+
+```bash
+PORT=3000  # change if needed
+for path in / /blog /about /pre-qual /studio /privacy; do
+  code=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:$PORT$path")
+  echo "$code $path"
+done
+```
+
+Expected:
+- `/` → 200
+- `/blog` → 200
+- `/about` → 200
+- `/pre-qual` → 200
+- `/studio` → 200
+- `/privacy` → 200
+
+Then verify Studio response no longer contains site chrome markers:
+
+```bash
+curl -s "http://localhost:$PORT/studio" | grep -cE '<header|class="[^"]*footer|StickyCta|Skip to main content' || echo 0
+```
+
+Expected: `0` (or grep returns no matches). The Studio now serves with only the minimal root layout.
+
+Kill the dev server before proceeding.
+
+- [ ] **Step 7: Commit.**
+
+```bash
+git add app/
+git commit -m "$(cat <<'EOF'
+refactor(app): route-group split — (site) for chrome, bare root for /studio
+
+Studio at /studio was inheriting the site's Header/Footer/StickyCta/global
+CSS via root layout nesting. Standard Next.js App Router fix: move all
+site routes into app/(site)/ with a (site)/layout.tsx holding chrome,
+trim app/layout.tsx to <html><body>{children}</body></html>. Route groups
+are URL-invisible so every public URL stays the same.
+
+Also unblocks Phase E (Tasks 14-15): the Sanity-managed catch-all page
+route can live at app/(site)/[...slug]/page.tsx and inherit chrome
+without duplicating layout code.
+
+Co-Authored-By: Claude Opus 4.7 <noreply@anthropic.com>
+EOF
+)"
+```
+
+---
+
 ## Task 5: Export from Contentful
 
 **Files:**
@@ -2889,11 +3269,11 @@ git commit -m "feat(sanity): page document + 6 section block types (hero, richTe
 - Create: `components/sections/section-renderer.tsx`
 - Create: `lib/sanity/page-queries.ts`
 - Create: `lib/sanity/page-api.ts`
-- Create: `app/(sanity-page)/[...slug]/page.tsx` — catch-all route for Sanity-managed pages
+- Create: `app/(site)/[...slug]/page.tsx` — catch-all route for Sanity-managed pages
 
 The renderer takes a `sections: Section[]` array and emits the right React component for each. The catch-all route resolves a URL path to a `page` document by slug and renders its sections — Phase F (follow-up plan) uses this route to serve converted pages.
 
-The route is placed inside `app/(sanity-page)/` (route group) so it doesn't collide with existing hardcoded routes. The catch-all uses `notFound()` when no matching `page` doc exists, so existing hardcoded routes continue to take precedence.
+The route is placed inside `app/(site)/` (route group) so it doesn't collide with existing hardcoded routes. The catch-all uses `notFound()` when no matching `page` doc exists, so existing hardcoded routes continue to take precedence.
 
 - [ ] **Step 1: Install missing rendering peer dep if needed.**
 
@@ -3297,9 +3677,9 @@ And replace the fallback block at the bottom (currently `revalidateTag('post')` 
 
 Save.
 
-- [ ] **Step 13: Create the catch-all route `app/(sanity-page)/[...slug]/page.tsx`.**
+- [ ] **Step 13: Create the catch-all route `app/(site)/[...slug]/page.tsx`.**
 
-The route group `(sanity-page)` is invisible in URLs; the catch-all `[...slug]` matches any path. `notFound()` for unmatched slugs means existing hardcoded routes continue to take precedence at route resolution time.
+The route group `(site)` is invisible in URLs; the catch-all `[...slug]` matches any path. `notFound()` for unmatched slugs means existing hardcoded routes continue to take precedence at route resolution time.
 
 ```tsx
 import { notFound } from 'next/navigation'
@@ -3376,7 +3756,7 @@ Delete the test page from the Studio.
 
 ```bash
 git add components/sections/ lib/sanity/page-queries.ts lib/sanity/page-api.ts \
-  "app/(sanity-page)/[...slug]/page.tsx" app/api/revalidate/route.ts
+  "app/(site)/[...slug]/page.tsx" app/api/revalidate/route.ts
 git commit -m "feat(sanity): page-builder foundation — section renderer + catch-all route"
 ```
 
@@ -3414,7 +3794,7 @@ git tag -l 'sanity-page-builder-v1' -n10
 2. Create a `page` document in Studio with matching slug (e.g. `privacy` for `/privacy`).
 3. Compose the sections in Studio that mirror what's currently hardcoded.
 4. Delete the hardcoded `app/<route>/page.tsx` (or leave a stub redirect if the route shape requires it).
-5. The catch-all at `app/(sanity-page)/[...slug]/page.tsx` now serves the route.
+5. The catch-all at `app/(site)/[...slug]/page.tsx` now serves the route.
 6. Smoke-test the URL: identical or improved visual + SEO parity.
 7. Commit.
 
