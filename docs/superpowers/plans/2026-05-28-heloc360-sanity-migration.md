@@ -526,7 +526,7 @@ git commit -m "feat(sanity): config + CLI config for embedded Studio"
 - Create: `app/studio/layout.tsx`
 - Create: `app/studio/[[...tool]]/page.tsx`
 
-The Studio needs its own layout that bypasses the site's global Tailwind chrome — `next-sanity` recommends this pattern.
+The Studio needs its own layout segment to re-export the `metadata` + `viewport` that `next-sanity` provides (which override the site's metadata for this route). Because the Studio is a **nested** layout under `app/layout.tsx` (which already renders `<html><body>`), this file does NOT re-render html/body — doing so would produce duplicate tags and a hydration mismatch. The site chrome is excluded by virtue of `app/studio/` living outside the `(site)` route group (see Task 4.5).
 
 - [ ] **Step 1: Create `app/studio/layout.tsx`.**
 
@@ -538,11 +538,7 @@ export const dynamic = 'force-static'
 export { metadata, viewport } from 'next-sanity/studio'
 
 export default function StudioLayout({ children }: { children: ReactNode }) {
-  return (
-    <html lang="en">
-      <body style={{ margin: 0 }}>{children}</body>
-    </html>
-  )
+  return <>{children}</>
 }
 ```
 
