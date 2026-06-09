@@ -9,8 +9,6 @@ import {
 
 type Props = { params: { slug: string } };
 
-export const revalidate = 86400;
-
 export async function generateMetadata(): Promise<Metadata> {
 	return {
 		robots: { index: false, follow: true },

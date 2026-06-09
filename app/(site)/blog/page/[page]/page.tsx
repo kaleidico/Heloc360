@@ -3,8 +3,6 @@ import { getAllBlogPosts } from "@/lib/sanity/api";
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 
-export const revalidate = 86400;
-
 type Props = {
 	params: Promise<{ page: string }>;
 	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;

@@ -2,8 +2,6 @@ import BlogHome from "@/components/blog/blog-home";
 import { getAllBlogPosts } from "@/lib/sanity/api";
 import type { Metadata } from "next";
 
-export const revalidate = 86400;
-
 export const metadata: Metadata = {
 	title: "HELOC360 Blog — Insights, Tips, and Smart Equity Strategies",
 	description:

@@ -48,9 +48,7 @@ const nextConfig = {
 		imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
 		minimumCacheTTL: 60,
 		remotePatterns: [
-			{ protocol: "https", hostname: "images.ctfassets.net" },
-			{ protocol: "https", hostname: "assets.ctfassets.net" },
-			{ protocol: "https", hostname: "downloads.ctfassets.net" },
+			{ protocol: "https", hostname: "cdn.sanity.io" },
 			{ protocol: "https", hostname: "sjc.microlink.io" },
 		],
 	},

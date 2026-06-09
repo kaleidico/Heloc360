@@ -56,8 +56,6 @@ export async function generateStaticParams() {
   return posts.map((post) => ({ slug: post.slug }))
 }
 
-export const revalidate = 86400
-
 export default async function BlogPostPage({ params }: Props) {
   const post = await getBlogPostBySlug(params.slug)
 
