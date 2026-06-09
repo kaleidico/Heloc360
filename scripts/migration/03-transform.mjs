@@ -154,6 +154,13 @@ function getLocalized(field) {
   return field['en-US'] ?? Object.values(field)[0]
 }
 
+// Lookup: Contentful asset ID → en-US description (used as image alt text).
+const assetDescriptionMap = Object.fromEntries(
+  (exportData.assets || [])
+    .map((a) => [a.sys?.id, getLocalized(a.fields?.description)])
+    .filter(([id, d]) => id && typeof d === 'string' && d.trim()),
+)
+
 function buildImageRef(contentfulAssetLink) {
   if (!contentfulAssetLink) return null
   const cfAssetId = contentfulAssetLink?.sys?.id
@@ -163,9 +170,11 @@ function buildImageRef(contentfulAssetLink) {
     console.warn(`Asset ${cfAssetId} not in asset-map.json — skipping image`)
     return null
   }
+  const alt = assetDescriptionMap[cfAssetId]
   return {
     _type: 'image',
     asset: { _type: 'reference', _ref: mapped._id },
+    ...(alt ? { alt } : {}),
   }
 }
 
