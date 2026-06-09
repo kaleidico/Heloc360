@@ -1257,6 +1257,8 @@ Expected behavior:
 2. On completion, `_archive/asset-map.json` exists with one entry per Contentful asset.
 3. Re-running the script prints `SKIP` for every asset (idempotency check).
 
+**Expect upstream gateway flakes.** Sanity's gateway returns transient 502 Bad Gateway or ECONNRESET errors a few times across a 1000+-asset run — the script doesn't catch them by design, the error propagates and kills the process. Just re-run; the idempotency map skips everything already uploaded and continues from the next un-mapped asset. In practice you may need 2-4 invocations to complete a 1000-asset run. Each run is self-contained and saves progress after every successful upload.
+
 Sanity-check:
 
 ```bash
