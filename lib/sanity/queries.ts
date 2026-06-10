@@ -1,7 +1,6 @@
 // GROQ query strings.
 //
-// Field projection mirrors lib/contentful.ts's mapEntryToBlogPost / mapEntryToTeamMember
-// output shape so consumers don't need to change anything except their import path.
+// Field projection produces the BlogPost / TeamMember shape consumers expect.
 
 export const ALL_BLOG_POSTS_QUERY = `
   *[_type == "blogPost"] | order(publishDate desc) {

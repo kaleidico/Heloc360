@@ -62,10 +62,8 @@
     "react-google-places-autocomplete": "^4.1.0",
     "react-hook-form": "^7.54.1",
     "react-is": "^19.1.1",
-    "react-markdown": "^10.1.0",
     "react-resizable-panels": "^2.1.7",
     "recharts": "latest",
-    "remark-gfm": "^4.0.1",
     "sanity": "^3.99.0",
     "sharp": "^0.34.3",
     "sonner": "^1.7.1",
@@ -76,15 +74,10 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@portabletext/block-tools": "^1.1.38",
-    "@sanity/schema": "^3.99.0",
     "@tailwindcss/typography": "^0.5.16",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "contentful-export": "^7.22.5",
-    "jsdom": "^24.1.3",
-    "marked": "^12.0.2",
     "postcss": "^8.5",
     "tailwindcss": "^3.4.17",
     "typescript": "^5"
