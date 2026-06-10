@@ -84,6 +84,26 @@ export const alertCallout = defineType({
         }),
       ],
     }),
+    defineField({
+      name: 'rows',
+      title: 'Label rows (optional)',
+      description:
+        'Renders after the body as stacked label/value pairs (consent "How to Opt Out": <h4> label + <p> value, in the variant color family).',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'labelRow',
+          fields: [
+            { name: 'label', type: 'string', title: 'Label' },
+            { name: 'value', type: 'string', title: 'Value' },
+          ],
+          preview: {
+            select: { title: 'label', subtitle: 'value' },
+          },
+        }),
+      ],
+    }),
   ],
   preview: {
     select: { title: 'heading', subtitle: 'variant' },
