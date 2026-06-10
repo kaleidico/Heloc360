@@ -4,6 +4,48 @@ Per-session work log. Most recent session at the top. Append after each session.
 
 ---
 
+## 2026-06-10 (EOD) — Robert's review-notes fixes + full end-of-day state (RESUME HERE tomorrow)
+
+### Review fixes shipped this evening (all live on staging)
+1. **Studio link-validation false error** (`fix(studio): allow relative…`). The link `href` fields in 6 block schemas (`infoCard`, `alertCallout`, `legalProse`, `legalContent`, `proseSection`, `richText`) were Sanity `url` type, whose default validation rejects relative paths — so Studio red-flagged stored-correct links like `/privacy`. Now `string` + custom validation accepting `https?://`, `/relative`, `#anchor`, `mailto:`, `tel:`. Data was never wrong; editor-side only.
+2. **Site font Inter → Poppins** (`feat(theme): …`). `app/layout.tsx` (`next/font/google` Poppins, weights 400/500/600/700/800, var `--font-poppins`) + `tailwind.config.ts` sans stack. Verified `font-family:Poppins` in deployed CSS.
+3. **Contact support cards centered** (`fix(contact): …`). `components/contact/contact-form.tsx:177` had a `md:grid-cols-3` grid holding only 2 cards (pre-existing quirk, faithfully ported) → now `md:grid-cols-2 max-w-3xl mx-auto`.
+
+### EXACT STATE AT END OF DAY
+
+**Deployed (staging `heloc360.vercel.app`, Vercel project `heloc360` under kaleidico team — NO custom domain attached):**
+- Contentful fully cut over to Sanity (Tasks 1–13 done; tag `sanity-cutover-v1`). Blog (250 posts) + team (10) from Sanity; webhook receiver `/api/revalidate` live + HMAC-verified (base64url).
+- Phase F: **9 of 11 pages render from Sanity `page` documents** — `/` (home), `/privacy`, `/terms`, `/communication-consent`, `/affiliate-disclosure`, `/about`, `/heloc-101`, `/pre-qual`, `/contact`. All screenshot-verified pixel-faithful (16+ diffs in `~/Downloads/heloc360-block-diffs/`). Forms (`MailingListForm`, `PreQualForm`, `ContactForm`) mount unchanged via `componentEmbed`.
+- **47-block section library** (`sanity/schemas/sections/`), recursive `renderBlock()` in `components/sections/section-renderer.tsx`, `contentSection` container for constrained stacks.
+- Calculators (`/calculators/home-equity-estimator`, `/calculators/debt-consolidation`) are STILL the original React routes — held intentionally. Sanity docs `page-calc-*` staged at `-sanity` temp slugs with `htmlEmbed` chrome + `<!-- Mortgage Mate embed pending -->` placeholder.
+
+**Git (`/Volumes/ExternalSSD/Sites/nextjs-heloc360`):**
+- Branch `sanity-migration`, working tree clean. **~50 commits local-only / NOT pushed** (origin/sanity-migration is stale pre-cutover; deploys went local→Vercel CLI). Local `main` == `origin/main` == old live code (untouched, safe).
+- Live `heloc360.com` is a DIFFERENT Vercel project (`v0-heloc360-redesign`) — completely untouched all day.
+
+**Sanity (project `2a445j5i`, dataset `production`, public read):**
+- Docs: 250 blogPost, 10 teamMember, 13 page docs (9 live-slug + 2 calc temp-slug + nothing else). Page ids are DOT-FREE (`page-about` style — dotted ids aren't publicly readable; anon grant covers single-segment only).
+- Seeds in `scripts/seed/*.mjs` — idempotent `createOrReplace`, run with `node --env-file=.env.local scripts/seed/<page>.mjs`.
+- Webhook: receiver deployed + tested; Robert was configuring the sanity.io/manage webhook form (URL `https://heloc360.vercel.app/api/revalidate`, filter `_type in ["blogPost","teamMember","page"]`, API `v2025-02-19`, secret in `.env.local` as `SANITY_WEBHOOK_SECRET`) — **CONFIRM tomorrow it was saved + fires on publish.**
+
+### TOMORROW'S PICKUP LIST (in rough order)
+1. **Robert's further review notes** — he's reviewing all pages; fix as they come.
+2. **Confirm the Sanity webhook** fires (edit a post in Studio → staging updates in seconds).
+3. **Mortgage Mate calculators** — when Robert sends embed snippets: paste into the 2 staged docs' placeholder `htmlEmbed`, rename slugs (`calculators/home-equity-estimator-sanity`→real, same for debt-consolidation), delete the 2 hardcoded routes + retire `components/calculators/*`, build, deploy, verify. (Robert said "good on Mortgage Mate for now" — don't push.)
+4. **Push `sanity-migration` to GitHub** when Robert says so (50 local commits).
+5. **Go-live** (Robert's call): point `heloc360.com` at this code — deploy to `v0-heloc360-redesign` project or merge→main + repoint. Then repoint the Sanity webhook URL to the live domain.
+6. **Robert's manual**: archive the Contentful space (90-day insurance — don't delete).
+7. **Deferred code follow-ups** (non-blocking, from reviews): wire the `Category` type into `BlogPost`/`mapBlogPost`; confirm Studio's blogPost category field constrains to the 6 `CATEGORIES`; consider recomposing `/privacy` from granular blocks (it still uses the monolithic `legalProse`) and retiring `legalProse`/`legalContent` once nothing references them.
+
+### Gotchas that bit today (don't re-learn)
+- **Dot-free Sanity ids only** for page docs (`page-foo`, never `page.foo`).
+- **Dev server port drifts** (3000→3001 if a stale process holds 3000) — `pkill -9 -f "next dev"` AND `-f "next-server"`, then read the port from the dev log. Never `npm run build` while dev runs.
+- **CDN lag after reseeding**: `generateStaticParams` may prerender stale slugs at build time; runtime serves correctly on-demand. Don't chase ghost 404s — restart dev/clear `.next/cache` or just wait.
+- **`vercel` CLI scope**: kaleidico team (`vercel switch kaleidico`), repo linked to project `heloc360`. CLI login = robert.baker@kaleidico.com seat (`robertbaker-5211`).
+- A `[slug]` route would shadow the catch-all — it was deleted; don't reintroduce single-segment dynamic siblings.
+
+---
+
 ## 2026-06-10 (later 5) — Phase F Wave 4: forms live; calculators staged (Phase F ~complete)
 
 - **`componentEmbed`** extended (`contactForm`, `preQualForm`, `stickyCtaSuppress`); `contact-form.tsx` relocated `app/(site)/contact/` → `components/contact/` so it survives route deletion.
