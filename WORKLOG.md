@@ -4,6 +4,29 @@ Per-session work log. Most recent session at the top. Append after each session.
 
 ---
 
+## 2026-06-10 (later) — Phase F kickoff: pages → Sanity blocks; Privacy pilot shipped
+
+### Goal
+Begin Phase F — convert all hardcoded pages into Sanity `page` documents built from blocks (master rule: nothing hardcoded). Brainstormed → spec → plan → executed the Privacy pilot (Wave 0).
+
+### Decisions (Robert)
+- **Pixel-perfect** reproduction (port exact JSX markup + Tailwind into block renderers), gated by a per-page screenshot diff before cutover.
+- **Calculators** will come from **Mortgage Mate** via a generic **HTML-snippet embed block** (mechanism TBD — raw-HTML block is agnostic). Forms (pre-qual/contact) → component-embed (preserve tracking). Full rebuild in blocks.
+- Decomposed into 5 waves; pilot = Privacy. Spec: `docs/superpowers/specs/2026-06-10-heloc360-pages-to-sanity-blocks-design.md`; plan: `docs/superpowers/plans/2026-06-10-phase-f-wave0-privacy-pilot.md`.
+- Accepted a ~0.8% page-height difference (uniform list spacing vs the source's hand-tuned `space-y-2`/`space-y-4`) as imperceptible — no per-element spacing control.
+
+### Shipped (Privacy pilot, branch `sanity-migration`)
+- New reusable blocks `legalHeader` + `legalProse` (schemas `348a767`, renderers `ca8ef83`) — exact privacy-page markup; legal-specific PortableText serializers.
+- Seed script `scripts/seed/privacy-page.mjs` (`911fbf9`) — 63 body blocks ported verbatim (19 p / 2 h2 / 9 h3 / 33 bullets), all links + `strong` labels preserved; idempotent `createOrReplace`.
+- Cutover `9eaf7dc`: deleted `app/(site)/privacy/page.tsx`; `/privacy` now serves from Sanity via `[...slug]`. Verified live on `heloc360.vercel.app/privacy` (200, SEO title + canonical preserved, visually identical desktop+mobile — screenshots in `~/Downloads/privacy-pilot-diff/`).
+
+### TWO foundation bugs the pilot caught (would have blocked ALL Phase F pages)
+1. **Dotted doc IDs aren't publicly readable** (`02b4513`). The dataset's anonymous read grant is `_id in path("*")` — only single-segment IDs. `page.privacy` (dotted) → 404 from the token-less frontend. **Rule: page docs must use dot-free IDs** (`page-privacy`). Blog posts work because their IDs are dot-free.
+2. **The `[...slug]` catch-all never rendered single-segment pages** (`e2bf5ed`). A legacy `app/(site)/[slug]/page.tsx` redirect route shadowed it for every `/privacy`-style path, and the catch-all had a Next-15 `await params` bug. Fixed: consolidated into one catch-all (Sanity page lookup first, then the legacy blog/team root-URL redirects — verified a real blog slug still 308s), deleted `[slug]`. Also hardened `generateStaticParams` to exclude `'home'` (a non-optional `[...slug]` can't serve `/`; homepage stays on `app/(site)/page.tsx` until the homepage wave). Final review: SHIP.
+
+### Reusable for later waves
+The `legalHeader`/`legalProse` blocks + the seed → temp-slug → screenshot-diff → atomic-cutover pattern carry directly into Wave 1 (terms, communication-consent, affiliate-disclosure — content-only, likely no new blocks).
+
 ## 2026-06-10 — Deployed Sanity staging + executed Tasks 12–13 (the irreversible cutover)
 
 ### Session goal
