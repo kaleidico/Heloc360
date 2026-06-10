@@ -41,6 +41,13 @@ import { dosAndDontsColumns } from './sections/dosAndDontsColumns'
 import { requirementCards } from './sections/requirementCards'
 import { faqAccordion } from './sections/faqAccordion'
 import { gradientCtaBand } from './sections/gradientCtaBand'
+import { componentEmbed } from './sections/componentEmbed'
+import { imageHero } from './sections/imageHero'
+import { splitContentChecklist } from './sections/splitContentChecklist'
+import { numberedProcessCards } from './sections/numberedProcessCards'
+import { iconFeatureGrid } from './sections/iconFeatureGrid'
+import { benefitsWithImage } from './sections/benefitsWithImage'
+import { formCtaBand } from './sections/formCtaBand'
 
 export const schemaTypes = [
   // Documents
@@ -88,4 +95,11 @@ export const schemaTypes = [
   requirementCards,
   faqAccordion,
   gradientCtaBand,
+  componentEmbed,
+  imageHero,
+  splitContentChecklist,
+  numberedProcessCards,
+  iconFeatureGrid,
+  benefitsWithImage,
+  formCtaBand,
 ]

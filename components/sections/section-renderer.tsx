@@ -38,6 +38,12 @@ import { DosAndDontsColumnsSection, type DosAndDontsColumnsValue } from './dos-a
 import { RequirementCardsSection, type RequirementCardsValue } from './requirement-cards-section'
 import { FaqAccordionSection, type FaqAccordionValue } from './faq-accordion-section'
 import { GradientCtaBandSection, type GradientCtaBandValue } from './gradient-cta-band-section'
+import { ImageHeroSection, type ImageHeroValue } from './image-hero-section'
+import { SplitContentChecklistSection, type SplitContentChecklistValue } from './split-content-checklist-section'
+import { NumberedProcessCardsSection, type NumberedProcessCardsValue } from './numbered-process-cards-section'
+import { IconFeatureGridSection, type IconFeatureGridValue } from './icon-feature-grid-section'
+import { BenefitsWithImageSection, type BenefitsWithImageValue } from './benefits-with-image-section'
+import { FormCtaBandSection, type FormCtaBandValue } from './form-cta-band-section'
 
 export type Section =
   | HeroSectionValue
@@ -80,6 +86,12 @@ export type Section =
   | RequirementCardsValue
   | FaqAccordionValue
   | GradientCtaBandValue
+  | ImageHeroValue
+  | SplitContentChecklistValue
+  | NumberedProcessCardsValue
+  | IconFeatureGridValue
+  | BenefitsWithImageValue
+  | FormCtaBandValue
 
 // Renders a single section, keyed by its `_key`. Exported so container blocks
 // (e.g. contentSection) can recursively render their nested children, making
@@ -166,6 +178,18 @@ export function renderBlock(section: Section): React.ReactNode {
       return <FaqAccordionSection key={section._key} value={section} />
     case 'gradientCtaBand':
       return <GradientCtaBandSection key={section._key} value={section} />
+    case 'imageHero':
+      return <ImageHeroSection key={section._key} value={section} />
+    case 'splitContentChecklist':
+      return <SplitContentChecklistSection key={section._key} value={section} />
+    case 'numberedProcessCards':
+      return <NumberedProcessCardsSection key={section._key} value={section} />
+    case 'iconFeatureGrid':
+      return <IconFeatureGridSection key={section._key} value={section} />
+    case 'benefitsWithImage':
+      return <BenefitsWithImageSection key={section._key} value={section} />
+    case 'formCtaBand':
+      return <FormCtaBandSection key={section._key} value={section} />
     default:
       // Section type unknown — likely a schema update without a matching renderer.
       // Render nothing in production; surface the type during development.
