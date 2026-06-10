@@ -7,6 +7,8 @@ import { ctaSection } from './sections/cta'
 import { featureGridSection } from './sections/featureGrid'
 import { faqSection } from './sections/faq'
 import { imageWithTextSection } from './sections/imageWithText'
+import { legalHeader } from './sections/legalHeader'
+import { legalProse } from './sections/legalProse'
 
 export const schemaTypes = [
   // Documents
@@ -20,4 +22,6 @@ export const schemaTypes = [
   featureGridSection,
   faqSection,
   imageWithTextSection,
+  legalHeader,
+  legalProse,
 ]

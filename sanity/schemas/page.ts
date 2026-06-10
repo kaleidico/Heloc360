@@ -30,6 +30,8 @@ export const page = defineType({
         defineArrayMember({ type: 'featureGridSection' }),
         defineArrayMember({ type: 'faqSection' }),
         defineArrayMember({ type: 'imageWithTextSection' }),
+        defineArrayMember({ type: 'legalHeader' }),
+        defineArrayMember({ type: 'legalProse' }),
       ],
       validation: (R) => R.required().min(1),
     }),
