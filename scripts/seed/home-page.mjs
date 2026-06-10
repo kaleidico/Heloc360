@@ -252,7 +252,7 @@ const doc = {
   title: 'Home Equity Line of Credit Services - HELOC360',
   // Temporary preview slug — does NOT collide with the live hardcoded `/` route.
   // The /-root cutover is performed by the controller after visual verification.
-  slug: { _type: 'slug', current: 'home-preview' },
+  slug: { _type: 'slug', current: 'home' },
   sections,
   seoTitle: 'Home Equity Line of Credit Services - HELOC360',
   seoDescription:
