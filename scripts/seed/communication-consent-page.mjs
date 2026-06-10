@@ -172,12 +172,15 @@ const typesCards = {
 
 // --- 8. "How to Opt Out" yellow callout (alertCallout / warning) ------------
 // Source: bg-yellow-50 border-l-4 border-l-yellow-400 rounded-lg mb-12,
-// AlertCircle. The source nests an intro paragraph then three label/value
-// sub-rows (Text Messages / Phone Calls / Email, the last with a mailto link).
-// The warning variant serializes every `normal` block as text-yellow-700
-// text-sm, so the sub-labels are rendered inline-bold (strong) rather than as
-// the source's separate <h4 className="font-medium text-yellow-800"> lines.
-// (See report — this is the one markup detail that does not map 1:1.)
+// AlertCircle. An intro paragraph, then three label/value sub-rows (Text
+// Messages / Phone Calls / Email). The alertCallout block now supports `rows`,
+// which the renderer emits as the source's <div className="space-y-3"> stack of
+// <h4 className="font-medium text-yellow-800"> label + <p className="text-yellow-700
+// text-sm"> value pairs — so these render as distinct heading lines, not inline
+// strong. (Remaining unfit markup: the source intro <p> is `text-yellow-700
+// mb-4` while the body renders `text-yellow-700 text-sm`; and the Email row's
+// value carries a mailto link in the source, but `rows` values are plain
+// strings, so the address renders as plain text. See report.)
 const optOut = {
   _type: 'alertCallout',
   _key: k('sec'),
@@ -188,23 +191,23 @@ const optOut = {
   heading: 'How to Opt Out',
   body: [
     p([span('You can stop receiving communications from us at any time using these methods:')]),
-    p([
-      span('Text Messages: ', ['strong']),
-      span('Reply "STOP" to any text message to unsubscribe'),
-    ]),
-    p([
-      span('Phone Calls: ', ['strong']),
-      span('Ask to be removed from our calling list during any call, or contact us directly'),
-    ]),
-    p(
-      [
-        span('Email: ', ['strong']),
-        span('Contact us at '),
-        span('help@heloc360.com', ['l0']),
-        span(' to update your preferences'),
-      ],
-      [{ _key: 'l0', _type: 'link', href: 'mailto:help@heloc360.com' }],
-    ),
+  ],
+  rows: [
+    {
+      _key: k('row'),
+      label: 'Text Messages:',
+      value: 'Reply "STOP" to any text message to unsubscribe',
+    },
+    {
+      _key: k('row'),
+      label: 'Phone Calls:',
+      value: 'Ask to be removed from our calling list during any call, or contact us directly',
+    },
+    {
+      _key: k('row'),
+      label: 'Email:',
+      value: 'Contact us at help@heloc360.com to update your preferences',
+    },
   ],
 }
 
@@ -274,19 +277,20 @@ const footerNote = {
   showReturnHome: true,
 }
 
-const doc = {
-  // Dot-free _id: the dataset's anonymous read grant is `_id in path("*")`,
-  // which only covers single-segment IDs. A dotted id is NOT publicly readable,
-  // so the token-less frontend client would 404. Hyphenated ids render public
-  // like blog posts.
-  _id: 'page-communication-consent',
-  _type: 'page',
-  title: 'Communication Consent',
-  // Temporary slug so it does not collide with the live hardcoded
-  // /communication-consent route.
-  slug: { _type: 'slug', current: 'communication-consent-sanity' },
-  sections: [
-    headerSection,
+// --- contentSection container (the body shell) ------------------------------
+// Phase F / Wave 1: hosts every body fragment inside the legal pages' shell:
+//   <section className="py-16"><div className="container mx-auto px-4">
+//     <div className="max-w-4xl mx-auto">…</div></div></section>
+// Source content wrapper is `max-w-4xl mx-auto` with NO prose (it's mostly
+// cards), so useProse:false. Previously these fragments sat at the top level
+// and rendered bare (full-bleed, no max-width/padding).
+const bodyContainer = {
+  _type: 'contentSection',
+  _key: k('sec'),
+  maxWidth: '4xl',
+  paddingY: '16',
+  useProse: false,
+  content: [
     mainConsent,
     whatThisMeansHeading,
     whatThisMeansCards,
@@ -299,6 +303,20 @@ const doc = {
     contactSection,
     footerNote,
   ],
+}
+
+const doc = {
+  // Dot-free _id: the dataset's anonymous read grant is `_id in path("*")`,
+  // which only covers single-segment IDs. A dotted id is NOT publicly readable,
+  // so the token-less frontend client would 404. Hyphenated ids render public
+  // like blog posts.
+  _id: 'page-communication-consent',
+  _type: 'page',
+  title: 'Communication Consent',
+  // Temporary slug so it does not collide with the live hardcoded
+  // /communication-consent route.
+  slug: { _type: 'slug', current: 'communication-consent-sanity' },
+  sections: [headerSection, bodyContainer],
   seoTitle: 'Communication Consent - HELOC360',
   seoDescription:
     'Understand how HELOC360 communicates with you, including phone calls and text messages. Learn about your consent options and communication preferences.',
