@@ -16,11 +16,15 @@ const k = (p) => `${p}-${n++}`
 const span = (text, marks = []) => ({ _type: 'span', _key: k('s'), text, marks })
 const p = (children, markDefs = []) => ({ _type: 'block', _key: k('b'), style: 'normal', markDefs, children })
 
-// === proseSection 1 — Introduction =========================================
+// === proseSection 1 — Introduction (BARE) ==================================
 // Source: the `prose prose-lg prose-gray mb-12` intro, four paragraphs. The
-// first paragraph links "My Perfect Leads, LLC" to https://myperfectleads.com/
-// with the trailing ExternalLink icon — encoded via the link annotation's
-// `external: true` flag (see prose-section's LegalPortableText serializer).
+// host contentSection runs with `useProse: false` (because the source only
+// scopes `prose` to this intro div, not the cards/grids below it), so this
+// intro run is a BARE proseSection — it carries its own `prose prose-lg
+// prose-gray` typography via the LegalPortableText serializer while the
+// surrounding fragments render outside prose. The first paragraph links
+// "My Perfect Leads, LLC" to https://myperfectleads.com/ with the trailing
+// ExternalLink icon — encoded via the link annotation's `external: true` flag.
 const introBody = [
   p(
     [
@@ -169,11 +173,13 @@ const editorial = {
   ],
 }
 
-// === proseSection 2 — FTC Compliance ======================================
-// Heading + three paragraphs. The source heading is `text-2xl font-bold
-// text-[#1b75bc] mb-6` with no icon — reproduced here as an H2 inside the
-// prose body (LegalPortableText renders h2 with that exact class), so the
-// heading and its paragraphs share the same constrained prose container.
+// === proseSection 2 — FTC Compliance (BARE) ===============================
+// Source: heading `text-2xl font-bold text-[#1b75bc] mb-6` (no icon) + three
+// paragraphs, all in the same `mb-12` constrained block. Reproduced as a BARE
+// proseSection: an H2 block (LegalPortableText renders h2 with that exact
+// class) followed by the three paragraphs, so heading + paragraphs share the
+// same scoped-prose run. Bare because the host contentSection runs useProse
+// false; this run supplies its own prose typography.
 const ftcBody = [
   { _type: 'block', _key: k('b'), style: 'h2', markDefs: [], children: [span('FTC Compliance')] },
   p([
@@ -193,30 +199,27 @@ const ftcBody = [
   ]),
 ]
 
-const doc = {
-  // Dot-free _id: the dataset's anonymous read grant is `_id in path("*")`,
-  // which only covers single-segment IDs. A dotted id is NOT publicly readable,
-  // so the token-less frontend client would 404. Hyphenated ids render public.
-  _id: 'page-affiliate-disclosure',
-  _type: 'page',
-  title: 'Affiliate Disclosure',
-  // Temporary slug so it does not collide with the live hardcoded
-  // /affiliate-disclosure route.
-  slug: { _type: 'slug', current: 'affiliate-disclosure-sanity' },
-  sections: [
-    // 1. Gradient banner header
-    {
-      _type: 'legalHeader',
-      _key: k('sec'),
-      heading: 'Transparency Matters Explore Affiliate Disclosures in Detail',
-      subheading:
-        'We believe in complete transparency about our affiliate relationships and recommendations',
-    },
-    // 2. Introduction prose (external MPL link with trailing icon)
-    { _type: 'proseSection', _key: k('sec'), body: introBody, maxWidth: '4xl' },
-    // 3. Our Commitment to You (checkmark grid in gradient box)
+// === contentSection (container) ===========================================
+// The body shell from the source:
+//   <section className="py-16">
+//     <div className="container mx-auto px-4">
+//       <div className="max-w-4xl mx-auto"> … </div>
+// `useProse: false` because the source scopes `prose` only to the intro div
+// (and the Editorial Independence info card), NOT to the gradient box, the
+// accent notes, or the partnership cards. Prose-typed runs (intro, FTC) carry
+// their own typography via BARE proseSections nested inside.
+const body = {
+  _type: 'contentSection',
+  _key: k('sec'),
+  maxWidth: '4xl',
+  paddingY: '16',
+  useProse: false,
+  content: [
+    // Intro prose (external MPL link with trailing icon) — bare prose run.
+    { _type: 'proseSection', _key: k('sec'), bare: true, maxWidth: '4xl', body: introBody },
+    // Our Commitment to You (checkmark grid in gradient box).
     commitment,
-    // 4. How Affiliate Marketing Works — heading + accent notes
+    // How Affiliate Marketing Works — heading + accent notes.
     {
       _type: 'iconHeading',
       _key: k('sec'),
@@ -225,7 +228,7 @@ const doc = {
       text: 'How Affiliate Marketing Works',
     },
     howItWorks,
-    // 5. Types of Partnerships — heading + two-tier cards
+    // Types of Partnerships — heading + two-tier cards.
     {
       _type: 'iconHeading',
       _key: k('sec'),
@@ -234,11 +237,11 @@ const doc = {
       text: 'Types of Partnerships',
     },
     partnerships,
-    // 6. Editorial Independence (gray prose info card)
+    // Editorial Independence (gray prose info card).
     editorial,
-    // 7. FTC Compliance — heading + prose
-    { _type: 'proseSection', _key: k('sec'), body: ftcBody, maxWidth: '4xl' },
-    // 8. Contact callout (gradient box) + buttons
+    // FTC Compliance — heading + prose (bare prose run).
+    { _type: 'proseSection', _key: k('sec'), bare: true, maxWidth: '4xl', body: ftcBody },
+    // Contact callout (gradient box) + buttons.
     {
       _type: 'contactCallout',
       _key: k('sec'),
@@ -255,13 +258,37 @@ const doc = {
         { _key: k('btn'), label: 'View Privacy Policy', href: '/privacy', style: 'outline' },
       ],
     },
-    // 9. Effective-date footer + Return to Home
+    // Effective-date footer + Return to Home.
     {
       _type: 'pageFooterNote',
       _key: k('sec'),
       text: 'This affiliate disclosure is effective as of the date of your use of our website. We may update this disclosure from time to time, and we will post any changes on this page.',
       showReturnHome: true,
     },
+  ],
+}
+
+const doc = {
+  // Dot-free _id: the dataset's anonymous read grant is `_id in path("*")`,
+  // which only covers single-segment IDs. A dotted id is NOT publicly readable,
+  // so the token-less frontend client would 404. Hyphenated ids render public.
+  _id: 'page-affiliate-disclosure',
+  _type: 'page',
+  title: 'Affiliate Disclosure',
+  // Temporary slug so it does not collide with the live hardcoded
+  // /affiliate-disclosure route.
+  slug: { _type: 'slug', current: 'affiliate-disclosure-sanity' },
+  sections: [
+    // 1. Gradient banner header (full-bleed, outside the content shell).
+    {
+      _type: 'legalHeader',
+      _key: k('sec'),
+      heading: 'Transparency Matters Explore Affiliate Disclosures in Detail',
+      subheading:
+        'We believe in complete transparency about our affiliate relationships and recommendations',
+    },
+    // 2. The whole body, hosted in a single contentSection container.
+    body,
   ],
   seoTitle: 'Affiliate Disclosure - HELOC360',
   seoDescription:
