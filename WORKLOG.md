@@ -4,6 +4,15 @@ Per-session work log. Most recent session at the top. Append after each session.
 
 ---
 
+## 2026-06-10 (later 4) — Phase F Wave 3: homepage → blocks (live)
+
+- **homepage** (`page-home`, slug `home`) — 6 bespoke blocks (`imageHero`, `splitContentChecklist`, `numberedProcessCards`, `iconFeatureGrid`, `benefitsWithImage`, `formCtaBand`) + reused `faqAccordion`.
+- **`componentEmbed` block** (NEW, reusable): mounts an existing client component by key (`switch(component){ case 'mailingListForm': <MailingListForm/> }`) — preserves the homepage form's logic without reimplementation. This is also the mechanism for Wave 4 forms.
+- **`/`-root cutover:** `app/(site)/page.tsx` replaced with a 24-line thin root that fetches the `home` doc and renders `<SectionRenderer>` (a non-optional `[...slug]` can't match `/`). 523 lines of hardcoded JSX removed. Screenshot-verified pixel-identical (incl. the embedded form); **live on staging** (200, title preserved).
+- **7 of 12 pages live.** Remaining: Wave 4 — pre-qual + contact (forms via `componentEmbed`); calculators ×2 (need Robert's Mortgage Mate embed snippets for the `htmlEmbed` block).
+
+---
+
 ## 2026-06-10 (later 3) — Phase F Wave 2: about + heloc-101 → blocks (live)
 
 - **about** (`page-about`) — 8 new reusable marketing blocks: `marketingHero`, `statsBand`, `storySection`, `valueCardsGrid`, `teamSection` (dynamic — renders live Sanity team members), `missionStatement`, `awardsGrid`, `marketingCtaBand`.
