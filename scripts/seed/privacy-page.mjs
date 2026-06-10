@@ -276,7 +276,7 @@ const doc = {
   _id: 'page-privacy',
   _type: 'page',
   title: 'Privacy Policy',
-  slug: { _type: 'slug', current: 'privacy-sanity' },
+  slug: { _type: 'slug', current: 'privacy' },
   sections: [
     {
       _type: 'legalHeader', _key: k('sec'),
