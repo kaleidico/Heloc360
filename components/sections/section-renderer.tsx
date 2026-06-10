@@ -14,6 +14,12 @@ import { InfoCardSection, type InfoCardValue } from './info-card-section'
 import { ButtonRowSection, type ButtonRowValue } from './button-row-section'
 import { ContactCalloutSection, type ContactCalloutValue } from './contact-callout-section'
 import { PageFooterNoteSection, type PageFooterNoteValue } from './page-footer-note-section'
+import { ChecklistCardGridSection, type ChecklistCardGridValue } from './checklist-card-grid-section'
+import { TitledBulletCardsSection, type TitledBulletCardsValue } from './titled-bullet-cards-section'
+import { IconBadgeCardsSection, type IconBadgeCardsValue } from './icon-badge-cards-section'
+import { CheckmarkGridSection, type CheckmarkGridValue } from './checkmark-grid-section'
+import { AccentNotesSection, type AccentNotesValue } from './accent-notes-section'
+import { TwoTierCardsSection, type TwoTierCardsValue } from './two-tier-cards-section'
 
 export type Section =
   | HeroSectionValue
@@ -32,6 +38,12 @@ export type Section =
   | ButtonRowValue
   | ContactCalloutValue
   | PageFooterNoteValue
+  | ChecklistCardGridValue
+  | TitledBulletCardsValue
+  | IconBadgeCardsValue
+  | CheckmarkGridValue
+  | AccentNotesValue
+  | TwoTierCardsValue
 
 export function SectionRenderer({ sections }: { sections: Section[] }) {
   return (
@@ -70,6 +82,18 @@ export function SectionRenderer({ sections }: { sections: Section[] }) {
             return <ContactCalloutSection key={section._key} value={section} />
           case 'pageFooterNote':
             return <PageFooterNoteSection key={section._key} value={section} />
+          case 'checklistCardGrid':
+            return <ChecklistCardGridSection key={section._key} value={section} />
+          case 'titledBulletCards':
+            return <TitledBulletCardsSection key={section._key} value={section} />
+          case 'iconBadgeCards':
+            return <IconBadgeCardsSection key={section._key} value={section} />
+          case 'checkmarkGrid':
+            return <CheckmarkGridSection key={section._key} value={section} />
+          case 'accentNotes':
+            return <AccentNotesSection key={section._key} value={section} />
+          case 'twoTierCards':
+            return <TwoTierCardsSection key={section._key} value={section} />
           default:
             // Section type unknown — likely a schema update without a matching renderer.
             // Render nothing in production; surface the type during development.

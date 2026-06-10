@@ -33,7 +33,17 @@ export const proseSection = defineType({
                 name: 'link',
                 type: 'object',
                 title: 'Link',
-                fields: [{ name: 'href', type: 'url', title: 'URL' }],
+                fields: [
+                  { name: 'href', type: 'url', title: 'URL' },
+                  {
+                    name: 'external',
+                    type: 'boolean',
+                    title: 'Show trailing external-link icon',
+                    description:
+                      'Renders the link as an inline-flex anchor with a trailing ExternalLink icon (matches the affiliate intro "My Perfect Leads" link).',
+                    initialValue: false,
+                  },
+                ],
               },
             ],
           },

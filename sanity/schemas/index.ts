@@ -17,6 +17,12 @@ import { infoCard } from './sections/infoCard'
 import { buttonRow } from './sections/buttonRow'
 import { contactCallout } from './sections/contactCallout'
 import { pageFooterNote } from './sections/pageFooterNote'
+import { checklistCardGrid } from './sections/checklistCardGrid'
+import { titledBulletCards } from './sections/titledBulletCards'
+import { iconBadgeCards } from './sections/iconBadgeCards'
+import { checkmarkGrid } from './sections/checkmarkGrid'
+import { accentNotes } from './sections/accentNotes'
+import { twoTierCards } from './sections/twoTierCards'
 
 export const schemaTypes = [
   // Documents
@@ -40,4 +46,10 @@ export const schemaTypes = [
   buttonRow,
   contactCallout,
   pageFooterNote,
+  checklistCardGrid,
+  titledBulletCards,
+  iconBadgeCards,
+  checkmarkGrid,
+  accentNotes,
+  twoTierCards,
 ]

@@ -1,3 +1,4 @@
+import { ExternalLink } from 'lucide-react'
 import { PortableText as BasePortableText, type PortableTextComponents } from '@portabletext/react'
 import type { PortableTextBlock } from '@portabletext/types'
 
@@ -17,9 +18,26 @@ const components: PortableTextComponents = {
     strong: ({ children }) => <strong>{children}</strong>,
     em: ({ children }) => <em>{children}</em>,
     link: ({ value, children }) => {
-      const href = (value as { href?: string })?.href || '#'
-      const external = href.startsWith('http')
-      return external ? (
+      const mark = value as { href?: string; external?: boolean }
+      const href = mark?.href || '#'
+      const isHttp = href.startsWith('http')
+      // When the annotation opts into the trailing-icon treatment, render an
+      // inline-flex anchor with a trailing ExternalLink icon — matching the
+      // affiliate intro's "My Perfect Leads, LLC" link verbatim.
+      if (mark?.external) {
+        return (
+          <a
+            href={href}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="text-[#1b75bc] hover:text-[#007a5e] transition-colors inline-flex items-center gap-1"
+          >
+            {children}
+            <ExternalLink className="w-4 h-4" />
+          </a>
+        )
+      }
+      return isHttp ? (
         <a
           href={href}
           target="_blank"
