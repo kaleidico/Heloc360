@@ -46,6 +46,7 @@ export const page = defineType({
         defineArrayMember({ type: 'checkmarkGrid' }),
         defineArrayMember({ type: 'accentNotes' }),
         defineArrayMember({ type: 'twoTierCards' }),
+        defineArrayMember({ type: 'contentSection' }),
       ],
       validation: (R) => R.required().min(1),
     }),

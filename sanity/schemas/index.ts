@@ -23,6 +23,7 @@ import { iconBadgeCards } from './sections/iconBadgeCards'
 import { checkmarkGrid } from './sections/checkmarkGrid'
 import { accentNotes } from './sections/accentNotes'
 import { twoTierCards } from './sections/twoTierCards'
+import { contentSection } from './sections/contentSection'
 
 export const schemaTypes = [
   // Documents
@@ -52,4 +53,5 @@ export const schemaTypes = [
   checkmarkGrid,
   accentNotes,
   twoTierCards,
+  contentSection,
 ]

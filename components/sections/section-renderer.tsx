@@ -20,6 +20,7 @@ import { IconBadgeCardsSection, type IconBadgeCardsValue } from './icon-badge-ca
 import { CheckmarkGridSection, type CheckmarkGridValue } from './checkmark-grid-section'
 import { AccentNotesSection, type AccentNotesValue } from './accent-notes-section'
 import { TwoTierCardsSection, type TwoTierCardsValue } from './two-tier-cards-section'
+import { ContentSectionSection, type ContentSectionValue } from './content-section-section'
 
 export type Section =
   | HeroSectionValue
@@ -44,65 +45,69 @@ export type Section =
   | CheckmarkGridValue
   | AccentNotesValue
   | TwoTierCardsValue
+  | ContentSectionValue
+
+// Renders a single section, keyed by its `_key`. Exported so container blocks
+// (e.g. contentSection) can recursively render their nested children, making
+// rendering recursive one level deep.
+export function renderBlock(section: Section): React.ReactNode {
+  switch (section._type) {
+    case 'heroSection':
+      return <HeroSection key={section._key} value={section} />
+    case 'richTextSection':
+      return <RichTextSection key={section._key} value={section} />
+    case 'ctaSection':
+      return <CtaSection key={section._key} value={section} />
+    case 'featureGridSection':
+      return <FeatureGridSection key={section._key} value={section} />
+    case 'faqSection':
+      return <FaqSection key={section._key} value={section} />
+    case 'imageWithTextSection':
+      return <ImageWithTextSection key={section._key} value={section} />
+    case 'legalHeader':
+      return <LegalHeaderSection key={section._key} value={section} />
+    case 'legalProse':
+      return <LegalProseSection key={section._key} value={section} />
+    case 'legalContent':
+      return <LegalContentSection key={section._key} value={section} />
+    case 'proseSection':
+      return <ProseSection key={section._key} value={section} />
+    case 'iconHeading':
+      return <IconHeadingSection key={section._key} value={section} />
+    case 'alertCallout':
+      return <AlertCalloutSection key={section._key} value={section} />
+    case 'infoCard':
+      return <InfoCardSection key={section._key} value={section} />
+    case 'buttonRow':
+      return <ButtonRowSection key={section._key} value={section} />
+    case 'contactCallout':
+      return <ContactCalloutSection key={section._key} value={section} />
+    case 'pageFooterNote':
+      return <PageFooterNoteSection key={section._key} value={section} />
+    case 'checklistCardGrid':
+      return <ChecklistCardGridSection key={section._key} value={section} />
+    case 'titledBulletCards':
+      return <TitledBulletCardsSection key={section._key} value={section} />
+    case 'iconBadgeCards':
+      return <IconBadgeCardsSection key={section._key} value={section} />
+    case 'checkmarkGrid':
+      return <CheckmarkGridSection key={section._key} value={section} />
+    case 'accentNotes':
+      return <AccentNotesSection key={section._key} value={section} />
+    case 'twoTierCards':
+      return <TwoTierCardsSection key={section._key} value={section} />
+    case 'contentSection':
+      return <ContentSectionSection key={section._key} value={section} />
+    default:
+      // Section type unknown — likely a schema update without a matching renderer.
+      // Render nothing in production; surface the type during development.
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn('Unknown section type:', (section as { _type?: string })._type)
+      }
+      return null
+  }
+}
 
 export function SectionRenderer({ sections }: { sections: Section[] }) {
-  return (
-    <>
-      {sections.map((section) => {
-        switch (section._type) {
-          case 'heroSection':
-            return <HeroSection key={section._key} value={section} />
-          case 'richTextSection':
-            return <RichTextSection key={section._key} value={section} />
-          case 'ctaSection':
-            return <CtaSection key={section._key} value={section} />
-          case 'featureGridSection':
-            return <FeatureGridSection key={section._key} value={section} />
-          case 'faqSection':
-            return <FaqSection key={section._key} value={section} />
-          case 'imageWithTextSection':
-            return <ImageWithTextSection key={section._key} value={section} />
-          case 'legalHeader':
-            return <LegalHeaderSection key={section._key} value={section} />
-          case 'legalProse':
-            return <LegalProseSection key={section._key} value={section} />
-          case 'legalContent':
-            return <LegalContentSection key={section._key} value={section} />
-          case 'proseSection':
-            return <ProseSection key={section._key} value={section} />
-          case 'iconHeading':
-            return <IconHeadingSection key={section._key} value={section} />
-          case 'alertCallout':
-            return <AlertCalloutSection key={section._key} value={section} />
-          case 'infoCard':
-            return <InfoCardSection key={section._key} value={section} />
-          case 'buttonRow':
-            return <ButtonRowSection key={section._key} value={section} />
-          case 'contactCallout':
-            return <ContactCalloutSection key={section._key} value={section} />
-          case 'pageFooterNote':
-            return <PageFooterNoteSection key={section._key} value={section} />
-          case 'checklistCardGrid':
-            return <ChecklistCardGridSection key={section._key} value={section} />
-          case 'titledBulletCards':
-            return <TitledBulletCardsSection key={section._key} value={section} />
-          case 'iconBadgeCards':
-            return <IconBadgeCardsSection key={section._key} value={section} />
-          case 'checkmarkGrid':
-            return <CheckmarkGridSection key={section._key} value={section} />
-          case 'accentNotes':
-            return <AccentNotesSection key={section._key} value={section} />
-          case 'twoTierCards':
-            return <TwoTierCardsSection key={section._key} value={section} />
-          default:
-            // Section type unknown — likely a schema update without a matching renderer.
-            // Render nothing in production; surface the type during development.
-            if (process.env.NODE_ENV !== 'production') {
-              console.warn('Unknown section type:', (section as { _type?: string })._type)
-            }
-            return null
-        }
-      })}
-    </>
-  )
+  return <>{sections.map((section) => renderBlock(section))}</>
 }
