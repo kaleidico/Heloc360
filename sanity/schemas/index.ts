@@ -48,6 +48,8 @@ import { numberedProcessCards } from './sections/numberedProcessCards'
 import { iconFeatureGrid } from './sections/iconFeatureGrid'
 import { benefitsWithImage } from './sections/benefitsWithImage'
 import { formCtaBand } from './sections/formCtaBand'
+import { preQualIntro } from './sections/preQualIntro'
+import { htmlEmbed } from './sections/htmlEmbed'
 
 export const schemaTypes = [
   // Documents
@@ -102,4 +104,6 @@ export const schemaTypes = [
   iconFeatureGrid,
   benefitsWithImage,
   formCtaBand,
+  preQualIntro,
+  htmlEmbed,
 ]
