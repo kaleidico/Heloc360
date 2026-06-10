@@ -4,6 +4,15 @@ Per-session work log. Most recent session at the top. Append after each session.
 
 ---
 
+## 2026-06-10 (later 3) — Phase F Wave 2: about + heloc-101 → blocks (live)
+
+- **about** (`page-about`) — 8 new reusable marketing blocks: `marketingHero`, `statsBand`, `storySection`, `valueCardsGrid`, `teamSection` (dynamic — renders live Sanity team members), `missionStatement`, `awardsGrid`, `marketingCtaBand`.
+- **heloc-101** (`page-heloc-101`, the 852-line page) — 9 new blocks: `centeredHeroBand`, `tableOfContents` (8 jump anchors reproduced), `definitionWithImage`, `processCardsWithFormula`, `borderAccentCards` (benefits+risks), `dosAndDontsColumns`, `requirementCards`, `faqAccordion` (verbatim port of the Plus/Minus FAQ incl. FAQPage JSON-LD), `gradientCtaBand`.
+- Both screenshot-verified pixel-identical (diffs in `~/Downloads/heloc360-block-diffs/`); cut over (`feat(sanity): Wave 2 …`), routes deleted, **live on staging** (200, titles preserved). Legal pages unregressed.
+- Block library now ~40 section schemas. **6 of 12 pages live.** Remaining: Wave 3 homepage (bespoke + `/` routing), Wave 4 interactive (calculators via Mortgage Mate embed — needs Robert's snippets; forms via component-embed).
+
+---
+
 ## 2026-06-10 (later 2) — Phase F Wave 1: 3 legal pages → blocks + granular block library
 
 ### Direction change (Robert)
