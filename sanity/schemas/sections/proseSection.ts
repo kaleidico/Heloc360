@@ -19,10 +19,15 @@ export const proseSection = defineType({
           type: 'block',
           styles: [
             { title: 'Normal', value: 'normal' },
+            { title: 'Normal (mb-4)', value: 'normalMb4' },
+            { title: 'Normal (flush)', value: 'normalFlush' },
             { title: 'H2', value: 'h2' },
             { title: 'H3', value: 'h3' },
           ],
-          lists: [{ title: 'Bullet', value: 'bullet' }],
+          lists: [
+            { title: 'Bullet', value: 'bullet' },
+            { title: 'Numbered', value: 'number' },
+          ],
           marks: {
             decorators: [
               { title: 'Strong', value: 'strong' },
@@ -63,6 +68,14 @@ export const proseSection = defineType({
         layout: 'radio',
       },
       initialValue: '4xl',
+    }),
+    defineField({
+      name: 'bare',
+      title: 'Bare (no wrapping shell)',
+      type: 'boolean',
+      description:
+        'When true, renders only the PortableText — no section/container/max-width/prose wrapper. Use inside a contentSection that already provides the shell.',
+      initialValue: false,
     }),
   ],
   preview: {

@@ -5,14 +5,20 @@ import type { PortableTextBlock } from '@portabletext/types'
 const components: PortableTextComponents = {
   block: {
     normal: ({ children }) => <p className="text-lg leading-relaxed mb-6">{children}</p>,
+    // Additive paragraph-spacing variants (mirror legalContent): tighter `mb-4`
+    // and a flush, no-margin paragraph. Existing `normal` is unchanged.
+    normalMb4: ({ children }) => <p className="text-lg leading-relaxed mb-4">{children}</p>,
+    normalFlush: ({ children }) => <p className="text-lg leading-relaxed">{children}</p>,
     h2: ({ children }) => <h2 className="text-2xl font-bold text-[#1b75bc] mb-6">{children}</h2>,
     h3: ({ children }) => <h3 className="text-xl font-semibold text-[#1b75bc] mb-4">{children}</h3>,
   },
   list: {
     bullet: ({ children }) => <ul className="list-disc pl-6 mb-8 space-y-2">{children}</ul>,
+    number: ({ children }) => <ol className="list-decimal pl-6 mb-6 space-y-2">{children}</ol>,
   },
   listItem: {
     bullet: ({ children }) => <li>{children}</li>,
+    number: ({ children }) => <li>{children}</li>,
   },
   marks: {
     strong: ({ children }) => <strong>{children}</strong>,
