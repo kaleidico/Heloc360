@@ -357,7 +357,7 @@ const doc = {
   _type: 'page',
   title: 'HELOC 101: Complete Guide to Home Equity Lines of Credit',
   // Temporary slug so it does not collide with the live hardcoded /heloc-101 route.
-  slug: { _type: 'slug', current: 'heloc-101-sanity' },
+  slug: { _type: 'slug', current: 'heloc-101' },
   sections,
   seoTitle: 'HELOC 101: Complete Guide to Home Equity Lines of Credit',
   seoDescription:

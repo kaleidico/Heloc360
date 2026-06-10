@@ -182,7 +182,7 @@ const doc = {
   _type: 'page',
   title: 'About HELOC360 - Your Trusted Home Equity Partner',
   // Temporary slug so it does not collide with the live hardcoded /about route.
-  slug: { _type: 'slug', current: 'about-sanity' },
+  slug: { _type: 'slug', current: 'about' },
   sections,
   seoTitle: 'About HELOC360 - Your Trusted Home Equity Partner',
   seoDescription:
