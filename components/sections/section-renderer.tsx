@@ -7,6 +7,13 @@ import { ImageWithTextSection, type ImageWithTextSectionValue } from './image-wi
 import { LegalHeaderSection, type LegalHeaderValue } from './legal-header-section'
 import { LegalProseSection, type LegalProseValue } from './legal-prose-section'
 import { LegalContentSection, type LegalContentValue } from './legal-content-section'
+import { ProseSection, type ProseSectionValue } from './prose-section'
+import { IconHeadingSection, type IconHeadingValue } from './icon-heading-section'
+import { AlertCalloutSection, type AlertCalloutValue } from './alert-callout-section'
+import { InfoCardSection, type InfoCardValue } from './info-card-section'
+import { ButtonRowSection, type ButtonRowValue } from './button-row-section'
+import { ContactCalloutSection, type ContactCalloutValue } from './contact-callout-section'
+import { PageFooterNoteSection, type PageFooterNoteValue } from './page-footer-note-section'
 
 export type Section =
   | HeroSectionValue
@@ -18,6 +25,13 @@ export type Section =
   | LegalHeaderValue
   | LegalProseValue
   | LegalContentValue
+  | ProseSectionValue
+  | IconHeadingValue
+  | AlertCalloutValue
+  | InfoCardValue
+  | ButtonRowValue
+  | ContactCalloutValue
+  | PageFooterNoteValue
 
 export function SectionRenderer({ sections }: { sections: Section[] }) {
   return (
@@ -42,6 +56,20 @@ export function SectionRenderer({ sections }: { sections: Section[] }) {
             return <LegalProseSection key={section._key} value={section} />
           case 'legalContent':
             return <LegalContentSection key={section._key} value={section} />
+          case 'proseSection':
+            return <ProseSection key={section._key} value={section} />
+          case 'iconHeading':
+            return <IconHeadingSection key={section._key} value={section} />
+          case 'alertCallout':
+            return <AlertCalloutSection key={section._key} value={section} />
+          case 'infoCard':
+            return <InfoCardSection key={section._key} value={section} />
+          case 'buttonRow':
+            return <ButtonRowSection key={section._key} value={section} />
+          case 'contactCallout':
+            return <ContactCalloutSection key={section._key} value={section} />
+          case 'pageFooterNote':
+            return <PageFooterNoteSection key={section._key} value={section} />
           default:
             // Section type unknown — likely a schema update without a matching renderer.
             // Render nothing in production; surface the type during development.
