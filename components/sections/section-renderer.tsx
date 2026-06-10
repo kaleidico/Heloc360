@@ -29,6 +29,15 @@ import { TeamSection, type TeamSectionValue } from './team-section'
 import { MissionStatementSection, type MissionStatementValue } from './mission-statement-section'
 import { AwardsGridSection, type AwardsGridValue } from './awards-grid-section'
 import { MarketingCtaBandSection, type MarketingCtaBandValue } from './marketing-cta-band-section'
+import { CenteredHeroBandSection, type CenteredHeroBandValue } from './centered-hero-band-section'
+import { TableOfContentsSection, type TableOfContentsValue } from './table-of-contents-section'
+import { DefinitionWithImageSection, type DefinitionWithImageValue } from './definition-with-image-section'
+import { ProcessCardsWithFormulaSection, type ProcessCardsWithFormulaValue } from './process-cards-with-formula-section'
+import { BorderAccentCardsSection, type BorderAccentCardsValue } from './border-accent-cards-section'
+import { DosAndDontsColumnsSection, type DosAndDontsColumnsValue } from './dos-and-donts-columns-section'
+import { RequirementCardsSection, type RequirementCardsValue } from './requirement-cards-section'
+import { FaqAccordionSection, type FaqAccordionValue } from './faq-accordion-section'
+import { GradientCtaBandSection, type GradientCtaBandValue } from './gradient-cta-band-section'
 
 export type Section =
   | HeroSectionValue
@@ -62,6 +71,15 @@ export type Section =
   | MissionStatementValue
   | AwardsGridValue
   | MarketingCtaBandValue
+  | CenteredHeroBandValue
+  | TableOfContentsValue
+  | DefinitionWithImageValue
+  | ProcessCardsWithFormulaValue
+  | BorderAccentCardsValue
+  | DosAndDontsColumnsValue
+  | RequirementCardsValue
+  | FaqAccordionValue
+  | GradientCtaBandValue
 
 // Renders a single section, keyed by its `_key`. Exported so container blocks
 // (e.g. contentSection) can recursively render their nested children, making
@@ -130,6 +148,24 @@ export function renderBlock(section: Section): React.ReactNode {
       return <AwardsGridSection key={section._key} value={section} />
     case 'marketingCtaBand':
       return <MarketingCtaBandSection key={section._key} value={section} />
+    case 'centeredHeroBand':
+      return <CenteredHeroBandSection key={section._key} value={section} />
+    case 'tableOfContents':
+      return <TableOfContentsSection key={section._key} value={section} />
+    case 'definitionWithImage':
+      return <DefinitionWithImageSection key={section._key} value={section} />
+    case 'processCardsWithFormula':
+      return <ProcessCardsWithFormulaSection key={section._key} value={section} />
+    case 'borderAccentCards':
+      return <BorderAccentCardsSection key={section._key} value={section} />
+    case 'dosAndDontsColumns':
+      return <DosAndDontsColumnsSection key={section._key} value={section} />
+    case 'requirementCards':
+      return <RequirementCardsSection key={section._key} value={section} />
+    case 'faqAccordion':
+      return <FaqAccordionSection key={section._key} value={section} />
+    case 'gradientCtaBand':
+      return <GradientCtaBandSection key={section._key} value={section} />
     default:
       // Section type unknown — likely a schema update without a matching renderer.
       // Render nothing in production; surface the type during development.

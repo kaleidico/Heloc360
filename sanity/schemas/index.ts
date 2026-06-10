@@ -32,6 +32,15 @@ import { teamSection } from './sections/teamSection'
 import { missionStatement } from './sections/missionStatement'
 import { awardsGrid } from './sections/awardsGrid'
 import { marketingCtaBand } from './sections/marketingCtaBand'
+import { centeredHeroBand } from './sections/centeredHeroBand'
+import { tableOfContents } from './sections/tableOfContents'
+import { definitionWithImage } from './sections/definitionWithImage'
+import { processCardsWithFormula } from './sections/processCardsWithFormula'
+import { borderAccentCards } from './sections/borderAccentCards'
+import { dosAndDontsColumns } from './sections/dosAndDontsColumns'
+import { requirementCards } from './sections/requirementCards'
+import { faqAccordion } from './sections/faqAccordion'
+import { gradientCtaBand } from './sections/gradientCtaBand'
 
 export const schemaTypes = [
   // Documents
@@ -70,4 +79,13 @@ export const schemaTypes = [
   missionStatement,
   awardsGrid,
   marketingCtaBand,
+  centeredHeroBand,
+  tableOfContents,
+  definitionWithImage,
+  processCardsWithFormula,
+  borderAccentCards,
+  dosAndDontsColumns,
+  requirementCards,
+  faqAccordion,
+  gradientCtaBand,
 ]
