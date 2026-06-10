@@ -4,6 +4,26 @@ Per-session work log. Most recent session at the top. Append after each session.
 
 ---
 
+## 2026-06-10 (later 2) — Phase F Wave 1: 3 legal pages → blocks + granular block library
+
+### Direction change (Robert)
+"Create as many blocks as you can" → pivoted from monolithic per-page blocks to a **granular, composable** block library (Gutenberg-style). Built a 23-schema section library.
+
+### Granular block library built (reusable across legal + marketing)
+- Batch 1: `proseSection`, `iconHeading`, `alertCallout`, `infoCard`, `buttonRow`, `contactCallout`, `pageFooterNote`.
+- Batch 2 (card/grid): `checklistCardGrid`, `titledBulletCards`, `iconBadgeCards`, `checkmarkGrid`, `accentNotes`, `twoTierCards`; plus an `external` trailing-icon flag on the legal link serializer.
+- **`contentSection` container** (the linchpin): provides the `py-16 → container → max-w-Nxl (optional prose)` shell and hosts a nested `content[]` of fragment blocks. `section-renderer.tsx` refactored to an exported recursive `renderBlock()`. Without this, fragment blocks rendered full-bleed. Also added `proseSection.bare` + ordered-list (`number`) + `normalMb4`/`normalFlush` styles + `alertCallout.rows` (label/value).
+
+### Pages shipped (each = legalHeader + one contentSection of granular fragments)
+- **terms** (`page-terms`), **communication-consent** (`page-communication-consent`), **affiliate-disclosure** (`page-affiliate-disclosure`) — all dot-free ids, seeded via `scripts/seed/*-page.mjs`, content ported verbatim.
+- Screenshot-verified pixel-faithful (current vs Sanity, desktop) — diffs in `~/Downloads/heloc360-block-diffs/`. Only delta is slightly tighter inter-section spacing (source `mb-12` group gaps → margin-driven rhythm), within the accepted tolerance.
+- Cut over (`feat(sanity): Wave 1 …`): deleted the 3 hardcoded routes; **live on `heloc360.vercel.app`** (all 200, titles + canonicals preserved).
+
+### Status of Phase F
+Wave 0 (privacy) ✅ · Wave 1 (3 legal) ✅ = **4 of 12 pages**. Remaining: Wave 2 marketing (about, heloc-101 — large, need new blocks), Wave 3 homepage (bespoke + `/` routing), Wave 4 interactive (calculators via a Mortgage Mate **HTML-embed block — needs Robert's embed snippets**; pre-qual/contact forms via component-embed).
+
+---
+
 ## 2026-06-10 (later) — Phase F kickoff: pages → Sanity blocks; Privacy pilot shipped
 
 ### Goal
