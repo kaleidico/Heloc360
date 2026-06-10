@@ -4,6 +4,34 @@ Per-session work log. Most recent session at the top. Append after each session.
 
 ---
 
+## 2026-06-10 — Deployed Sanity staging + executed Tasks 12–13 (the irreversible cutover)
+
+### Session goal
+Stand up a safe, isolated staging deploy reading from Sanity, verify it end-to-end, then run the two held cutover tasks (12 + 13) once Robert green-lit them.
+
+### Staging deploy (safe, no live domain)
+- Pushed the migration work to `origin/sanity-migration`. Discovered the `-u` push had pointed local `main`'s upstream at the migration branch; **moved all 47 migration commits onto a local `sanity-migration` branch and reset local `main` to match `origin/main`** so `main` == live and a stray `git push` from main can't deploy anything.
+- Vercel project map under the **kaleidico** team: `heloc360` (→ `heloc360.vercel.app`, **no custom domain** — staging), `homebuyershaven`, and `v0-heloc360-redesign` (→ owns the live `heloc360.com`). So the `heloc360` project is a safe staging surface; live is a different project.
+- CLI was logged into the wrong account (personal) — Robert re-logged as the kaleidico-seat account; switched scope to `kaleidico`, linked the repo to the `heloc360` project.
+- The 4 Sanity env vars existed only on **Preview** scope (why prior prod builds 404'd on `/api/revalidate` and still showed `ctfassets.net`). Added them to **Production** scope, then `vercel --prod` deployed the `sanity-migration` code (Robert authorized the prod deploy explicitly).
+- **Verified on `https://heloc360.vercel.app`:** `/api/revalidate` → 200 (HMAC receiver; signed-request test: valid→200, hex/tampered→401), `/blog` index + post bodies with sequential `heading-N` TOC anchors, `/about`, `/meet-our-team/[slug]` — all rendering from `cdn.sanity.io`. Sitemap counts: **250 blog / 10 team** from Sanity.
+
+### Tasks completed (each: implementer → spec review → code-quality review)
+- **Task 12 — Contentful cutover** (`013f837`, tag `sanity-cutover-v1`). Deleted `lib/contentful.ts`, `data/blog-posts.ts`, `scripts/migration/{01–04}` (left gitignored `_archive/` insurance); removed 7 deps (`contentful-export`, `@portabletext/block-tools`, `@sanity/schema`, `marked`, `jsdom`, `react-markdown`, `remark-gfm`); stripped Contentful vars from `.env.local` (not committed). No Contentful vars on the `heloc360` Vercel project; other projects untouched. Build green; dangling-ref grep clean. Both reviews ✅.
+- **Task 13 — retire runtime category normalization** (`aa68d0e`). `config/blog.ts` 90→17 lines: dropped `findBestMatch`/`pickFirstAllowedCategory`/`toAllowedCategoryOrDefault`, renamed `ALLOWED_CATEGORIES`→`CATEGORIES` / `AllowedCategory`→`Category`; updated lone consumer `components/blog/blog-home.tsx`. Grep-clean for all 5 dead identifiers repo-wide; build green. Both reviews ✅.
+
+### Non-blocking follow-ups noted by review
+- `Category` type is exported but unused — `BlogPost.category` is plain `string`. Wiring `Category` into `mapBlogPost`/`BlogPost` would move the "categories are canonical" guarantee into the type system. (Deferred — deviates from the plan's exact `config/blog.ts` spec.)
+- Confirm the Sanity Studio category field constrains authoring to the 6 `CATEGORIES` strings, else the blog filter dropdown could silently match zero posts.
+
+### Still Robert's call (deploy-time)
+- **Real go-live** = pointing `heloc360.com` at this code (its own project `v0-heloc360-redesign`, or merge `sanity-migration`→main + repoint). Deliberate, owner-controlled; out of this plan's scope.
+- Configure the Sanity Studio webhook → `https://heloc360.vercel.app/api/revalidate` (filter `_type in ["blogPost","teamMember","page"]`, secret + signature on).
+- Task 12 Step 9 (manual): archive the Contentful space (90-day insurance window; don't delete yet).
+- Branch/tag are **local-only** unless Robert asks to push beyond `origin/sanity-migration`.
+
+---
+
 ## 2026-06-09 (later) — Executed Tasks 9–15: data-layer cutover + webhook + page-builder foundation
 
 ### Session goal
