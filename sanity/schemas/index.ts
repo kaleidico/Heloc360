@@ -24,6 +24,14 @@ import { checkmarkGrid } from './sections/checkmarkGrid'
 import { accentNotes } from './sections/accentNotes'
 import { twoTierCards } from './sections/twoTierCards'
 import { contentSection } from './sections/contentSection'
+import { marketingHero } from './sections/marketingHero'
+import { statsBand } from './sections/statsBand'
+import { storySection } from './sections/storySection'
+import { valueCardsGrid } from './sections/valueCardsGrid'
+import { teamSection } from './sections/teamSection'
+import { missionStatement } from './sections/missionStatement'
+import { awardsGrid } from './sections/awardsGrid'
+import { marketingCtaBand } from './sections/marketingCtaBand'
 
 export const schemaTypes = [
   // Documents
@@ -54,4 +62,12 @@ export const schemaTypes = [
   accentNotes,
   twoTierCards,
   contentSection,
+  marketingHero,
+  statsBand,
+  storySection,
+  valueCardsGrid,
+  teamSection,
+  missionStatement,
+  awardsGrid,
+  marketingCtaBand,
 ]

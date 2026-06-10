@@ -21,6 +21,14 @@ import { CheckmarkGridSection, type CheckmarkGridValue } from './checkmark-grid-
 import { AccentNotesSection, type AccentNotesValue } from './accent-notes-section'
 import { TwoTierCardsSection, type TwoTierCardsValue } from './two-tier-cards-section'
 import { ContentSectionSection, type ContentSectionValue } from './content-section-section'
+import { MarketingHeroSection, type MarketingHeroValue } from './marketing-hero-section'
+import { StatsBandSection, type StatsBandValue } from './stats-band-section'
+import { StorySection, type StorySectionValue } from './story-section'
+import { ValueCardsGridSection, type ValueCardsGridValue } from './value-cards-grid-section'
+import { TeamSection, type TeamSectionValue } from './team-section'
+import { MissionStatementSection, type MissionStatementValue } from './mission-statement-section'
+import { AwardsGridSection, type AwardsGridValue } from './awards-grid-section'
+import { MarketingCtaBandSection, type MarketingCtaBandValue } from './marketing-cta-band-section'
 
 export type Section =
   | HeroSectionValue
@@ -46,6 +54,14 @@ export type Section =
   | AccentNotesValue
   | TwoTierCardsValue
   | ContentSectionValue
+  | MarketingHeroValue
+  | StatsBandValue
+  | StorySectionValue
+  | ValueCardsGridValue
+  | TeamSectionValue
+  | MissionStatementValue
+  | AwardsGridValue
+  | MarketingCtaBandValue
 
 // Renders a single section, keyed by its `_key`. Exported so container blocks
 // (e.g. contentSection) can recursively render their nested children, making
@@ -98,6 +114,22 @@ export function renderBlock(section: Section): React.ReactNode {
       return <TwoTierCardsSection key={section._key} value={section} />
     case 'contentSection':
       return <ContentSectionSection key={section._key} value={section} />
+    case 'marketingHero':
+      return <MarketingHeroSection key={section._key} value={section} />
+    case 'statsBand':
+      return <StatsBandSection key={section._key} value={section} />
+    case 'storySection':
+      return <StorySection key={section._key} value={section} />
+    case 'valueCardsGrid':
+      return <ValueCardsGridSection key={section._key} value={section} />
+    case 'teamSection':
+      return <TeamSection key={section._key} value={section} />
+    case 'missionStatement':
+      return <MissionStatementSection key={section._key} value={section} />
+    case 'awardsGrid':
+      return <AwardsGridSection key={section._key} value={section} />
+    case 'marketingCtaBand':
+      return <MarketingCtaBandSection key={section._key} value={section} />
     default:
       // Section type unknown — likely a schema update without a matching renderer.
       // Render nothing in production; surface the type during development.
