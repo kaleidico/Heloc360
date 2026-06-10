@@ -15,7 +15,7 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import type { BlogPost } from "@/types/blog";
-import { ALLOWED_CATEGORIES } from "@/config/blog";
+import { CATEGORIES } from "@/config/blog";
 import MailingListForm from "@/components/mailing-list-form";
 
 const BlogCard = dynamic(() => import("@/components/blog/blog-card"), {
@@ -287,7 +287,7 @@ export default function BlogHome({
 										<SelectItem value='all'>
 											All Categories
 										</SelectItem>
-										{ALLOWED_CATEGORIES.map((category) => (
+										{CATEGORIES.map((category) => (
 											<SelectItem
 												key={category}
 												value={category}
