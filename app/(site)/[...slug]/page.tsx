@@ -13,7 +13,13 @@ function slugFromSegments(segments: string[]): string {
 
 export async function generateStaticParams() {
   const slugs = await getAllPageSlugs()
-  return slugs.map((slug) => ({ slug: slug === 'home' ? [] : slug.split('/') }))
+  // A non-optional [...slug] cannot match `/`, so a 'home' page doc cannot be
+  // statically generated here (an empty param array would error / collide with
+  // app/(site)/page.tsx). The homepage stays on app/(site)/page.tsx until the
+  // homepage wave converts it (via an optional catch-all or a thin root page).
+  return slugs
+    .filter((slug) => slug !== 'home')
+    .map((slug) => ({ slug: slug.split('/') }))
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
