@@ -277,7 +277,7 @@ const doc = {
   title: 'Affiliate Disclosure',
   // Temporary slug so it does not collide with the live hardcoded
   // /affiliate-disclosure route.
-  slug: { _type: 'slug', current: 'affiliate-disclosure-sanity' },
+  slug: { _type: 'slug', current: 'affiliate-disclosure' },
   sections: [
     // 1. Gradient banner header (full-bleed, outside the content shell).
     {

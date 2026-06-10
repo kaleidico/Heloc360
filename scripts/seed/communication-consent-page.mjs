@@ -315,7 +315,7 @@ const doc = {
   title: 'Communication Consent',
   // Temporary slug so it does not collide with the live hardcoded
   // /communication-consent route.
-  slug: { _type: 'slug', current: 'communication-consent-sanity' },
+  slug: { _type: 'slug', current: 'communication-consent' },
   sections: [headerSection, bodyContainer],
   seoTitle: 'Communication Consent - HELOC360',
   seoDescription:

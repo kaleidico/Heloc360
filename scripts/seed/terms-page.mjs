@@ -275,7 +275,7 @@ const doc = {
   _type: 'page',
   title: 'Terms of Use',
   // Temporary slug so it does not collide with the live hardcoded /terms route.
-  slug: { _type: 'slug', current: 'terms-sanity' },
+  slug: { _type: 'slug', current: 'terms' },
   sections,
   seoTitle: 'Terms of Use - HELOC360',
   seoDescription:
