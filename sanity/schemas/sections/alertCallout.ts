@@ -77,7 +77,7 @@ export const alertCallout = defineType({
                 name: 'link',
                 type: 'object',
                 title: 'Link',
-                fields: [{ name: 'href', type: 'url', title: 'URL' }],
+                fields: [{ name: 'href', type: 'string', title: 'URL', validation: (R) => R.custom((v) => !v || /^(https?:\/\/|mailto:|tel:|\/|#)/.test(v) || 'Use an absolute URL, a /relative path, #anchor, mailto: or tel:') }],
               },
             ],
           },

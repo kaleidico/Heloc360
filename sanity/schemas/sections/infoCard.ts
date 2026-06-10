@@ -79,7 +79,7 @@ export const infoCard = defineType({
                 type: 'object',
                 title: 'Link',
                 fields: [
-                  { name: 'href', type: 'url', title: 'URL' },
+                  { name: 'href', type: 'string', title: 'URL', validation: (R) => R.custom((v) => !v || /^(https?:\/\/|mailto:|tel:|\/|#)/.test(v) || 'Use an absolute URL, a /relative path, #anchor, mailto: or tel:') },
                   { name: 'underline', type: 'boolean', title: 'Underline', initialValue: false },
                 ],
               },
