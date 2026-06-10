@@ -6,6 +6,7 @@ import { FaqSection, type FaqSectionValue } from './faq-section'
 import { ImageWithTextSection, type ImageWithTextSectionValue } from './image-with-text-section'
 import { LegalHeaderSection, type LegalHeaderValue } from './legal-header-section'
 import { LegalProseSection, type LegalProseValue } from './legal-prose-section'
+import { LegalContentSection, type LegalContentValue } from './legal-content-section'
 
 export type Section =
   | HeroSectionValue
@@ -16,6 +17,7 @@ export type Section =
   | ImageWithTextSectionValue
   | LegalHeaderValue
   | LegalProseValue
+  | LegalContentValue
 
 export function SectionRenderer({ sections }: { sections: Section[] }) {
   return (
@@ -38,6 +40,8 @@ export function SectionRenderer({ sections }: { sections: Section[] }) {
             return <LegalHeaderSection key={section._key} value={section} />
           case 'legalProse':
             return <LegalProseSection key={section._key} value={section} />
+          case 'legalContent':
+            return <LegalContentSection key={section._key} value={section} />
           default:
             // Section type unknown — likely a schema update without a matching renderer.
             // Render nothing in production; surface the type during development.

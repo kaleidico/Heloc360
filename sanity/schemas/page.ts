@@ -32,6 +32,7 @@ export const page = defineType({
         defineArrayMember({ type: 'imageWithTextSection' }),
         defineArrayMember({ type: 'legalHeader' }),
         defineArrayMember({ type: 'legalProse' }),
+        defineArrayMember({ type: 'legalContent' }),
       ],
       validation: (R) => R.required().min(1),
     }),

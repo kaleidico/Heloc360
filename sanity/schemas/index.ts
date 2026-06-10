@@ -9,6 +9,7 @@ import { faqSection } from './sections/faq'
 import { imageWithTextSection } from './sections/imageWithText'
 import { legalHeader } from './sections/legalHeader'
 import { legalProse } from './sections/legalProse'
+import { legalContent } from './sections/legalContent'
 
 export const schemaTypes = [
   // Documents
@@ -24,4 +25,5 @@ export const schemaTypes = [
   imageWithTextSection,
   legalHeader,
   legalProse,
+  legalContent,
 ]
