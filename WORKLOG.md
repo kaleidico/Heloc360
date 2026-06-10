@@ -4,6 +4,17 @@ Per-session work log. Most recent session at the top. Append after each session.
 
 ---
 
+## 2026-06-10 (later 5) — Phase F Wave 4: forms live; calculators staged (Phase F ~complete)
+
+- **`componentEmbed`** extended (`contactForm`, `preQualForm`, `stickyCtaSuppress`); `contact-form.tsx` relocated `app/(site)/contact/` → `components/contact/` so it survives route deletion.
+- **pre-qual** (`page-pre-qual`) — new `preQualIntro` block (verbatim chrome) hosting `<PreQualForm useCase="universal">` + `<StickyCtaSuppress>` via componentEmbed. **contact** (`page-contact`) — single `componentEmbed{contactForm}`. Both screenshot-verified pixel-identical (forms unchanged), cut over, **live** (`/pre-qual`, `/contact` 200, funnels intact).
+- **`htmlEmbed`** block built (raw snippet via `dangerouslySetInnerHTML`, trusted-editor assumption documented). The 2 **calculator** pages (`page-calc-home-equity-estimator`, `page-calc-debt-consolidation`) are **staged** with chrome + a `<!-- Mortgage Mate embed pending -->` placeholder at temp slugs — **NOT cut over**; the existing React calculators stay live until Robert provides Mortgage Mate embed snippets.
+
+### Phase F status: 9 of 11 hardcoded pages now render from Sanity blocks
+Live: homepage, privacy, terms, communication-consent, affiliate-disclosure, about, heloc-101, pre-qual, contact. **Pending only:** the 2 calculators (drop Mortgage Mate snippets → I update the `htmlEmbed` html + cut over). **47-section block library** built. All on `sanity-migration` (staging `heloc360.vercel.app`); live `heloc360.com` (separate project) untouched.
+
+---
+
 ## 2026-06-10 (later 4) — Phase F Wave 3: homepage → blocks (live)
 
 - **homepage** (`page-home`, slug `home`) — 6 bespoke blocks (`imageHero`, `splitContentChecklist`, `numberedProcessCards`, `iconFeatureGrid`, `benefitsWithImage`, `formCtaBand`) + reused `faqAccordion`.
