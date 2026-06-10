@@ -14,7 +14,7 @@ const doc = {
   _type: 'page',
   title: 'Talk to a HELOC advisor — free, no obligation',
   // Temporary slug so it does not collide with the live hardcoded /pre-qual route.
-  slug: { _type: 'slug', current: 'pre-qual-sanity' },
+  slug: { _type: 'slug', current: 'pre-qual' },
   // preQualIntro reproduces the page chrome (bg-surface-50 main, header, white card)
   // verbatim and hosts the interactive PreQualForm via a nested componentEmbed. It also
   // renders the StickyCtaSuppress side-effect (suppressStickyCta defaults true).

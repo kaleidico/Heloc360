@@ -14,7 +14,7 @@ const doc = {
   _type: 'page',
   title: 'Contact HELOC360 - Get Help with Your Home Equity Line of Credit',
   // Temporary slug so it does not collide with the live hardcoded /contact route.
-  slug: { _type: 'slug', current: 'contact-sanity' },
+  slug: { _type: 'slug', current: 'contact' },
   // The ContactForm component renders the entire page layout (hero, contact methods,
   // form, sidebar, CTA), so a single top-level componentEmbed is the whole page.
   sections: [
