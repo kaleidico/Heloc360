@@ -269,7 +269,11 @@ const body = [
 ]
 
 const doc = {
-  _id: 'page.privacy',
+  // Dot-free _id: the dataset's anonymous read grant is `_id in path("*")`, which
+  // only covers single-segment IDs. A dotted id like `page.privacy` lands in the
+  // `page.` namespace path and is NOT publicly readable, so the frontend (token-less
+  // client) would 404. Hyphenated ids render public exactly like blog posts.
+  _id: 'page-privacy',
   _type: 'page',
   title: 'Privacy Policy',
   slug: { _type: 'slug', current: 'privacy-sanity' },
