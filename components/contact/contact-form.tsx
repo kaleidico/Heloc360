@@ -174,7 +174,7 @@ export default function ContactForm() {
 							</p>
 						</div>
 
-						<div className='grid md:grid-cols-3 gap-8'>
+						<div className='grid md:grid-cols-2 gap-8 max-w-3xl mx-auto'>
 							{contactMethods.map((method, index) => (
 								<Card
 									key={index}
