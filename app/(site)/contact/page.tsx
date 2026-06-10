@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import ContactForm from "./contact-form";
+import ContactForm from "@/components/contact/contact-form";
 
 export const metadata: Metadata = {
 	title: "Contact HELOC360 - Get Help with Your Home Equity Line of Credit",

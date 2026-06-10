@@ -44,6 +44,9 @@ import { NumberedProcessCardsSection, type NumberedProcessCardsValue } from './n
 import { IconFeatureGridSection, type IconFeatureGridValue } from './icon-feature-grid-section'
 import { BenefitsWithImageSection, type BenefitsWithImageValue } from './benefits-with-image-section'
 import { FormCtaBandSection, type FormCtaBandValue } from './form-cta-band-section'
+import { PreQualIntroSection, type PreQualIntroValue } from './pre-qual-intro-section'
+import { HtmlEmbedSection, type HtmlEmbedValue } from './html-embed-section'
+import { ComponentEmbedSection, type ComponentEmbedValue } from './component-embed-section'
 
 export type Section =
   | HeroSectionValue
@@ -92,6 +95,9 @@ export type Section =
   | IconFeatureGridValue
   | BenefitsWithImageValue
   | FormCtaBandValue
+  | PreQualIntroValue
+  | HtmlEmbedValue
+  | ComponentEmbedValue
 
 // Renders a single section, keyed by its `_key`. Exported so container blocks
 // (e.g. contentSection) can recursively render their nested children, making
@@ -190,6 +196,12 @@ export function renderBlock(section: Section): React.ReactNode {
       return <BenefitsWithImageSection key={section._key} value={section} />
     case 'formCtaBand':
       return <FormCtaBandSection key={section._key} value={section} />
+    case 'preQualIntro':
+      return <PreQualIntroSection key={section._key} value={section} />
+    case 'htmlEmbed':
+      return <HtmlEmbedSection key={section._key} value={section} />
+    case 'componentEmbed':
+      return <ComponentEmbedSection key={section._key} value={section} />
     default:
       // Section type unknown — likely a schema update without a matching renderer.
       // Render nothing in production; surface the type during development.
