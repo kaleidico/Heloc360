@@ -4,6 +4,21 @@ Per-session work log. Most recent session at the top. Append after each session.
 
 ---
 
+## 2026-06-11 — Review note: strip HTML from the staged calculator docs (blocks only)
+
+Robert: "Some of the calculator's content has html in it. Can you clean them up? I don't want any HTML in non Calculator blocks."
+
+The two staged calc page docs (`page-calc-home-equity-estimator`, `page-calc-debt-consolidation`) carried their page chrome (header/hero, educational copy, disclaimers) as raw `htmlEmbed` sections. Rebuilt as real blocks — commit `fd22710`, deployed + verified on staging:
+
+- **4 new blocks** (51-block library now), markup verbatim from the hardcoded calc routes: `pageHeaderBand` (gray-50 centered title+lead), `infoSplitCard` (white card, topics column + bullets column), `labeledDisclaimers` (label+body stacks; `yellowCard` and `grayBand` variants — the bold label's trailing colon and the "• " bullet prefixes are rendered, not stored), `bulletPanelHero` (blue-900→700 gradient hero + translucent bullet panel). Registered in `schemas/index.ts`, `page.ts`, `section-renderer.tsx`.
+- Both seeds rewritten to block content; reseeded. **Dataset audit (all 11 page docs): the ONLY `htmlEmbed` left anywhere is `<!-- Mortgage Mate embed pending -->` ×2.**
+- Screenshot-diffed both `-sanity` slugs vs the hardcoded routes on staging — chrome matches; calculator widget absent by design (`~/Downloads/heloc360-block-diffs/calc-*.png`, folder recreated — earlier diffs were cleaned out).
+- Side benefit: chrome Tailwind classes now live in scanned components, so cutover (deleting the hardcoded routes) can no longer purge their CSS — the old htmlEmbed strings were invisible to the Tailwind scanner.
+- Staging caveat (in seed comments): the source pages paint one full-height gray-50 background; bands carry their own gray-50 now, so the empty calculator slot renders white until the Mortgage Mate embed fills it (wrap the embed in a gray-50 band then).
+- Noticed, NOT fixed (pre-existing, affects hardcoded routes too): both calculator pages render tab titles as "… | HELOC360 | HELOC360" — page titles already include the suffix and a layout title template appends it again. Site-wide check worth doing before go-live.
+
+---
+
 ## 2026-06-10 (EOD) — Robert's review-notes fixes + full end-of-day state (RESUME HERE tomorrow)
 
 ### Review fixes shipped this evening (all live on staging)
