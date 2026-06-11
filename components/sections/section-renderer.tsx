@@ -45,6 +45,10 @@ import { IconFeatureGridSection, type IconFeatureGridValue } from './icon-featur
 import { BenefitsWithImageSection, type BenefitsWithImageValue } from './benefits-with-image-section'
 import { FormCtaBandSection, type FormCtaBandValue } from './form-cta-band-section'
 import { PreQualIntroSection, type PreQualIntroValue } from './pre-qual-intro-section'
+import { PageHeaderBandSection, type PageHeaderBandValue } from './page-header-band-section'
+import { InfoSplitCardSection, type InfoSplitCardValue } from './info-split-card-section'
+import { LabeledDisclaimersSection, type LabeledDisclaimersValue } from './labeled-disclaimers-section'
+import { BulletPanelHeroSection, type BulletPanelHeroValue } from './bullet-panel-hero-section'
 import { HtmlEmbedSection, type HtmlEmbedValue } from './html-embed-section'
 import { ComponentEmbedSection, type ComponentEmbedValue } from './component-embed-section'
 
@@ -96,6 +100,10 @@ export type Section =
   | BenefitsWithImageValue
   | FormCtaBandValue
   | PreQualIntroValue
+  | PageHeaderBandValue
+  | InfoSplitCardValue
+  | LabeledDisclaimersValue
+  | BulletPanelHeroValue
   | HtmlEmbedValue
   | ComponentEmbedValue
 
@@ -198,6 +206,14 @@ export function renderBlock(section: Section): React.ReactNode {
       return <FormCtaBandSection key={section._key} value={section} />
     case 'preQualIntro':
       return <PreQualIntroSection key={section._key} value={section} />
+    case 'pageHeaderBand':
+      return <PageHeaderBandSection key={section._key} value={section} />
+    case 'infoSplitCard':
+      return <InfoSplitCardSection key={section._key} value={section} />
+    case 'labeledDisclaimers':
+      return <LabeledDisclaimersSection key={section._key} value={section} />
+    case 'bulletPanelHero':
+      return <BulletPanelHeroSection key={section._key} value={section} />
     case 'htmlEmbed':
       return <HtmlEmbedSection key={section._key} value={section} />
     case 'componentEmbed':

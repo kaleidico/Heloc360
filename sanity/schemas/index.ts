@@ -49,6 +49,10 @@ import { iconFeatureGrid } from './sections/iconFeatureGrid'
 import { benefitsWithImage } from './sections/benefitsWithImage'
 import { formCtaBand } from './sections/formCtaBand'
 import { preQualIntro } from './sections/preQualIntro'
+import { pageHeaderBand } from './sections/pageHeaderBand'
+import { infoSplitCard } from './sections/infoSplitCard'
+import { labeledDisclaimers } from './sections/labeledDisclaimers'
+import { bulletPanelHero } from './sections/bulletPanelHero'
 import { htmlEmbed } from './sections/htmlEmbed'
 
 export const schemaTypes = [
@@ -105,5 +109,9 @@ export const schemaTypes = [
   benefitsWithImage,
   formCtaBand,
   preQualIntro,
+  pageHeaderBand,
+  infoSplitCard,
+  labeledDisclaimers,
+  bulletPanelHero,
   htmlEmbed,
 ]
