@@ -4,6 +4,18 @@ Per-session work log. Most recent session at the top. Append after each session.
 
 ---
 
+## 2026-06-11 — Footer 404 sweep: 7 dead links eliminated (commit `2db1125`)
+
+Robert: "let's scan and eliminate the 404's in the footer links." Audit of all 17 `config/footer-nav.json` links: 7 were 404 — and all 7 also 404 on live heloc360.com, i.e. never-built pages, not migration regressions.
+
+- **Built `/meet-our-team`** — new Sanity page (`page-meet-our-team`), a single self-contained `teamSection` block (fetches all 10 members, Leadership/Contributors split — same band as the about page). Detail pages at `/meet-our-team/<slug>` already existed.
+- **Built `/calculators`** — new Sanity hub page (`page-calculators`): `centeredHeroBand` + new **`linkCardsGrid`** block (52nd in the library — clickable card grid, team-card hover treatment; card copy lifted from the two calculators' meta descriptions). No route conflict: `app/(site)/calculators/` has no index `page.tsx`, so the catch-all serves it.
+- **Footer config**: "Pay off debt" repointed `/debt-consolidation` → `/calculators/debt-consolidation`; removed "Renovate my home" (`/home-renovation`), "Plan for retirement" (`/retirement-equity`), "I'm self-employed" (`/self-employed-heloc`), "Glossary" (`/glossary`); added "Talk to an advisor" → `/pre-qual` to round out the use-cases column. The removed four can come back as Sanity block pages whenever there's copy.
+- `sitemap.ts`: added `/calculators` + `/meet-our-team`. (Noticed `/pre-qual` is absent from the sitemap — pre-existing, not touched.)
+- Verified: all 13 footer links 200 on staging; screenshots of both new pages in `~/Downloads/heloc360-block-diffs/` (`calculators-hub-NEW.png`, `meet-our-team-NEW.png`).
+
+---
+
 ## 2026-06-11 — Review note: strip HTML from the staged calculator docs (blocks only)
 
 Robert: "Some of the calculator's content has html in it. Can you clean them up? I don't want any HTML in non Calculator blocks."
