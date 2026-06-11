@@ -53,6 +53,7 @@ import { pageHeaderBand } from './sections/pageHeaderBand'
 import { infoSplitCard } from './sections/infoSplitCard'
 import { labeledDisclaimers } from './sections/labeledDisclaimers'
 import { bulletPanelHero } from './sections/bulletPanelHero'
+import { linkCardsGrid } from './sections/linkCardsGrid'
 import { htmlEmbed } from './sections/htmlEmbed'
 
 export const schemaTypes = [
@@ -113,5 +114,6 @@ export const schemaTypes = [
   infoSplitCard,
   labeledDisclaimers,
   bulletPanelHero,
+  linkCardsGrid,
   htmlEmbed,
 ]

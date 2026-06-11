@@ -17,11 +17,9 @@
 		{ "label": "Email", "url": "mailto:info@heloc360.com", "type": "email", "icon": "Mail" }
 	],
 	"useCases": [
-		{ "label": "Pay off debt", "url": "/debt-consolidation", "type": "text", "icon": null },
-		{ "label": "Renovate my home", "url": "/home-renovation", "type": "text", "icon": null },
-		{ "label": "Plan for retirement", "url": "/retirement-equity", "type": "text", "icon": null },
+		{ "label": "Pay off debt", "url": "/calculators/debt-consolidation", "type": "text", "icon": null },
 		{ "label": "First time tapping equity", "url": "/heloc-101", "type": "text", "icon": null },
-		{ "label": "I'm self-employed", "url": "/self-employed-heloc", "type": "text", "icon": null }
+		{ "label": "Talk to an advisor", "url": "/pre-qual", "type": "text", "icon": null }
 	],
 	"calculators": [
 		{ "label": "Debt Consolidation Savings", "url": "/calculators/debt-consolidation", "type": "text", "icon": null },
@@ -30,8 +28,7 @@
 	],
 	"resources": [
 		{ "label": "HELOC 101", "url": "/heloc-101", "type": "text", "icon": null },
-		{ "label": "Blog", "url": "/blog", "type": "text", "icon": null },
-		{ "label": "Glossary", "url": "/glossary", "type": "text", "icon": null }
+		{ "label": "Blog", "url": "/blog", "type": "text", "icon": null }
 	],
 	"company": [
 		{ "label": "About", "url": "/about", "type": "text", "icon": null },

@@ -76,6 +76,7 @@ export const page = defineType({
         defineArrayMember({ type: 'infoSplitCard' }),
         defineArrayMember({ type: 'labeledDisclaimers' }),
         defineArrayMember({ type: 'bulletPanelHero' }),
+        defineArrayMember({ type: 'linkCardsGrid' }),
         defineArrayMember({ type: 'htmlEmbed' }),
       ],
       validation: (R) => R.required().min(1),

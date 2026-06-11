@@ -49,6 +49,7 @@ import { PageHeaderBandSection, type PageHeaderBandValue } from './page-header-b
 import { InfoSplitCardSection, type InfoSplitCardValue } from './info-split-card-section'
 import { LabeledDisclaimersSection, type LabeledDisclaimersValue } from './labeled-disclaimers-section'
 import { BulletPanelHeroSection, type BulletPanelHeroValue } from './bullet-panel-hero-section'
+import { LinkCardsGridSection, type LinkCardsGridValue } from './link-cards-grid-section'
 import { HtmlEmbedSection, type HtmlEmbedValue } from './html-embed-section'
 import { ComponentEmbedSection, type ComponentEmbedValue } from './component-embed-section'
 
@@ -104,6 +105,7 @@ export type Section =
   | InfoSplitCardValue
   | LabeledDisclaimersValue
   | BulletPanelHeroValue
+  | LinkCardsGridValue
   | HtmlEmbedValue
   | ComponentEmbedValue
 
@@ -214,6 +216,8 @@ export function renderBlock(section: Section): React.ReactNode {
       return <LabeledDisclaimersSection key={section._key} value={section} />
     case 'bulletPanelHero':
       return <BulletPanelHeroSection key={section._key} value={section} />
+    case 'linkCardsGrid':
+      return <LinkCardsGridSection key={section._key} value={section} />
     case 'htmlEmbed':
       return <HtmlEmbedSection key={section._key} value={section} />
     case 'componentEmbed':
