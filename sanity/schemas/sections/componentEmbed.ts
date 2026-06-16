@@ -10,7 +10,6 @@ import { defineType, defineField } from 'sanity'
 //
 // Known components:
 //   mailingListForm  — the homepage Lead Capture form (components/mailing-list-form.tsx)
-//   contactForm      — the full /contact page form + chrome (components/contact/contact-form.tsx)
 //   preQualForm      — the two-step pre-qual form (components/pre-qual/pre-qual-form.tsx);
 //                      rendered with useCase="universal" by the renderer
 //   stickyCtaSuppress — side-effect component that hides the sticky CTA while mounted
@@ -26,7 +25,6 @@ export const componentEmbed = defineType({
       options: {
         list: [
           { title: 'Mailing list form', value: 'mailingListForm' },
-          { title: 'Contact form (full /contact page)', value: 'contactForm' },
           { title: 'Pre-qual form (useCase: universal)', value: 'preQualForm' },
           { title: 'Sticky CTA suppress (side-effect)', value: 'stickyCtaSuppress' },
         ],

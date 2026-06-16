@@ -98,6 +98,9 @@ export default function Footer() {
                 {data.companyInfo.callToAction}
               </p>
               <p className="text-white/80 leading-relaxed">{data.companyInfo.description}</p>
+              <address className="not-italic text-white/60 text-sm mt-3">
+                {data.companyInfo.address}
+              </address>
             </div>
             <div>
               <p className="text-white/50 text-xs leading-relaxed">

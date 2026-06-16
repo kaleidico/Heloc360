@@ -17,6 +17,7 @@ export interface FooterCompanyInfo {
   tagline: string
   callToAction: string
   description: string
+  address: string
   legalDisclaimer: string
 }
 

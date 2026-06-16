@@ -149,7 +149,7 @@ export default async function TeamMemberPage({ params }: Props) {
                     </div>
 
                     <Button className="w-full bg-[#1b75bc] hover:bg-[#1b75bc]/90" asChild>
-                      <Link href="/contact">Schedule a Consultation</Link>
+                      <Link href="/pre-qual">Schedule a Consultation</Link>
                     </Button>
                   </CardContent>
                 </Card>
@@ -233,7 +233,7 @@ export default async function TeamMemberPage({ params }: Props) {
                 className="border-white text-white hover:bg-white/10 bg-transparent"
                 asChild
               >
-                <Link href="/contact">Schedule Consultation</Link>
+                <Link href="/pre-qual">Schedule Consultation</Link>
               </Button>
             </div>
           </div>

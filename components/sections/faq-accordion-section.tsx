@@ -39,7 +39,7 @@ export function FaqAccordionSection({ value }: { value: FaqAccordionValue }) {
   const items = value.items || []
   const showContactCTA = value.showContactCTA ?? true
   const contactCTAText = value.contactCTAText ?? 'Still have questions?'
-  const contactCTALink = value.contactCTALink ?? '/contact'
+  const contactCTALink = value.contactCTALink ?? '/pre-qual'
   const bg = BG[value.background || 'white']
 
   const toggleItem = (index: number) => {

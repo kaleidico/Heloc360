@@ -169,9 +169,17 @@ const sections = [
     _key: k('sec'),
     heading: 'Ready to Work With Us?',
     body: "Join thousands of homeowners who have successfully accessed their home equity with HELOC360's help.",
-    primaryCta: { label: 'Get Pre-Qualified', href: 'https://get-started.heloc360.com/' },
-    secondaryCta: { label: 'Contact Our Team', href: '/contact' },
+    primaryCta: { label: 'Get Pre-Qualified', href: '/pre-qual' },
+    secondaryCta: { label: 'Meet Our Team', href: '/meet-our-team' },
     finePrint: 'Free consultation • No obligation • Expert guidance every step of the way',
+  },
+
+  // 9. Mailing/legal address — small centered closing note.
+  {
+    _type: 'pageFooterNote',
+    _key: k('sec'),
+    text: 'HELOC360 is provided by My Perfect Leads, LLC · 1121 Annapolis RD #218 · Odenton, MD 21113',
+    showReturnHome: false,
   },
 ]
 

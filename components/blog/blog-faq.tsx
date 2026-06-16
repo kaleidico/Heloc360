@@ -16,7 +16,7 @@ export default function BlogFAQ({ title = "Frequently Asked Questions", items }:
           className="bg-transparent py-0"
           showContactCTA={true}
           contactCTAText="Have more questions about HELOCs?"
-          contactCTALink="/contact"
+          contactCTALink="/pre-qual"
           generateStructuredData={true}
         />
       </div>

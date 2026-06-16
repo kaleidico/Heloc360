@@ -43,10 +43,10 @@ const commonPages = [
     keywords: ["calculator", "equity", "estimate", "home", "value"],
   },
   {
-    path: "/contact",
-    title: "Contact Us",
-    description: "Get in touch with our team",
-    keywords: ["contact", "support", "help", "phone", "email"],
+    path: "/pre-qual",
+    title: "Talk to an Advisor",
+    description: "Speak with a licensed HELOC advisor",
+    keywords: ["contact", "advisor", "talk", "help", "support"],
   },
   {
     path: "/privacy",
@@ -83,8 +83,8 @@ const popularPages = [
     description: "Meet our team",
   },
   {
-    path: "/contact",
-    title: "Contact Support",
+    path: "/pre-qual",
+    title: "Talk to an Advisor",
     icon: Mail,
     description: "Get help from experts",
   },
@@ -289,9 +289,9 @@ export default function NotFoundClient() {
               </Link>
             </Button>
             <Button size="lg" variant="outline" asChild>
-              <Link href="/contact">
+              <Link href="/pre-qual">
                 <Mail className="w-5 h-5 mr-2" />
-                Contact Support
+                Talk to an Advisor
               </Link>
             </Button>
           </div>
@@ -324,8 +324,8 @@ export default function NotFoundClient() {
           <div className="mt-12 text-center">
             <p className="text-gray-600 mb-4">Still can't find what you're looking for?</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center text-sm">
-              <Link href="/contact" className="text-[#1b75bc] hover:text-[#007a5e] transition-colors">
-                Contact our support team
+              <Link href="/pre-qual" className="text-[#1b75bc] hover:text-[#007a5e] transition-colors">
+                Talk to an advisor
               </Link>
               <span className="hidden sm:inline text-gray-400">•</span>
               <Link href="/heloc-101" className="text-[#1b75bc] hover:text-[#007a5e] transition-colors">

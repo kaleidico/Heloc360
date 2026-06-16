@@ -3,6 +3,7 @@
 		"tagline": "The HELOC advisor, not the HELOC salesman.",
 		"callToAction": "Talk to an advisor — not a sales rep.",
 		"description": "HELOC360 helps homeowners decide whether and how to tap their home equity. We connect you with vetted, licensed lenders who specialize in your specific situation — and we'll walk you through the trade-offs before you commit to anything. HELOC360 is provided by My Perfect Leads, LLC.",
+		"address": "My Perfect Leads, LLC · 1121 Annapolis RD #218 · Odenton, MD 21113",
 		"legalDisclaimer": "This is not an offer to enter into an agreement. Not all customers will qualify. Information, rates, and programs are subject to change without notice. All products are subject to credit and property approval. Other restrictions and limitations may apply. Equal Housing Opportunity."
 	},
 	"mailingList": {
@@ -32,8 +33,7 @@
 	],
 	"company": [
 		{ "label": "About", "url": "/about", "type": "text", "icon": null },
-		{ "label": "Meet our team", "url": "/meet-our-team", "type": "text", "icon": null },
-		{ "label": "Contact", "url": "/contact", "type": "text", "icon": null }
+		{ "label": "Meet our team", "url": "/meet-our-team", "type": "text", "icon": null }
 	],
 	"legal": [
 		{ "label": "Privacy Policy", "url": "/privacy", "type": "text", "icon": null },

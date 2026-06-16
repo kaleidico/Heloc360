@@ -41,7 +41,7 @@ export default function FAQ({
   items,
   showContactCTA = true,
   contactCTAText = "Still have questions?",
-  contactCTALink = "/contact",
+  contactCTALink = "/pre-qual",
   className = "",
   generateStructuredData = true,
 }: FAQProps) {

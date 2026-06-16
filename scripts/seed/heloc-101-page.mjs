@@ -297,7 +297,7 @@ const sections = [
     background: 'white',
     showContactCTA: true,
     contactCTAText: 'Need personalized HELOC guidance?',
-    contactCTALink: '/contact',
+    contactCTALink: '/pre-qual',
     items: [
       {
         _key: k('faq'),
