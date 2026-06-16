@@ -4,6 +4,18 @@ Per-session work log. Most recent session at the top. Append after each session.
 
 ---
 
+## 2026-06-16 (later 2) — PUSHED + DEPLOYED TO LIVE heloc360.com
+
+Robert: "push up and deploy." Pushed `sanity-migration` → `kaleidico/Heloc360` (63 commits, `0550903..f98792f`). Added Vercel env vars (Production+Preview): `NEXT_PUBLIC_RECAPTCHA_SITE_KEY`, `RECAPTCHA_SECRET_KEY`, `RESEND_API_KEY`. Ran `vercel --prod`.
+
+**⚠️ The deploy aliased to `https://heloc360.com` — the LIVE domain, not `heloc360.vercel.app`.** Between the earlier calculators deploy this session (which aliased to `.vercel.app`) and this one, the `heloc360.com` domain became attached to the `heloc360` Vercel project. So the 06-10 worklog note ("live = separate project `v0-heloc360-redesign`; heloc360 project has no custom domain") is now STALE — heloc360.com serves THIS project. Everything from today's session is now live: MortgageMate HELOC calculators, contact page removed + address in footer/about, FAQ/CTA repoints to /pre-qual, about primaryCta off the old external form, Resend wiring, and Invisible reCAPTCHA on pre-qual.
+
+**Live verification:** all key routes 200 (`/`, `/about`, `/heloc-101`, `/blog`, `/pre-qual`, both calculators, `/meet-our-team`, `/privacy`); `/contact` 404; footer shows the address + no Contact link; reCAPTCHA loads on heloc360.com with NO "unsupported domain" error (the localhost limitation doesn't apply to the registered domain). Did NOT fire a real lead-submit on production (would create a junk lead). 
+
+**Still not functional in prod:** Resend email — `heloc360.com` is not yet a verified SENDING domain in Resend, so notification emails to support@kaleidico.com still 403 (forms work; webhook delivery intact). Verify the domain in resend.com/domains to turn it on.
+
+---
+
 ## 2026-06-16 (later) — Resend lead-notification email on all forms (commit `1ade96d`)
 
 Robert asked whether "Resend" was on the site and wanted to be sure the forms work. It was NOT — forms deliver by webhook (pre-qual + legacy mortgage → lender webhook `webhooks-listener-woad.vercel.app`; mailing list → Zapier), no email anywhere. Verified the webhook is reachable (built-in `GET /api/test-webhook` on staging returned `{"success":true,"message":"Webhook received successfully",requestId}`). He then provided a Resend API key and asked to notify the team (`support@kaleidico.com`) on **all** form submissions.
