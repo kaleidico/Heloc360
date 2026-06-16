@@ -4,6 +4,29 @@ Per-session work log. Most recent session at the top. Append after each session.
 
 ---
 
+## 2026-06-16 — Calculators cut over to MortgageMate HELOC embed (commit `869d09f`, NOT deployed)
+
+Robert sent the MortgageMate embed snippets (10 calculator types, one account key `mm_abc426486dba2d3dc15158d91f722a58`) and said: "Just do those 2 from Mortgage Mate" — i.e. fill the 2 already-staged calc pages, not build all 10. None of the 10 MM types is named "home-equity-estimator" or "debt-consolidation"; the **HELOC** calculator (`data-mortgagemate="heloc"`) is the right fit for both (both pages are about borrowing against home equity). Used `heloc` on both — flagged the debt-consolidation mapping for Robert to override if he wants a different one; he didn't.
+
+### What shipped (commit `869d09f`, on `sanity-migration`)
+- **New typed block `mortgageMateEmbed`** (`sanity/schemas/sections/mortgageMateEmbed.ts`): `calculator` (dropdown of all 10 MM types) + `dataKey` + heading/background/maxWidth/paddingY wrappers. Registered in `schemas/index.ts`, `page.ts`, `section-renderer.tsx`.
+- **Client renderer** `components/sections/mortgage-mate-embed-section.tsx`: renders `<div data-mortgagemate data-key>` and loads `mortgagemate.app/embed.js` in a `useEffect` (fresh script element per mount → re-scans on client-side nav). **Why not htmlEmbed:** `<script>` injected via `dangerouslySetInnerHTML` never executes, so the raw-snippet route could never mount the widget. This was the load-bearing technical decision.
+- **Reseeded both calc docs at their REAL slugs** (`scripts/seed/calc-{home-equity-estimator,debt-consolidation}-page.mjs`): swapped the `<!-- Mortgage Mate embed pending -->` `htmlEmbed` placeholder for `mortgageMateEmbed{heloc}` (gray-50 band), promoted `…-sanity` temp slugs → `calculators/home-equity-estimator` and `calculators/debt-consolidation`. Published to the production dataset.
+- **Deleted the hardcoded React routes** (`app/(site)/calculators/{home-equity-estimator,debt-consolidation}/page.tsx`) + the 4 `components/calculators/*` files. Catch-all now serves both from Sanity. **The dataset is now fully HTML-free — zero `htmlEmbed` usage remains anywhere.**
+
+### Verified (local dev, port 3000, fresh `.next`)
+Both pages 200; `embed.js` executes and mounts the HELOC widget in an iframe (`https://mortgagemate.app/embed/heloc?key=…&domain=…`), container ~3235px, full calculator UI (Property Information / HELOC Terms / Financial Information / "Powered by mortgagemate"); page chrome (educational split-card, disclaimers, 7-page-guide CTA, footer) intact. Full-page screenshots: `~/Downloads/heloc360-block-diffs/calc-{home-equity,debt-consolidation}-MORTGAGEMATE.png`. Only console errors are pre-existing favicon 404s.
+
+### NOT done — needs Robert
+- **Deploy to staging is PENDING.** `vercel --prod` was blocked by the safety classifier (deploy/push decision still gated on Robert). Until staging is redeployed, `heloc360.vercel.app` still shows the OLD React calculators (the deployed build's hardcoded routes shadow the catch-all). The Sanity reseed alone caused **no staging regression** (old routes still win there); the cutover only takes effect on redeploy. **To finish: authorize `vercel --prod` (kaleidico scope — note CLI was logged in as personal `robertallenbaker-4715`, project is team `heloc360`; `vercel login` / `vercel switch` may be needed), then browser-verify the embed on staging.**
+- Commit `869d09f` is local-only (now 103 commits ahead of `origin/main`).
+
+### Gotchas confirmed this session
+- **Dev-server `.next` wedge bit again** (the documented one): the running dev server was 404ing EVERY route (even `/about`) — not my change. Fix per runbook: `pkill -9 -f "next dev"/"next-server"` → `rm -rf .next` → restart. Came back clean on 3000.
+- Pre-existing, NOT fixed: calc tab titles still double-suffix ("… | HELOC360 | HELOC360") — already on the backlog.
+
+---
+
 ## 2026-06-11 — Footer 404 sweep: 7 dead links eliminated (commit `2db1125`)
 
 Robert: "let's scan and eliminate the 404's in the footer links." Audit of all 17 `config/footer-nav.json` links: 7 were 404 — and all 7 also 404 on live heloc360.com, i.e. never-built pages, not migration regressions.
