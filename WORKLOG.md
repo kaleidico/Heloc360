@@ -4,7 +4,27 @@ Per-session work log. Most recent session at the top. Append after each session.
 
 ---
 
-## 2026-06-16 — Calculators cut over to MortgageMate HELOC embed (commit `869d09f`, NOT deployed)
+## 2026-06-16 (later) — Resend lead-notification email on all forms (commit `1ade96d`)
+
+Robert asked whether "Resend" was on the site and wanted to be sure the forms work. It was NOT — forms deliver by webhook (pre-qual + legacy mortgage → lender webhook `webhooks-listener-woad.vercel.app`; mailing list → Zapier), no email anywhere. Verified the webhook is reachable (built-in `GET /api/test-webhook` on staging returned `{"success":true,"message":"Webhook received successfully",requestId}`). He then provided a Resend API key and asked to notify the team (`support@kaleidico.com`) on **all** form submissions.
+
+### Built (commit `1ade96d`)
+- `lib/email/notify.ts` — `sendLeadNotification()` via Resend REST (no SDK dep). **Env-gated on `RESEND_API_KEY`** (silent no-op if unset, like the hCaptcha check). to/from overridable via `LEAD_NOTIFY_TO`/`LEAD_NOTIFY_FROM`, default `support@kaleidico.com` / `HELOC360 Website <leads@heloc360.com>`. Renders fields as HTML+text table, sets `reply_to` to the submitter. **Never throws** — a mail failure cannot fail a submission; existing webhook/Zapier delivery is untouched.
+- Wired into `/api/submit-prequal`, `/api/subscribe-mailing-list`, `/api/submit-mortgage` (after their existing delivery succeeds).
+- **Contact form was FAKE** — `handleSubmit` awaited a 2s `setTimeout` and showed success, delivering nowhere. Built a real `app/(site)/api/submit-contact/route.ts` (validates required fields + email, then notifies) and pointed `components/contact/contact-form.tsx` at it.
+
+### Verified
+- `npx tsc --noEmit` clean on all changed files. Local smoke: `POST /api/submit-contact` valid → `{success:true}`, missing-consent → 400.
+- Direct Resend send probe: **403 `The heloc360.com domain is not verified`** — expected; the key + sender are correct, the domain just isn't verified yet.
+
+### Not live until Robert does 2 things
+1. **Verify `heloc360.com` in Resend** (resend.com/domains → add domain → add the SPF/DKIM/DMARC DNS records at the heloc360.com DNS host → verify). `*.vercel.app` CANNOT be a sender domain — sender must be `heloc360.com`.
+2. **Set `RESEND_API_KEY` in the Vercel `heloc360` project env**, then redeploy. (Key is in local `.env.local`, gitignored — NOT committed.)
+Until both are done the notifier logs the 403 and forms still work (return success); contact-form delivery specifically depends on this (it has no other backend now).
+
+---
+
+## 2026-06-16 — Calculators cut over to MortgageMate HELOC embed (commit `869d09f`, deployed to staging)
 
 Robert sent the MortgageMate embed snippets (10 calculator types, one account key `mm_abc426486dba2d3dc15158d91f722a58`) and said: "Just do those 2 from Mortgage Mate" — i.e. fill the 2 already-staged calc pages, not build all 10. None of the 10 MM types is named "home-equity-estimator" or "debt-consolidation"; the **HELOC** calculator (`data-mortgagemate="heloc"`) is the right fit for both (both pages are about borrowing against home equity). Used `heloc` on both — flagged the debt-consolidation mapping for Robert to override if he wants a different one; he didn't.
 
