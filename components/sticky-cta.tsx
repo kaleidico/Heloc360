@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { Phone, X } from "lucide-react"
+import { X } from "lucide-react"
 
 const DISMISS_KEY = "stickyCta:dismissed"
 
@@ -58,13 +58,6 @@ export default function StickyCta() {
       className="fixed bottom-4 inset-x-3 md:inset-x-auto md:right-6 md:bottom-6 z-40 bg-brand-navy text-white shadow-2xl rounded-xl border border-white/10 overflow-hidden"
     >
       <div className="flex items-stretch">
-        <Link
-          href="/pre-qual"
-          className="flex items-center gap-2 px-4 py-3 text-sm font-semibold hover:bg-white/10 transition-colors"
-        >
-          <Phone className="w-4 h-4" aria-hidden="true" />
-          <span>Talk to advisor</span>
-        </Link>
         <Link
           href="/#calculator"
           className="flex items-center gap-2 px-4 py-3 text-sm font-semibold bg-brand-green hover:bg-brand-green-dark transition-colors"
