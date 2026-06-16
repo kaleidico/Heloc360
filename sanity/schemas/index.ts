@@ -55,6 +55,7 @@ import { labeledDisclaimers } from './sections/labeledDisclaimers'
 import { bulletPanelHero } from './sections/bulletPanelHero'
 import { linkCardsGrid } from './sections/linkCardsGrid'
 import { htmlEmbed } from './sections/htmlEmbed'
+import { mortgageMateEmbed } from './sections/mortgageMateEmbed'
 
 export const schemaTypes = [
   // Documents
@@ -116,4 +117,5 @@ export const schemaTypes = [
   bulletPanelHero,
   linkCardsGrid,
   htmlEmbed,
+  mortgageMateEmbed,
 ]

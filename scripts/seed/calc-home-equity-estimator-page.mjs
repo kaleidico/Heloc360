@@ -8,23 +8,17 @@ const client = createClient({
   useCdn: false,
 })
 
-// Staging structure only — NOT cut over. The hardcoded /calculators/home-equity-estimator
-// route stays live. Page chrome is real blocks (pageHeaderBand, infoSplitCard,
-// labeledDisclaimers) — the ONLY htmlEmbed is the placeholder where the Mortgage Mate
-// calculator embed will later go. Content is verbatim from
-// app/(site)/calculators/home-equity-estimator/page.tsx.
-//
-// Staging caveat: the source page paints one full-height gray-50 background; here each
-// chrome block carries its own gray-50 band, so the (currently empty) calculator slot
-// renders white. Resolves itself once the Mortgage Mate embed fills the slot — wrap the
-// embed HTML in a gray-50 band to match.
+// CUT OVER. Renders at /calculators/home-equity-estimator (hardcoded React route deleted).
+// Chrome is real blocks (pageHeaderBand, infoSplitCard, labeledDisclaimers); the calculator
+// is the MortgageMate HELOC widget via the mortgageMateEmbed block. The embed carries its
+// own gray-50 band to match the surrounding chrome (the source page painted one full-height
+// gray-50 background). Content is verbatim from the former route.
 
 const doc = {
   _id: 'page-calc-home-equity-estimator',
   _type: 'page',
   title: 'Home Equity Estimator Calculator | HELOC360',
-  // Temporary slug; live hardcoded route stays at /calculators/home-equity-estimator.
-  slug: { _type: 'slug', current: 'calculators/home-equity-estimator-sanity' },
+  slug: { _type: 'slug', current: 'calculators/home-equity-estimator' },
   sections: [
     {
       _type: 'pageHeaderBand',
@@ -33,11 +27,13 @@ const doc = {
       body: "Calculate your current home equity and discover how much you could potentially borrow with a HELOC. Get instant estimates based on your home's current value and existing mortgage balance.",
     },
     {
-      _type: 'htmlEmbed',
-      _key: 'heec-calc-placeholder',
-      html: '<!-- Mortgage Mate embed pending -->',
+      _type: 'mortgageMateEmbed',
+      _key: 'heec-calc',
+      calculator: 'heloc',
+      dataKey: 'mm_abc426486dba2d3dc15158d91f722a58',
+      background: 'gray-50',
       maxWidth: '7xl',
-      paddingY: 'md',
+      paddingY: 'lg',
     },
     {
       _type: 'infoSplitCard',

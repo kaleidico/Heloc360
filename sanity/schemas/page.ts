@@ -78,6 +78,7 @@ export const page = defineType({
         defineArrayMember({ type: 'bulletPanelHero' }),
         defineArrayMember({ type: 'linkCardsGrid' }),
         defineArrayMember({ type: 'htmlEmbed' }),
+        defineArrayMember({ type: 'mortgageMateEmbed' }),
       ],
       validation: (R) => R.required().min(1),
     }),

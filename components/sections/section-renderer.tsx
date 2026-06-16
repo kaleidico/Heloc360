@@ -52,6 +52,7 @@ import { BulletPanelHeroSection, type BulletPanelHeroValue } from './bullet-pane
 import { LinkCardsGridSection, type LinkCardsGridValue } from './link-cards-grid-section'
 import { HtmlEmbedSection, type HtmlEmbedValue } from './html-embed-section'
 import { ComponentEmbedSection, type ComponentEmbedValue } from './component-embed-section'
+import { MortgageMateEmbedSection, type MortgageMateEmbedValue } from './mortgage-mate-embed-section'
 
 export type Section =
   | HeroSectionValue
@@ -108,6 +109,7 @@ export type Section =
   | LinkCardsGridValue
   | HtmlEmbedValue
   | ComponentEmbedValue
+  | MortgageMateEmbedValue
 
 // Renders a single section, keyed by its `_key`. Exported so container blocks
 // (e.g. contentSection) can recursively render their nested children, making
@@ -222,6 +224,8 @@ export function renderBlock(section: Section): React.ReactNode {
       return <HtmlEmbedSection key={section._key} value={section} />
     case 'componentEmbed':
       return <ComponentEmbedSection key={section._key} value={section} />
+    case 'mortgageMateEmbed':
+      return <MortgageMateEmbedSection key={section._key} value={section} />
     default:
       // Section type unknown — likely a schema update without a matching renderer.
       // Render nothing in production; surface the type during development.

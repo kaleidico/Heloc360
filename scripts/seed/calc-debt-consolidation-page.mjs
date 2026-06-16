@@ -8,21 +8,16 @@ const client = createClient({
   useCdn: false,
 })
 
-// Staging structure only — NOT cut over. The hardcoded /calculators/debt-consolidation
-// route stays live. Page chrome is real blocks (bulletPanelHero, labeledDisclaimers) —
-// the ONLY htmlEmbed is the placeholder where the Mortgage Mate calculator embed will
-// later go. Content is verbatim from app/(site)/calculators/debt-consolidation/page.tsx.
-//
-// Staging caveat: the source page paints a full-height gray-50 background behind the
-// calculator section; the (currently empty) calculator slot renders white here. When the
-// Mortgage Mate embed lands, wrap it in a gray-50 band to match.
+// CUT OVER. Renders at /calculators/debt-consolidation (hardcoded React route deleted).
+// Chrome is real blocks (bulletPanelHero, labeledDisclaimers); the calculator is the
+// MortgageMate HELOC widget via the mortgageMateEmbed block (gray-50 band to match the
+// source page's full-height gray background). Content is verbatim from the former route.
 
 const doc = {
   _id: 'page-calc-debt-consolidation',
   _type: 'page',
   title: 'Debt Consolidation Savings Calculator | HELOC360',
-  // Temporary slug; live hardcoded route stays at /calculators/debt-consolidation.
-  slug: { _type: 'slug', current: 'calculators/debt-consolidation-sanity' },
+  slug: { _type: 'slug', current: 'calculators/debt-consolidation' },
   sections: [
     {
       _type: 'bulletPanelHero',
@@ -38,10 +33,12 @@ const doc = {
       ],
     },
     {
-      _type: 'htmlEmbed',
-      _key: 'dcc-calc-placeholder',
-      html: '<!-- Mortgage Mate embed pending -->',
-      maxWidth: 'none',
+      _type: 'mortgageMateEmbed',
+      _key: 'dcc-calc',
+      calculator: 'heloc',
+      dataKey: 'mm_abc426486dba2d3dc15158d91f722a58',
+      background: 'gray-50',
+      maxWidth: '7xl',
       paddingY: 'lg',
     },
     {
