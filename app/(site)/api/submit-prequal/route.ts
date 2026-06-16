@@ -9,23 +9,23 @@ import { sendLeadNotification } from "@/lib/email/notify"
 const LENDER_WEBHOOK_URL =
   "https://webhooks-listener-woad.vercel.app/api/webhook/f129713b-67b2-4302-9ca0-b2884e21d682"
 
-const HCAPTCHA_VERIFY_URL = "https://api.hcaptcha.com/siteverify"
+const RECAPTCHA_VERIFY_URL = "https://www.google.com/recaptcha/api/siteverify"
 
-interface HCaptchaVerifyResponse {
+interface RecaptchaVerifyResponse {
   success: boolean
   "error-codes"?: string[]
 }
 
-async function verifyHCaptcha(token: string, secret: string): Promise<boolean> {
+async function verifyRecaptcha(token: string, secret: string): Promise<boolean> {
   try {
     const body = new URLSearchParams({ response: token, secret })
-    const response = await fetch(HCAPTCHA_VERIFY_URL, {
+    const response = await fetch(RECAPTCHA_VERIFY_URL, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: body.toString(),
     })
     if (!response.ok) return false
-    const data = (await response.json()) as HCaptchaVerifyResponse
+    const data = (await response.json()) as RecaptchaVerifyResponse
     return data.success === true
   } catch {
     return false
@@ -57,20 +57,20 @@ export async function POST(request: NextRequest) {
 
   const data = parsed.data
 
-  // hCaptcha verification — only enforced when HCAPTCHA_SECRET is set.
-  // Mirrors the existing 9-step form's dev-skip pattern.
-  const hcaptchaSecret = process.env.HCAPTCHA_SECRET
-  if (hcaptchaSecret) {
-    if (!data.hcaptchaToken) {
+  // reCAPTCHA verification — only enforced when RECAPTCHA_SECRET_KEY is set,
+  // so local/dev without the secret still works.
+  const recaptchaSecret = process.env.RECAPTCHA_SECRET_KEY
+  if (recaptchaSecret) {
+    if (!data.recaptchaToken) {
       return NextResponse.json(
-        { success: false, message: "hCaptcha required" },
+        { success: false, message: "reCAPTCHA required" },
         { status: 400 },
       )
     }
-    const ok = await verifyHCaptcha(data.hcaptchaToken, hcaptchaSecret)
+    const ok = await verifyRecaptcha(data.recaptchaToken, recaptchaSecret)
     if (!ok) {
       return NextResponse.json(
-        { success: false, message: "hCaptcha verification failed" },
+        { success: false, message: "reCAPTCHA verification failed" },
         { status: 400 },
       )
     }
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
 
   // Forward to the lender webhook. Strip the token from the outbound payload
   // since the lender side doesn't need it after we've verified.
-  const { hcaptchaToken: _drop, ...outbound } = data
+  const { recaptchaToken: _drop, ...outbound } = data
 
   try {
     const response = await fetch(LENDER_WEBHOOK_URL, {

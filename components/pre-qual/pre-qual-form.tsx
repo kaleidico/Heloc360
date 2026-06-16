@@ -7,7 +7,7 @@ import { Phone, Loader2 } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import HCaptcha from "@/components/ui/hcaptcha"
+import { InvisibleRecaptcha, type InvisibleRecaptchaHandle } from "@/components/ui/recaptcha-invisible"
 import { getMergedTrackingData } from "@/lib/tracking"
 import {
   PreQualSubmissionSchema,
@@ -39,15 +39,14 @@ interface PersistedState {
 
 interface PreQualFormProps {
   useCase: UseCase
-  hcaptchaSiteKey?: string
 }
 
-export function PreQualForm({ useCase, hcaptchaSiteKey }: PreQualFormProps) {
+export function PreQualForm({ useCase }: PreQualFormProps) {
   const [step1Valid, setStep1Valid] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
   const [submitted, setSubmitted] = useState(false)
-  const [hcaptchaToken, setHcaptchaToken] = useState("")
+  const recaptchaRef = useRef<InvisibleRecaptchaHandle>(null)
   const [zipLookupPending, setZipLookupPending] = useState(false)
   const pendingZipRef = useRef<string>("")
 
@@ -190,6 +189,18 @@ export function PreQualForm({ useCase, hcaptchaSiteKey }: PreQualFormProps) {
   const onSubmitInner = async (data: PreQualSubmission) => {
     setSubmitError(null)
     setSubmitting(true)
+
+    // Run the invisible reCAPTCHA challenge on submit and capture its token.
+    // Resolves "" when no sitekey is configured; rejects on expiry/error.
+    let recaptchaToken = ""
+    try {
+      recaptchaToken = (await recaptchaRef.current?.execute()) ?? ""
+    } catch {
+      setSubmitError("Couldn't verify you're human. Please try again.")
+      setSubmitting(false)
+      return
+    }
+
     const tracking = (() => {
       try {
         return getMergedTrackingData()
@@ -202,7 +213,7 @@ export function PreQualForm({ useCase, hcaptchaSiteKey }: PreQualFormProps) {
       ...data,
       useCase,
       formType: "pre-qual-v1",
-      hcaptchaToken: hcaptchaToken || undefined,
+      recaptchaToken: recaptchaToken || undefined,
     }
     try {
       const response = await fetch("/api/submit-prequal", {
@@ -453,11 +464,7 @@ export function PreQualForm({ useCase, hcaptchaSiteKey }: PreQualFormProps) {
             error={errors.bestTime?.message}
           />
 
-          <HCaptcha
-            onVerify={setHcaptchaToken}
-            onExpire={() => setHcaptchaToken("")}
-            sitekey={hcaptchaSiteKey}
-          />
+          <InvisibleRecaptcha ref={recaptchaRef} />
 
           <Button
             type="submit"
