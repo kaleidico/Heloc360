@@ -16,10 +16,7 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
-	Phone,
-	Mail,
 	MapPin,
-	Clock,
 	CheckCircle,
 	AlertCircle,
 	Calculator,
@@ -36,27 +33,6 @@ const contactReasons = [
 	{ value: "partnership", label: "Partnership Inquiry" },
 	{ value: "media-press", label: "Media & Press" },
 	{ value: "other", label: "Other" },
-];
-
-const contactMethods = [
-	{
-		icon: Phone,
-		title: "Phone Support",
-		description: "Speak directly with our HELOC experts",
-		contact: "(313) 264-0470",
-		hours: "Mon-Fri: 8AM-8PM EST",
-		action: "tel:3132640470",
-		actionText: "Call Now",
-	},
-	{
-		icon: Mail,
-		title: "Email Support",
-		description: "Get detailed answers to your questions",
-		contact: "help@heloc360.com",
-		hours: "Response within 24 hours",
-		action: "mailto:help@heloc360.com",
-		actionText: "Send Email",
-	},
 ];
 
 const quickLinks = [
@@ -145,79 +121,10 @@ export default function ContactForm() {
 						<h1 className='text-4xl md:text-5xl font-bold mb-6'>
 							Contact Our HELOC Experts
 						</h1>
-						<p className='text-xl mb-8 opacity-90'>
+						<p className='text-xl opacity-90'>
 							Ready to unlock your home's equity? Our team is here
 							to guide you through every step of the process.
 						</p>
-						<div className='flex justify-center'>
-							<Button
-								size='lg'
-								className='bg-white text-[#1b75bc] hover:bg-gray-100'
-								asChild
-							>
-								<a href='tel:3132640470'>
-									<Phone className='w-5 h-5 mr-2' />
-									Call (313) 264-0470
-								</a>
-							</Button>
-						</div>
-					</div>
-				</div>
-			</section>
-
-			{/* Contact Methods */}
-			<section className='py-16 bg-gray-50'>
-				<div className='container mx-auto px-4'>
-					<div className='max-w-6xl mx-auto'>
-						<div className='text-center mb-12'>
-							<h2 className='text-3xl font-bold text-[#1b75bc] mb-4'>
-								Get in Touch
-							</h2>
-							<p className='text-lg text-gray-600'>
-								Choose the contact method that works best for
-								you
-							</p>
-						</div>
-
-						<div className='grid md:grid-cols-2 gap-8 max-w-3xl mx-auto'>
-							{contactMethods.map((method, index) => (
-								<Card
-									key={index}
-									className='text-center hover:shadow-lg transition-shadow'
-								>
-									<CardHeader>
-										<div className='w-16 h-16 bg-[#1b75bc]/10 rounded-full flex items-center justify-center mx-auto mb-4'>
-											<method.icon className='w-8 h-8 text-[#1b75bc]' />
-										</div>
-										<CardTitle className='text-xl text-[#1b75bc]'>
-											{method.title}
-										</CardTitle>
-									</CardHeader>
-									<CardContent>
-										<p className='text-gray-600 mb-4'>
-											{method.description}
-										</p>
-										<div className='space-y-2 mb-6'>
-											<p className='font-semibold text-gray-900'>
-												{method.contact}
-											</p>
-											<div className='flex items-center justify-center gap-1 text-sm text-gray-500'>
-												<Clock className='w-4 h-4' />
-												<span>{method.hours}</span>
-											</div>
-										</div>
-										<Button
-											className='w-full bg-[#1b75bc] hover:bg-[#1b75bc]/90'
-											asChild
-										>
-											<a href={method.action}>
-												{method.actionText}
-											</a>
-										</Button>
-									</CardContent>
-								</Card>
-							))}
-						</div>
 					</div>
 				</div>
 			</section>
@@ -234,8 +141,7 @@ export default function ContactForm() {
 								</h2>
 								<p className='text-gray-600 mb-8'>
 									Fill out the form below and we'll get back
-									to you within 24 hours. For urgent matters,
-									please call us directly.
+									to you within 24 hours.
 								</p>
 
 								{submitStatus === "success" && (
@@ -263,8 +169,8 @@ export default function ContactForm() {
 											</h3>
 											<p className='text-red-700 text-sm'>
 												There was an error sending your
-												message. Please try again or
-												contact us directly.
+												message. Please try again in a
+												few moments.
 											</p>
 										</div>
 									</div>
@@ -500,8 +406,6 @@ export default function ContactForm() {
 												Odenton, MD 21113
 											</p>
 										</div>
-										{/* REMOVE START */}
-										{/* REMOVE END */}
 									</CardContent>
 								</Card>
 
@@ -541,36 +445,6 @@ export default function ContactForm() {
 									</CardContent>
 								</Card>
 
-								{/* Emergency Contact */}
-								<Card className='bg-yellow-50 border-yellow-200'>
-									<CardContent className='pt-6'>
-										<div className='flex items-start gap-3'>
-											<AlertCircle className='w-5 h-5 text-yellow-600 mt-1 flex-shrink-0' />
-											<div>
-												<h4 className='font-semibold text-yellow-800 mb-2'>
-													Urgent Matters
-												</h4>
-												<p className='text-yellow-700 text-sm mb-3'>
-													For time-sensitive issues
-													related to your loan
-													application or closing,
-													please call us directly
-													rather than using this form.
-												</p>
-												<Button
-													size='sm'
-													className='bg-yellow-600 hover:bg-yellow-700 text-white'
-													asChild
-												>
-													<a href='tel:3132640470'>
-														<Phone className='w-4 h-4 mr-2' />
-														Call Now
-													</a>
-												</Button>
-											</div>
-										</div>
-									</CardContent>
-								</Card>
 							</div>
 						</div>
 					</div>
