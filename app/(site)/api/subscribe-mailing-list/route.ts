@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { sendLeadNotification } from "@/lib/email/notify";
 
 export async function POST(request: NextRequest) {
 	try {
@@ -44,6 +45,14 @@ export async function POST(request: NextRequest) {
 		}
 
 		const zapierData = await zapierResponse.json();
+
+		// Notify the team (additive, best-effort — never throws).
+		await sendLeadNotification({
+			formName: "Mailing List Signup",
+			fields: { firstName: firstName.trim(), email: email.trim(), source: "homepage-mailing-list" },
+			subjectHint: email.trim(),
+			replyTo: email.trim(),
+		});
 
 		return NextResponse.json({
 			success: true,

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { sendLeadNotification } from '@/lib/email/notify'
 
 export async function POST(request: NextRequest) {
   try {
@@ -25,7 +26,16 @@ export async function POST(request: NextRequest) {
       if (process.env.NODE_ENV !== 'production') {
         console.log('Webhook response:', responseData)
       }
-      
+
+      // Notify the team (additive, best-effort — never throws).
+      await sendLeadNotification({
+        formName: 'Mortgage Application',
+        fields: data,
+        subjectHint:
+          [data?.firstName, data?.lastName].filter(Boolean).join(' ') || data?.email,
+        replyTo: typeof data?.email === 'string' ? data.email : undefined,
+      })
+
       return NextResponse.json({
         success: true,
         message: 'Application submitted successfully',

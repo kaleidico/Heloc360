@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { PreQualSubmissionSchema } from "@/lib/pre-qual/schema"
+import { sendLeadNotification } from "@/lib/email/notify"
 
 // Same webhook destination the legacy submit-mortgage endpoint uses
 // (app/api/submit-mortgage/route.ts line 11). Hardcoded here to match
@@ -97,6 +98,16 @@ export async function POST(request: NextRequest) {
         { status: 502 },
       )
     }
+    // Notify the team. Additive and best-effort — sendLeadNotification never
+    // throws, so a mail failure cannot turn a delivered lead into an error.
+    await sendLeadNotification({
+      formName: "Pre-Qualification",
+      fields: outbound,
+      subjectHint:
+        [data.firstName, data.lastName].filter(Boolean).join(" ") || data.email,
+      replyTo: data.email,
+    })
+
     return NextResponse.json({ success: true, message: "Submitted" })
   } catch (error) {
     console.error("Lender webhook error:", error)
