@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { PreQualSubmissionSchema } from "@/lib/pre-qual/schema"
 import { sendLeadNotification } from "@/lib/email/notify"
+import { toLeadBytePayload } from "@/lib/pre-qual/leadbyte"
 
 // Same webhook destination the legacy submit-mortgage endpoint uses
 // (app/api/submit-mortgage/route.ts line 11). Hardcoded here to match
@@ -80,15 +81,23 @@ export async function POST(request: NextRequest) {
   // since the lender side doesn't need it after we've verified.
   const { recaptchaToken: _drop, ...outbound } = data
 
+  // The webhook listener forwards into LeadByte, which expects its own
+  // f_<id>_<name> field shape keyed on a campaign id. We only send that shape
+  // once LEADBYTE_CAMPID is configured; until then we keep posting the legacy
+  // flat payload so an unconfigured deploy can't break lead delivery.
+  const webhookBody = process.env.LEADBYTE_CAMPID
+    ? toLeadBytePayload(outbound)
+    : {
+        ...outbound,
+        submittedAt: new Date().toISOString(),
+        userAgent: request.headers.get("user-agent") || undefined,
+      }
+
   try {
     const response = await fetch(LENDER_WEBHOOK_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...outbound,
-        submittedAt: new Date().toISOString(),
-        userAgent: request.headers.get("user-agent") || undefined,
-      }),
+      body: JSON.stringify(webhookBody),
     })
     if (!response.ok) {
       const errorText = await response.text().catch(() => "")
