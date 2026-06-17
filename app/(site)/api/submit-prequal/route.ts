@@ -3,10 +3,13 @@ import { PreQualSubmissionSchema } from "@/lib/pre-qual/schema"
 import { sendLeadNotification } from "@/lib/email/notify"
 import { toLeadBytePayload } from "@/lib/pre-qual/leadbyte"
 
-// Same webhook destination the legacy submit-mortgage endpoint uses
-// (app/api/submit-mortgage/route.ts line 11). Hardcoded here to match
-// the existing pattern; both should move to an env var in a future
-// tooling pass.
+// LeadByte REST API (account: kaleidico). Direct lead delivery — leads post
+// here with campid + a valid `key`. This is additive to the woad webhook
+// below; both fire on every submission.
+const LEADBYTE_LEADS_URL = "https://kaleidico.leadbyte.com/restapi/v1.3/leads"
+
+// Webhook capture/inspection listener (the woad->downstream pipe). Kept as a
+// required destination alongside LeadByte.
 const LENDER_WEBHOOK_URL =
   "https://webhooks-listener-woad.vercel.app/api/webhook/f129713b-67b2-4302-9ca0-b2884e21d682"
 
@@ -30,6 +33,51 @@ async function verifyRecaptcha(token: string, secret: string): Promise<boolean> 
     return data.success === true
   } catch {
     return false
+  }
+}
+
+type DeliveryResult = { dest: string; ok: boolean; message: string }
+
+// POST the JSON payload to the woad webhook listener.
+async function postToWoad(body: unknown): Promise<DeliveryResult> {
+  try {
+    const response = await fetch(LENDER_WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    })
+    if (!response.ok) {
+      const text = await response.text().catch(() => "")
+      return { dest: "woad", ok: false, message: `HTTP ${response.status} ${text.slice(0, 200)}` }
+    }
+    return { dest: "woad", ok: true, message: "ok" }
+  } catch (error) {
+    return { dest: "woad", ok: false, message: error instanceof Error ? error.message : "fetch failed" }
+  }
+}
+
+// POST the mapped lead directly to LeadByte's REST API. LeadByte error
+// responses carry status:"Error"; anything else on a 2xx is treated as accepted.
+async function postToLeadByte(fields: Record<string, string>, key: string): Promise<DeliveryResult> {
+  try {
+    const body = new URLSearchParams({ key, ...fields })
+    const response = await fetch(LEADBYTE_LEADS_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: body.toString(),
+    })
+    const text = await response.text()
+    let json: { status?: string; message?: string } | null = null
+    try {
+      json = JSON.parse(text)
+    } catch {
+      /* non-JSON body */
+    }
+    const status = String(json?.status ?? "").toLowerCase()
+    const ok = response.ok && status !== "error"
+    return { dest: "leadbyte", ok, message: json?.message || text.slice(0, 300) || `HTTP ${response.status}` }
+  } catch (error) {
+    return { dest: "leadbyte", ok: false, message: error instanceof Error ? error.message : "fetch failed" }
   }
 }
 
@@ -77,15 +125,15 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  // Forward to the lender webhook. Strip the token from the outbound payload
-  // since the lender side doesn't need it after we've verified.
+  // Strip the token from anything we forward — it's spent after verification.
   const { recaptchaToken: _drop, ...outbound } = data
 
-  // Posted to the woad webhook listener (NOT LeadByte directly — that wiring
-  // is handled downstream of woad). When LEADBYTE_CAMPID is set we send the
-  // LeadByte f_<id>_<name> field shape so the downstream forward can pass it
-  // straight through; otherwise we post the legacy flat payload.
-  const webhookBody = process.env.LEADBYTE_CAMPID
+  const campid = process.env.LEADBYTE_CAMPID
+  const leadByteKey = process.env.LEADBYTE_API_KEY
+
+  // The woad webhook gets the LeadByte field shape when a campid is configured
+  // (so its downstream forward can pass through), else the legacy flat payload.
+  const woadBody = campid
     ? toLeadBytePayload(outbound)
     : {
         ...outbound,
@@ -93,36 +141,37 @@ export async function POST(request: NextRequest) {
         userAgent: request.headers.get("user-agent") || undefined,
       }
 
-  try {
-    const response = await fetch(LENDER_WEBHOOK_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(webhookBody),
-    })
-    if (!response.ok) {
-      const errorText = await response.text().catch(() => "")
-      console.error("Lender webhook returned non-OK:", response.status, errorText)
-      return NextResponse.json(
-        { success: false, message: "Lead routing failed. Please try again." },
-        { status: 502 },
-      )
-    }
-    // Notify the team. Additive and best-effort — sendLeadNotification never
-    // throws, so a mail failure cannot turn a delivered lead into an error.
-    await sendLeadNotification({
-      formName: "Pre-Qualification",
-      fields: outbound,
-      subjectHint:
-        [data.firstName, data.lastName].filter(Boolean).join(" ") || data.email,
-      replyTo: data.email,
-    })
+  // Fire both destinations in parallel. The helpers never throw, so a failure
+  // in one can't abort the other.
+  const deliveries: Promise<DeliveryResult>[] = [postToWoad(woadBody)]
+  if (leadByteKey && campid) {
+    deliveries.push(postToLeadByte(toLeadBytePayload(outbound), leadByteKey))
+  }
+  const results = await Promise.all(deliveries)
 
-    return NextResponse.json({ success: true, message: "Submitted" })
-  } catch (error) {
-    console.error("Lender webhook error:", error)
+  const failures = results.filter((r) => !r.ok)
+  for (const f of failures) {
+    console.error(`Lead delivery to ${f.dest} failed:`, f.message)
+  }
+
+  // Only error to the visitor if EVERY delivery failed (lead would be lost).
+  // A partial failure is logged but still reported as success so the visitor
+  // isn't asked to resubmit (which would duplicate into the pipe that worked).
+  if (results.every((r) => !r.ok)) {
     return NextResponse.json(
       { success: false, message: "Lead routing failed. Please try again." },
       { status: 502 },
     )
   }
+
+  // Team notification — additive and best-effort; never fails the lead.
+  await sendLeadNotification({
+    formName: "Pre-Qualification",
+    fields: outbound,
+    subjectHint:
+      [data.firstName, data.lastName].filter(Boolean).join(" ") || data.email,
+    replyTo: data.email,
+  })
+
+  return NextResponse.json({ success: true, message: "Submitted" })
 }
