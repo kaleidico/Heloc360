@@ -29,7 +29,7 @@ const sections = [
       "Welcome to HELOC360—your trusted partner in turning home equity into opportunity. Whether it's funding a major renovation, consolidating debt, or creating financial flexibility, we make it easier to achieve your goals.",
     cta: {
       label: 'Get Pre-Qualified',
-      href: 'https://get-started.heloc360.com/',
+      href: '/pre-qual',
       ariaLabel: 'Get pre-qualified for a HELOC - Free and confidential',
     },
     finePrint:

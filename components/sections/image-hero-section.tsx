@@ -58,7 +58,9 @@ export function ImageHeroSection({ value }: { value: ImageHeroValue }) {
             <Link href={value.cta.href}>{value.cta.label}</Link>
           </Button>
         )}
-        {value.finePrint && <p className="text-sm mt-4 opacity-90">{value.finePrint}</p>}
+        {value.finePrint && (
+          <p className="text-sm mt-4 opacity-90 max-w-3xl mx-auto">{value.finePrint}</p>
+        )}
       </div>
     </section>
   )
