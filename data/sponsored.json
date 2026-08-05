@@ -1,0 +1,26 @@
+{
+  "_readme": "Single source of truth for the paid placement. This unit renders ABOVE the organic ranking and never inside it. Changing organic order to favor an advertiser is prohibited - see PDR.md section 2 and section 7.",
+  "slot": "primary",
+  "active": true,
+  "lei": "254900UL88QFG0E40516",
+  "brand": "Figure",
+  "headline": "Get an instant decision online",
+  "body": "Check your rate in minutes without leaving your couch, and see what you qualify for before you commit to a full application.",
+  "cta": {
+    "label": "Check your rate",
+    "url": "https://REPLACE-WITH-AFFILIATE-LINK"
+  },
+  "disclosureShort": "Advertisement",
+  "disclosureLong": "Figure is a paid advertiser. Payment does not affect our rankings, which are computed from federal HMDA filings and cannot be purchased.",
+  "organicRank": 3,
+  "claimsVerifiedOn": null,
+  "claimsSourceUrl": null,
+  "payoutTrigger": null,
+  "_blocking": [
+    "Every claim in headline/body must be verified against Figure's approved affiliate creative before launch. Set claimsVerifiedOn + claimsSourceUrl.",
+    "Affiliate link must be replaced with the live tracking URL.",
+    "Payout trigger (click / form fill / funded loan) is currently unverified - confirm with Sydney via Ken.",
+    "Confirm Figure permits placement alongside a ranking that includes competitors.",
+    "FTC material-connection disclosure must appear on /about and on every page carrying this unit."
+  ]
+}

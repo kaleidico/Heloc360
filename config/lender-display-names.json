@@ -1,0 +1,64 @@
+{
+	"_readme": "Display-name overrides for lender pages, applied on top of `displayName` in data/lender-profiles.json and keyed by slug. Two separate problems live here, kept apart on purpose. `overrides` repairs capitalization that the upstream title-casing destroyed: these restore the casing of the lender's own legal name and assert no new fact, so they are safe to apply. `unresolved` records names this project cannot fix from the data it holds, either because the filer registered a truncated name or because the legal entity is not the consumer brand. Those need a sourced decision from Bill before they are filled in; until then the page falls back to the legal name, which is accurate if not ideal for search. Never guess an entry into `overrides`.",
+
+	"overrides": {
+		"cmg-mortgage": "CMG Mortgage, Inc.",
+		"crosscountry-mortgage": "CrossCountry Mortgage, Inc.",
+		"jpmorgan-chase-bank": "JPMorgan Chase Bank, National Association",
+		"us-bank": "U.S. Bank National Association",
+		"usalliance-federal-credit-union": "USALLIANCE Federal Credit Union",
+		"loandepotcom": "loanDepot.com, LLC",
+		"flagstar-bank-na": "Flagstar Bank, N.A.",
+		"first-citizens-bank-and-trust": "First-Citizens Bank & Trust Company",
+		"spring-eq": "Spring EQ, LLC",
+		"goodleap": "GoodLeap, LLC"
+	},
+
+	"unresolved": {
+		"united-shore-financial-services": {
+			"current": "United Shore Financial Services, LLC",
+			"reason": "brand",
+			"note": "Flagged brandOverrideNeeded upstream. Consumers search UWM. Changing this should change the slug too, so it needs to happen before the redirect map is finalised."
+		},
+		"broker-solutions": {
+			"current": "Broker Solutions, Inc.",
+			"reason": "brand",
+			"note": "Flagged brandOverrideNeeded upstream. Trading brand not derivable from the filing."
+		},
+		"wilmington-savings-fund-society": {
+			"current": "Wilmington Savings Fund Society, FSB",
+			"reason": "brand",
+			"note": "Flagged brandOverrideNeeded upstream. Consumer-facing brand differs from the chartered entity."
+		},
+		"lendage": {
+			"current": "Lendage, LLC",
+			"reason": "brand",
+			"note": "Flagged brandOverrideNeeded upstream. Consumers search Achieve."
+		},
+		"digital": {
+			"current": "Digital",
+			"reason": "truncated",
+			"note": "Name truncated at LEI registration. GLEIF returns the same string, so the data cannot resolve it. Renders as a single ambiguous word on a live page."
+		},
+		"affinity": {
+			"current": "Affinity",
+			"reason": "truncated",
+			"note": "Name truncated at LEI registration. Ambiguous on its own."
+		},
+		"kinecta": {
+			"current": "Kinecta",
+			"reason": "truncated",
+			"note": "Name truncated at LEI registration. Missing its institution-type suffix."
+		},
+		"citizens-equity-first": {
+			"current": "Citizens Equity First",
+			"reason": "truncated",
+			"note": "Name truncated at LEI registration. Missing its institution-type suffix."
+		},
+		"georgias-own": {
+			"current": "Georgia's Own",
+			"reason": "truncated",
+			"note": "Name truncated at LEI registration. Missing its institution-type suffix."
+		}
+	}
+}
