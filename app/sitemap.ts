@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next'
 import { getAllBlogPosts } from '@/lib/contentful'
 import { getAllTeamMembers } from '@/lib/contentful'
+import { getLenderSlugs } from '@/lib/hmda/data'
 
 const BASE_URL = 'https://heloc360.com'
 
@@ -19,7 +20,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/terms`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },
     { url: `${BASE_URL}/affiliate-disclosure`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },
     { url: `${BASE_URL}/communication-consent`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },
+    // HMDA data-authority cluster. The ranking is the primary asset on the site
+    // and the methodology is what makes it citable, so both sit above the
+    // legacy content pages.
+    { url: `${BASE_URL}/best-heloc-lenders`, lastModified: now, changeFrequency: 'monthly', priority: 1.0 },
+    { url: `${BASE_URL}/methodology`, lastModified: now, changeFrequency: 'yearly', priority: 0.8 },
   ]
+
+  // One entry per ranked lender. These are the branded-SERP play, so they carry
+  // real priority rather than being treated as long-tail detail pages.
+  const lenderPages: MetadataRoute.Sitemap = getLenderSlugs().map((slug) => ({
+    url: `${BASE_URL}/lenders/${slug}`,
+    lastModified: now,
+    changeFrequency: 'monthly' as const,
+    priority: 0.9,
+  }))
 
   const [blogPosts, teamMembers] = await Promise.all([
     getAllBlogPosts(),
@@ -40,5 +55,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }))
 
-  return [...staticPages, ...blogPages, ...teamPages]
+  return [...staticPages, ...lenderPages, ...blogPages, ...teamPages]
 }

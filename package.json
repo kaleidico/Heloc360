@@ -8,7 +8,10 @@
     "lint": "next lint",
     "start": "next start",
     "optimize-images": "node scripts/optimize-images.js",
-    "build:optimized": "npm run optimize-images && next build"
+    "build:optimized": "npm run optimize-images && next build",
+    "typecheck": "tsc --noEmit",
+    "verify:hmda": "node scripts/verify-hmda-build.mjs",
+    "build:verify": "next build && node scripts/verify-hmda-build.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
