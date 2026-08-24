@@ -50,7 +50,7 @@ export default function BlogPagination({ currentPage, totalPages, onPageChange }
           <Button
             variant={1 === currentPage ? "default" : "outline"}
             onClick={() => onPageChange(1)}
-            className={1 === currentPage ? "bg-[#1b75bc] hover:bg-[#1b75bc]/90" : ""}
+            className={1 === currentPage ? "bg-[#1a71b6] hover:bg-[#1a71b6]/90" : ""}
           >
             1
           </Button>
@@ -64,7 +64,7 @@ export default function BlogPagination({ currentPage, totalPages, onPageChange }
           key={page}
           variant={page === currentPage ? "default" : "outline"}
           onClick={() => onPageChange(page)}
-          className={page === currentPage ? "bg-[#1b75bc] hover:bg-[#1b75bc]/90" : ""}
+          className={page === currentPage ? "bg-[#1a71b6] hover:bg-[#1a71b6]/90" : ""}
         >
           {page}
         </Button>
@@ -79,7 +79,7 @@ export default function BlogPagination({ currentPage, totalPages, onPageChange }
           <Button
             variant={totalPages === currentPage ? "default" : "outline"}
             onClick={() => onPageChange(totalPages)}
-            className={totalPages === currentPage ? "bg-[#1b75bc] hover:bg-[#1b75bc]/90" : ""}
+            className={totalPages === currentPage ? "bg-[#1a71b6] hover:bg-[#1a71b6]/90" : ""}
           >
             {totalPages}
           </Button>

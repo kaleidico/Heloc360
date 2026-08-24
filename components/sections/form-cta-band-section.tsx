@@ -33,7 +33,7 @@ export function FormCtaBandSection({ value }: { value: FormCtaBandValue }) {
   const fp = value.finePrint
   return (
     <section
-      className="py-16 bg-gradient-to-r from-[#1b75bc] to-teal-600"
+      className="py-16 bg-gradient-to-r from-[#1a71b6] to-teal-600"
       aria-labelledby={value.anchorId}
     >
       <div className="container mx-auto px-4">

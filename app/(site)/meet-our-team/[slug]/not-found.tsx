@@ -5,7 +5,7 @@ export default function NotFound() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="text-center">
-        <h1 className="text-4xl font-bold text-[#1b75bc] mb-4">Team Member Not Found</h1>
+        <h1 className="text-4xl font-bold text-[#1a71b6] mb-4">Team Member Not Found</h1>
         <p className="text-gray-600 mb-8">Sorry, we couldn't find the team member you're looking for.</p>
         <div className="space-x-4">
           <Button asChild>

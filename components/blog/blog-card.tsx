@@ -21,7 +21,7 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
 
   return (
     <Card
-      className={`group hover:shadow-lg transition-all duration-200 h-full flex flex-col ${featured ? "border-[#1b75bc] border-2" : ""}`}
+      className={`group hover:shadow-lg transition-all duration-200 h-full flex flex-col ${featured ? "border-[#1a71b6] border-2" : ""}`}
     >
       <div className="relative overflow-hidden rounded-t-lg">
         <Link href={`/blog/${post.slug}`}>
@@ -34,7 +34,7 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
           />
         </Link>
         {featured && (
-          <div className="absolute top-4 left-4 bg-[#1b75bc] text-white px-3 py-1 rounded-full text-sm font-medium">
+          <div className="absolute top-4 left-4 bg-[#1a71b6] text-white px-3 py-1 rounded-full text-sm font-medium">
             Featured
           </div>
         )}
@@ -47,7 +47,7 @@ export default function BlogCard({ post, featured = false }: BlogCardProps) {
           </span>
         </div>
         <Link href={`/blog/${post.slug}`}>
-          <h3 className="text-xl font-bold text-gray-900 group-hover:text-[#1b75bc] transition-colors line-clamp-2 leading-tight">
+          <h3 className="text-xl font-bold text-gray-900 group-hover:text-[#1a71b6] transition-colors line-clamp-2 leading-tight">
             {post.title}
           </h3>
         </Link>

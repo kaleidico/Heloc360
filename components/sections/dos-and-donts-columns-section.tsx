@@ -22,11 +22,11 @@ export function DosAndDontsColumnsSection({ value }: { value: DosAndDontsColumns
     <section id={value.anchorId} className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-[#1b75bc] mb-8">{value.heading}</h2>
+          <h2 className="text-3xl font-bold text-[#1a71b6] mb-8">{value.heading}</h2>
           <div className="grid md:grid-cols-2 gap-8">
             <div>
               {value.dosHeading && (
-                <h3 className="text-xl font-semibold text-[#1b75bc] mb-4">{value.dosHeading}</h3>
+                <h3 className="text-xl font-semibold text-[#1a71b6] mb-4">{value.dosHeading}</h3>
               )}
               <div className="space-y-4">
                 {(value.dos || []).map((item) => (

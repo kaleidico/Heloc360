@@ -13,7 +13,7 @@ export type AccentNotesValue = {
 
 // Accent → left-border color, verbatim from source.
 const borderColor: Record<string, string> = {
-  blue: 'border-l-[#1b75bc]',
+  blue: 'border-l-[#1a71b6]',
   green: 'border-l-[#02c39a]',
   purple: 'border-l-purple-500',
 }

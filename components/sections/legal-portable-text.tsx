@@ -9,8 +9,8 @@ const components: PortableTextComponents = {
     // and a flush, no-margin paragraph. Existing `normal` is unchanged.
     normalMb4: ({ children }) => <p className="text-lg leading-relaxed mb-4">{children}</p>,
     normalFlush: ({ children }) => <p className="text-lg leading-relaxed">{children}</p>,
-    h2: ({ children }) => <h2 className="text-2xl font-bold text-[#1b75bc] mb-6">{children}</h2>,
-    h3: ({ children }) => <h3 className="text-xl font-semibold text-[#1b75bc] mb-4">{children}</h3>,
+    h2: ({ children }) => <h2 className="text-2xl font-bold text-[#1a71b6] mb-6">{children}</h2>,
+    h3: ({ children }) => <h3 className="text-xl font-semibold text-[#1a71b6] mb-4">{children}</h3>,
   },
   list: {
     bullet: ({ children }) => <ul className="list-disc pl-6 mb-8 space-y-2">{children}</ul>,
@@ -36,7 +36,7 @@ const components: PortableTextComponents = {
             href={href}
             target="_blank"
             rel="noreferrer noopener"
-            className="text-[#1b75bc] hover:text-[#007a5e] transition-colors inline-flex items-center gap-1"
+            className="text-[#1a71b6] hover:text-[#007a5e] transition-colors inline-flex items-center gap-1"
           >
             {children}
             <ExternalLink className="w-4 h-4" />
@@ -48,12 +48,12 @@ const components: PortableTextComponents = {
           href={href}
           target="_blank"
           rel="noreferrer noopener"
-          className="text-[#1b75bc] hover:text-[#007a5e] transition-colors"
+          className="text-[#1a71b6] hover:text-[#007a5e] transition-colors"
         >
           {children}
         </a>
       ) : (
-        <a href={href} className="text-[#1b75bc] hover:text-[#007a5e] transition-colors">
+        <a href={href} className="text-[#1a71b6] hover:text-[#007a5e] transition-colors">
           {children}
         </a>
       )

@@ -19,7 +19,7 @@ export type GradientCtaBandValue = {
 // closing CTA section.
 export function GradientCtaBandSection({ value }: { value: GradientCtaBandValue }) {
   return (
-    <section className="py-16 bg-gradient-to-r from-[#1b75bc] to-[#007a5e]">
+    <section className="py-16 bg-gradient-to-r from-[#1a71b6] to-[#007a5e]">
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto text-center text-white">
           <h2 className="text-3xl font-bold mb-4">{value.heading}</h2>
@@ -27,11 +27,11 @@ export function GradientCtaBandSection({ value }: { value: GradientCtaBandValue 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             {value.primaryCta?.label &&
               (value.primaryCta.href ? (
-                <Button size="lg" className="bg-white text-[#1b75bc] hover:bg-gray-100" asChild>
+                <Button size="lg" className="bg-white text-[#1a71b6] hover:bg-gray-100" asChild>
                   <Link href={value.primaryCta.href}>{value.primaryCta.label}</Link>
                 </Button>
               ) : (
-                <Button size="lg" className="bg-white text-[#1b75bc] hover:bg-gray-100">
+                <Button size="lg" className="bg-white text-[#1a71b6] hover:bg-gray-100">
                   {value.primaryCta.label}
                 </Button>
               ))}

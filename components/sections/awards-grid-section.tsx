@@ -39,7 +39,7 @@ export function AwardsGridSection({ value }: { value: AwardsGridValue }) {
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#1b75bc] mb-4">{value.heading}</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-[#1a71b6] mb-4">{value.heading}</h2>
             {value.subheading && <p className="text-lg text-gray-600">{value.subheading}</p>}
           </div>
 

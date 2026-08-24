@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { Facebook, Twitter, Linkedin, Mail } from "lucide-react"
 import footerNavData from "@/config/footer-nav.json"
+import CookiePreferencesLink from "@/components/consent/cookie-preferences-link"
 import type { FooterNavigation, FooterNavigationItem } from "@/types/navigation"
 
 // lucide-react exports use "Linkedin" (lowercase d), not "LinkedIn". Keep
@@ -60,6 +61,7 @@ export default function Footer() {
               <input
                 type="email"
                 required
+                autoComplete="email"
                 placeholder="you@example.com"
                 className="flex-1 px-4 py-3 rounded-md bg-white text-ink-900 placeholder:text-ink-400 focus:outline-none focus:ring-2 focus:ring-brand-blue"
                 aria-label="Email address"
@@ -82,7 +84,14 @@ export default function Footer() {
           <FooterColumn heading="Calculators" items={data.calculators} />
           <FooterColumn heading="Resources" items={data.resources} />
           <FooterColumn heading="Company" items={data.company} />
-          <FooterColumn heading="Legal" items={data.legal} />
+          <div>
+            <FooterColumn heading="Legal" items={data.legal} />
+            {/* Withdrawing consent has to be as easy as giving it, so this
+                sits with the other legal links rather than behind the banner. */}
+            <div className="mt-2">
+              <CookiePreferencesLink />
+            </div>
+          </div>
         </div>
       </div>
 

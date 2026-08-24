@@ -102,7 +102,7 @@ export default function BlogSearch({
       {hasActiveFilters && (
         <div className="flex flex-wrap gap-2 mt-3">
           {searchTerm && (
-            <span className="inline-flex items-center gap-1 px-3 py-1 bg-[#1b75bc] text-white rounded-full text-sm">
+            <span className="inline-flex items-center gap-1 px-3 py-1 bg-[#1a71b6] text-white rounded-full text-sm">
               "{searchTerm}"
               <button
                 onClick={() => onSearchChange("")}

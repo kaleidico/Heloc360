@@ -37,7 +37,7 @@ const VARIANTS = {
     icon: 'w-6 h-6 text-[#02c39a] mt-1 flex-shrink-0',
     heading: 'text-lg font-semibold text-[#007a5e] mb-2',
     para: 'text-gray-700 leading-relaxed',
-    link: 'text-[#1b75bc] hover:text-[#007a5e] transition-colors',
+    link: 'text-[#1a71b6] hover:text-[#007a5e] transition-colors',
     rowLabel: 'font-medium text-[#007a5e]',
     rowValue: 'text-gray-700 text-sm',
   },

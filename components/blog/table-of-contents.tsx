@@ -78,8 +78,8 @@ export default function TableOfContents({ blocks }: TableOfContentsProps) {
   return (
     <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
       <div className="flex items-center gap-2 mb-4">
-        <List className="w-5 h-5 text-[#1b75bc]" />
-        <h3 className="text-lg font-semibold text-[#1b75bc]">Table of Contents</h3>
+        <List className="w-5 h-5 text-[#1a71b6]" />
+        <h3 className="text-lg font-semibold text-[#1a71b6]">Table of Contents</h3>
       </div>
 
       <nav className="space-y-2">
@@ -88,7 +88,7 @@ export default function TableOfContents({ blocks }: TableOfContentsProps) {
             key={item.id}
             onClick={() => scrollToHeading(item.id)}
             className={`flex items-center gap-2 w-full text-left py-2 px-3 rounded-md transition-colors ${
-              activeId === item.id ? "bg-[#1b75bc] text-white" : "text-gray-700 hover:bg-gray-100 hover:text-[#1b75bc]"
+              activeId === item.id ? "bg-[#1a71b6] text-white" : "text-gray-700 hover:bg-gray-100 hover:text-[#1a71b6]"
             }`}
             style={{ paddingLeft: `${(item.level - 2) * 16 + 12}px` }}
           >

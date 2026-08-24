@@ -107,7 +107,7 @@ export default async function BlogPostPage({ params }: Props) {
         <div className="container mx-auto px-4">
           <Link
             href="/blog"
-            className="inline-flex items-center text-[#1b75bc] hover:text-[#1b75bc]/80 transition-colors"
+            className="inline-flex items-center text-[#1a71b6] hover:text-[#1a71b6]/80 transition-colors"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Blog

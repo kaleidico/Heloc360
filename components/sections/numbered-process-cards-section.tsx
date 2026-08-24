@@ -23,12 +23,12 @@ const BG: Record<string, string> = { white: 'bg-white', gray: 'bg-gray-50' }
 // Per-accent badge background + number color — verbatim from source. Note green's
 // number color (#007a5e) differs from its badge tint (#02c39a).
 const badgeBg: Record<string, string> = {
-  blue: 'bg-[#1b75bc]/10',
+  blue: 'bg-[#1a71b6]/10',
   green: 'bg-[#02c39a]/10',
   teal: 'bg-teal-100',
 }
 const numberColor: Record<string, string> = {
-  blue: 'text-[#1b75bc]',
+  blue: 'text-[#1a71b6]',
   green: 'text-[#007a5e]',
   teal: 'text-teal-600',
 }
@@ -42,7 +42,7 @@ export function NumberedProcessCardsSection({ value }: { value: NumberedProcessC
         <div className="text-center mb-12">
           <h2
             id={value.anchorId}
-            className="text-3xl md:text-4xl font-bold text-[#1b75bc] mb-4"
+            className="text-3xl md:text-4xl font-bold text-[#1a71b6] mb-4"
           >
             {value.heading}
           </h2>
@@ -57,7 +57,7 @@ export function NumberedProcessCardsSection({ value }: { value: NumberedProcessC
             return (
               <Card
                 key={step._key}
-                className="text-center border-2 border-[#1b75bc]/20 hover:border-[#1b75bc]/20 transition-colors"
+                className="text-center border-2 border-[#1a71b6]/20 hover:border-[#1a71b6]/20 transition-colors"
                 role="listitem"
               >
                 <CardHeader>
@@ -71,7 +71,7 @@ export function NumberedProcessCardsSection({ value }: { value: NumberedProcessC
                       {step.number}
                     </span>
                   </div>
-                  <CardTitle className="text-xl text-[#1b75bc]">{step.title}</CardTitle>
+                  <CardTitle className="text-xl text-[#1a71b6]">{step.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-600">{step.body}</p>

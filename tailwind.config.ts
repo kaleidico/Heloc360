@@ -65,7 +65,11 @@ const config: Config = {
   			},
   			brand: {
   				navy: '#00274C',
-  				blue: '#1b75bc',
+  				// Darkened from #1b75bc, which measured 4.46:1 on the blue-50
+  				// panels used across the site and so failed WCAG 1.4.3 (needs
+  				// 4.5:1). This passes on both blue-50 (4.73:1) and white
+  				// (5.15:1) and is a ~2% shift, visually near-identical.
+  				blue: '#1a71b6',
   				'blue-dark': '#155a91',
   				green: '#007a5e',
   				'green-dark': '#006650',

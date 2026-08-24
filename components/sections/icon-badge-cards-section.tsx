@@ -24,12 +24,12 @@ function Icon({ name, className }: { name?: string; className?: string }) {
 
 // Per-card tint → badge background + icon color, verbatim from source.
 const badgeBg: Record<string, string> = {
-  blue: 'bg-[#1b75bc]/10',
+  blue: 'bg-[#1a71b6]/10',
   green: 'bg-[#02c39a]/10',
   purple: 'bg-purple-100',
 }
 const iconColor: Record<string, string> = {
-  blue: 'text-[#1b75bc]',
+  blue: 'text-[#1a71b6]',
   green: 'text-[#02c39a]',
   purple: 'text-purple-600',
 }
@@ -48,7 +48,7 @@ export function IconBadgeCardsSection({ value }: { value: IconBadgeCardsValue })
             >
               <Icon name={card.icon} className={`w-6 h-6 ${iconColor[tint]}`} />
             </div>
-            <h3 className="text-lg font-semibold text-[#1b75bc] mb-2">{card.title}</h3>
+            <h3 className="text-lg font-semibold text-[#1a71b6] mb-2">{card.title}</h3>
             <p className="text-gray-600 text-sm">{card.body}</p>
           </div>
         )

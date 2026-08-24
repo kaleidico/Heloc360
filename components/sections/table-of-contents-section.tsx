@@ -20,7 +20,7 @@ export function TableOfContentsSection({ value }: { value: TableOfContentsValue 
     <section className="py-12 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl font-bold text-[#1b75bc] mb-6 text-center">{value.heading}</h2>
+          <h2 className="text-2xl font-bold text-[#1a71b6] mb-6 text-center">{value.heading}</h2>
           <div className="grid md:grid-cols-2 gap-4">
             {cols.map((col, ci) => (
               <div key={ci} className="space-y-2">
@@ -28,7 +28,7 @@ export function TableOfContentsSection({ value }: { value: TableOfContentsValue 
                   <a
                     key={item._key}
                     href={item.href}
-                    className="flex items-center text-gray-700 hover:text-[#1b75bc] transition-colors"
+                    className="flex items-center text-gray-700 hover:text-[#1a71b6] transition-colors"
                   >
                     <CheckCircle className="w-4 h-4 mr-2 text-[#02c39a]" />
                     {item.label}

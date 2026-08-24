@@ -65,7 +65,7 @@ export function FaqAccordionSection({ value }: { value: FaqAccordionValue }) {
             {(value.title || value.subtitle) && (
               <div className="text-center mb-12">
                 {value.title && (
-                  <h2 className="text-3xl md:text-4xl font-bold text-[#1b75bc] mb-4">
+                  <h2 className="text-3xl md:text-4xl font-bold text-[#1a71b6] mb-4">
                     {value.title}
                   </h2>
                 )}
@@ -79,7 +79,7 @@ export function FaqAccordionSection({ value }: { value: FaqAccordionValue }) {
                 return (
                   <div key={faq._key} className="border-b border-gray-200 last:border-b-0">
                     <button
-                      className="w-full text-left py-6 focus:outline-none focus:ring-2 focus:ring-[#1b75bc] focus:ring-offset-2 rounded-sm"
+                      className="w-full text-left py-6 focus:outline-none focus:ring-2 focus:ring-[#1a71b6] focus:ring-offset-2 rounded-sm"
                       onClick={() => toggleItem(index)}
                       aria-expanded={isOpen}
                       aria-controls={`faq-answer-${index}`}
@@ -88,7 +88,7 @@ export function FaqAccordionSection({ value }: { value: FaqAccordionValue }) {
                       <div className="flex items-center justify-between gap-4">
                         <h3 className="text-lg font-semibold text-gray-900 pr-4">{faq.question}</h3>
                         <div className="flex-shrink-0">
-                          <div className="w-6 h-6 rounded-full bg-[#1b75bc] flex items-center justify-center">
+                          <div className="w-6 h-6 rounded-full bg-[#1a71b6] flex items-center justify-center">
                             {isOpen ? (
                               <Minus className="w-3 h-3 text-white" aria-hidden="true" />
                             ) : (
@@ -123,7 +123,7 @@ export function FaqAccordionSection({ value }: { value: FaqAccordionValue }) {
                 <p className="text-gray-600 mb-4">{contactCTAText}</p>
                 <a
                   href={contactCTALink}
-                  className="inline-flex items-center px-6 py-3 bg-[#1b75bc] hover:bg-[#1b75bc]/90 text-white font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-[#1b75bc] focus:ring-offset-2"
+                  className="inline-flex items-center px-6 py-3 bg-[#1a71b6] hover:bg-[#1a71b6]/90 text-white font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-[#1a71b6] focus:ring-offset-2"
                 >
                   Contact Us
                 </a>

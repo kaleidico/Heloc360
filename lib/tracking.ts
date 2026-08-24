@@ -78,13 +78,20 @@ export function getMergedTrackingData(): TrackingData {
 }
 
 /**
- * Initialize Google Tag Manager
+ * Load Google Tag Manager.
+ *
+ * Consent-gated: call this only via the consent provider, never directly.
+ * Google Consent Mode v2 defaults are set ahead of this in
+ * <ConsentDefaultScript>, so any tag inside the container that does fire
+ * already knows what it is allowed to store.
  */
 export function initializeGTM(): void {
 	if (typeof window === "undefined") return;
+	if (document.getElementById("hl360-gtm")) return; // already loaded
 
 	// GTM script
 	const gtmScript = document.createElement("script");
+	gtmScript.id = "hl360-gtm";
 	gtmScript.async = true;
 	gtmScript.src = "https://www.googletagmanager.com/gtm.js?id=GTM-5G84S7P8";
 	document.head.appendChild(gtmScript);
@@ -104,13 +111,19 @@ export function initializeGTM(): void {
 }
 
 /**
- * Initialize Fraud Blocker
+ * Load Fraud Blocker.
+ *
+ * Consent-gated under the "fraud" category: call this only via the consent
+ * provider. It protects advertising spend rather than the visit itself, so it
+ * is not classed as strictly necessary.
  */
 export function initializeFraudBlocker(): void {
 	if (typeof window === "undefined") return;
+	if (document.getElementById("hl360-fraudblocker")) return; // already loaded
 
 	// Fraud Blocker script
 	const fbScript = document.createElement("script");
+	fbScript.id = "hl360-fraudblocker";
 	fbScript.type = "text/javascript";
 	fbScript.async = true;
 	fbScript.src =
@@ -124,17 +137,29 @@ export function initializeFraudBlocker(): void {
 	document.body.appendChild(fbNoscript);
 }
 
+/** Start analytics/advertising. Called by ConsentProvider once permitted. */
+export function startAnalytics(): void {
+	initializeGTM();
+}
+
+/** Start fraud prevention. Called by ConsentProvider once permitted. */
+export function startFraudPrevention(): void {
+	initializeFraudBlocker();
+}
+
 /**
- * Initialize tracking on page load
+ * First-party campaign capture, which runs regardless of consent.
+ *
+ * This records only the campaign link the visitor arrived on so an enquiry
+ * they choose to submit is attributed correctly. It sets no cookie, contacts
+ * no third party, and is not used to build a profile or to track anyone across
+ * other sites.
+ *
+ * Vendor scripts are NOT started here — see startAnalytics /
+ * startFraudPrevention, both gated by ConsentProvider.
  */
 export function initializeTracking(): void {
 	if (typeof window === "undefined") return;
-
-	// Initialize GTM
-	initializeGTM();
-
-	// Initialize Fraud Blocker
-	initializeFraudBlocker();
 
 	// Extract tracking parameters from current URL
 	const urlParams = extractTrackingParams(window.location.href);

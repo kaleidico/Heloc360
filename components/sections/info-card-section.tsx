@@ -33,8 +33,8 @@ function Icon({ name, className }: { name?: string; className?: string }) {
 function linkMark(value: { href?: string; underline?: boolean } | undefined, children: React.ReactNode) {
   const href = value?.href || '#'
   const cls = value?.underline
-    ? 'text-[#1b75bc] hover:text-[#007a5e] transition-colors underline'
-    : 'text-[#1b75bc] hover:text-[#007a5e] transition-colors'
+    ? 'text-[#1a71b6] hover:text-[#007a5e] transition-colors underline'
+    : 'text-[#1a71b6] hover:text-[#007a5e] transition-colors'
   const external = href.startsWith('http')
   return external ? (
     <a href={href} target="_blank" rel="noreferrer noopener" className={cls}>
@@ -52,7 +52,7 @@ function linkMark(value: { href?: string; underline?: boolean } | undefined, chi
 function GrayRowsCard({ value }: { value: InfoCardValue }) {
   return (
     <div className="bg-gray-50 p-6 rounded-lg">
-      {value.heading && <h3 className="text-lg font-semibold text-[#1b75bc] mb-4">{value.heading}</h3>}
+      {value.heading && <h3 className="text-lg font-semibold text-[#1a71b6] mb-4">{value.heading}</h3>}
       <div className="space-y-3">
         {(value.rows || []).map((row) => {
           // Mail-style rows (link, no multi-line address) center vertically;
@@ -77,7 +77,7 @@ function GrayRowsCard({ value }: { value: InfoCardValue }) {
                   </p>
                 )}
                 {row.linkLabel && row.linkHref && (
-                  <a href={row.linkHref} className="text-[#1b75bc] hover:text-[#007a5e] transition-colors">
+                  <a href={row.linkHref} className="text-[#1a71b6] hover:text-[#007a5e] transition-colors">
                     {row.linkLabel}
                   </a>
                 )}
@@ -104,11 +104,11 @@ function BlueStatementCard({ value }: { value: InfoCardValue }) {
     },
   }
   return (
-    <div className="bg-blue-50 border-l-4 border-l-[#1b75bc] p-8 rounded-lg mb-12">
+    <div className="bg-blue-50 border-l-4 border-l-[#1a71b6] p-8 rounded-lg mb-12">
       <div className="flex items-start gap-4">
-        <Icon name={value.icon} className="w-8 h-8 text-[#1b75bc] mt-1 flex-shrink-0" />
+        <Icon name={value.icon} className="w-8 h-8 text-[#1a71b6] mt-1 flex-shrink-0" />
         <div>
-          {value.heading && <h2 className="text-xl font-semibold text-[#1b75bc] mb-4">{value.heading}</h2>}
+          {value.heading && <h2 className="text-xl font-semibold text-[#1a71b6] mb-4">{value.heading}</h2>}
           {value.body && value.body.length > 0 && <BasePortableText value={value.body} components={components} />}
         </div>
       </div>
@@ -132,7 +132,7 @@ function GrayProseCard({ value }: { value: InfoCardValue }) {
   return (
     <div className="bg-gray-50 p-8 rounded-lg mb-12">
       {value.heading && (
-        <h2 className="text-2xl font-bold text-[#1b75bc] mb-6 flex items-center gap-3">
+        <h2 className="text-2xl font-bold text-[#1a71b6] mb-6 flex items-center gap-3">
           <Icon name={value.icon} className="w-6 h-6" />
           {value.heading}
         </h2>

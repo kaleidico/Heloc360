@@ -28,12 +28,12 @@ export function ChecklistCardGridSection({ value }: { value: ChecklistCardGridVa
         const iconCls =
           card.iconColor === 'green'
             ? 'w-6 h-6 text-[#02c39a] mt-1 flex-shrink-0'
-            : 'w-6 h-6 text-[#1b75bc] mt-1 flex-shrink-0'
+            : 'w-6 h-6 text-[#1a71b6] mt-1 flex-shrink-0'
         return (
           <div key={card._key} className="bg-white border border-gray-200 rounded-lg p-6">
             <div className="flex items-start gap-3 mb-4">
               <Icon name={card.icon} className={iconCls} />
-              <h3 className="text-lg font-semibold text-[#1b75bc]">{card.title}</h3>
+              <h3 className="text-lg font-semibold text-[#1a71b6]">{card.title}</h3>
             </div>
             <ul className="space-y-2 text-gray-700">
               {(card.items || []).map((item, i) => (

@@ -4,6 +4,10 @@ import Header from "@/components/header"
 import Footer from "@/components/footer"
 import dynamic from "next/dynamic"
 import TrackingProvider from "@/components/tracking-provider"
+import ConsentProvider from "@/components/consent/consent-provider"
+import ConsentDefaultScript from "@/components/consent/consent-default-script"
+import CookieBanner from "@/components/consent/cookie-banner"
+import CookiePreferencesDialog from "@/components/consent/cookie-preferences-dialog"
 
 const ScrollToTop = dynamic(() => import("@/components/scroll-to-top"), {
   loading: () => null,
@@ -82,7 +86,7 @@ export const metadata: Metadata = {
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
     ],
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
-    other: [{ rel: "mask-icon", url: "/safari-pinned-tab.svg", color: "#1b75bc" }],
+    other: [{ rel: "mask-icon", url: "/safari-pinned-tab.svg", color: "#1a71b6" }],
   },
   manifest: "/site.webmanifest",
   alternates: {
@@ -152,6 +156,9 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
 
+      {/* Consent Mode v2 defaults. Must run before any Google tag loads. */}
+      <ConsentDefaultScript />
+
       {/* Skip to main content for accessibility */}
       <a
         href="#main-content"
@@ -160,15 +167,22 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         Skip to main content
       </a>
 
-      <ScrollToTop />
-      <Header />
+      {/* Wraps Header/Footer too, so the footer preferences link and the
+          dialog share one consent state. */}
+      <ConsentProvider>
+        <ScrollToTop />
+        <Header />
 
-      <main id="main-content" className="min-h-screen">
-        <TrackingProvider>{children}</TrackingProvider>
-      </main>
+        <main id="main-content" className="min-h-screen">
+          <TrackingProvider>{children}</TrackingProvider>
+        </main>
 
-      <Footer />
-      <StickyCta />
+        <Footer />
+        <StickyCta />
+
+        <CookieBanner />
+        <CookiePreferencesDialog />
+      </ConsentProvider>
     </>
   )
 }

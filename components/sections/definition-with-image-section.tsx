@@ -23,7 +23,7 @@ export function DefinitionWithImageSection({ value }: { value: DefinitionWithIma
     <section id={value.anchorId} className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-[#1b75bc] mb-8">{value.heading}</h2>
+          <h2 className="text-3xl font-bold text-[#1a71b6] mb-8">{value.heading}</h2>
           <div className="grid lg:grid-cols-2 gap-12 items-center mb-12">
             <div>
               {value.paragraph && (
@@ -31,7 +31,7 @@ export function DefinitionWithImageSection({ value }: { value: DefinitionWithIma
               )}
               <div className="bg-blue-50 p-6 rounded-lg">
                 {value.featuresHeading && (
-                  <h3 className="font-semibold text-[#1b75bc] mb-3">{value.featuresHeading}</h3>
+                  <h3 className="font-semibold text-[#1a71b6] mb-3">{value.featuresHeading}</h3>
                 )}
                 <ul className="space-y-2">
                   {(value.features || []).map((f) => (

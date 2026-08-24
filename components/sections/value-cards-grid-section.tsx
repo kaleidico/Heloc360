@@ -30,19 +30,19 @@ const BG: Record<string, string> = { white: 'bg-white', gray: 'bg-gray-50' }
 // Per-accent class maps — verbatim from source. Note green's icon color (#007a5e)
 // differs from its top border (#02c39a).
 const borderTop: Record<string, string> = {
-  blue: 'border-t-[#1b75bc]',
+  blue: 'border-t-[#1a71b6]',
   green: 'border-t-[#02c39a]',
   purple: 'border-t-purple-500',
   orange: 'border-t-orange-500',
 }
 const badgeBg: Record<string, string> = {
-  blue: 'bg-[#1b75bc]/10',
+  blue: 'bg-[#1a71b6]/10',
   green: 'bg-[#02c39a]/10',
   purple: 'bg-purple-100',
   orange: 'bg-orange-100',
 }
 const iconColor: Record<string, string> = {
-  blue: 'text-[#1b75bc]',
+  blue: 'text-[#1a71b6]',
   green: 'text-[#007a5e]',
   purple: 'text-purple-600',
   orange: 'text-orange-600',
@@ -56,7 +56,7 @@ export function ValueCardsGridSection({ value }: { value: ValueCardsGridValue })
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#1b75bc] mb-4">{value.heading}</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-[#1a71b6] mb-4">{value.heading}</h2>
             {value.subheading && <p className="text-lg text-gray-600">{value.subheading}</p>}
           </div>
 

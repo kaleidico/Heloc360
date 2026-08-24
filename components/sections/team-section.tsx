@@ -39,14 +39,14 @@ function MemberCard({ member }: { member: TeamMember }) {
               quality={70}
             />
           </div>
-          <CardTitle className="text-xl text-[#1b75bc] group-hover:text-[#007a5e] transition-colors h-14 flex items-center justify-center">
+          <CardTitle className="text-xl text-[#1a71b6] group-hover:text-[#007a5e] transition-colors h-14 flex items-center justify-center">
             {member.name}
           </CardTitle>
           <p className="text-[#007a5e] font-medium h-6 flex items-center justify-center">{member.title}</p>
         </CardHeader>
         <CardContent className="flex-1 flex flex-col justify-between pt-0">
           <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-4">{member.bio}</p>
-          <div className="inline-flex items-center text-[#1b75bc] group-hover:text-[#007a5e] transition-colors text-sm font-medium justify-center">
+          <div className="inline-flex items-center text-[#1a71b6] group-hover:text-[#007a5e] transition-colors text-sm font-medium justify-center">
             <Users className="w-4 h-4 mr-2" />
             Learn More
           </div>
@@ -80,14 +80,14 @@ export async function TeamSection({ value }: { value: TeamSectionValue }) {
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#1b75bc] mb-4">{value.heading}</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-[#1a71b6] mb-4">{value.heading}</h2>
             {value.subheading && <p className="text-lg text-gray-600">{value.subheading}</p>}
           </div>
 
           {teamMembers.length > 0 ? (
             <div>
               <div className="mb-12">
-                <h3 className="text-2xl font-bold text-[#1b75bc] mb-8 text-center">
+                <h3 className="text-2xl font-bold text-[#1a71b6] mb-8 text-center">
                   {value.leadershipHeading || 'Leadership & Management'}
                 </h3>
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -99,7 +99,7 @@ export async function TeamSection({ value }: { value: TeamSectionValue }) {
 
               {contributors.length > 0 && (
                 <div>
-                  <h3 className="text-2xl font-bold text-[#1b75bc] mb-8 text-center">
+                  <h3 className="text-2xl font-bold text-[#1a71b6] mb-8 text-center">
                     {value.contributorsHeading || 'Contributors'}
                   </h3>
                   <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">

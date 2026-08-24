@@ -23,10 +23,10 @@ export function StatsBandSection({ value }: { value: StatsBandValue }) {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {(value.stats || []).map((stat) => (
             <div key={stat._key} className="text-center">
-              <div className="w-16 h-16 bg-[#1b75bc]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Icon name={stat.icon} className="w-8 h-8 text-[#1b75bc]" />
+              <div className="w-16 h-16 bg-[#1a71b6]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Icon name={stat.icon} className="w-8 h-8 text-[#1a71b6]" />
               </div>
-              <div className="text-3xl font-bold text-[#1b75bc] mb-2">{stat.number}</div>
+              <div className="text-3xl font-bold text-[#1a71b6] mb-2">{stat.number}</div>
               <div className="text-gray-600">{stat.label}</div>
             </div>
           ))}

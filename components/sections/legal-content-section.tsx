@@ -65,7 +65,7 @@ function Icon({ name, className }: { name?: string; className?: string }) {
 
 // --- portable text serialization for a group body ---------------------------
 // Reproduces the source markup: paragraphs `text-lg leading-relaxed mb-4`,
-// H3 `text-xl font-semibold text-[#1b75bc] mb-4`, ordered list `list-decimal
+// H3 `text-xl font-semibold text-[#1a71b6] mb-4`, ordered list `list-decimal
 // pl-6 space-y-2 mb-6`, the small ordered variant `list-decimal pl-6 space-y-2
 // text-sm`, bullet list `list-disc pl-6 space-y-2 mb-6`, links in brand blue.
 
@@ -74,7 +74,7 @@ const bodyComponents: PortableTextComponents = {
     normal: ({ children }) => <p className="text-lg leading-relaxed mb-4">{children}</p>,
     'normal-mb6': ({ children }) => <p className="text-lg leading-relaxed mb-6">{children}</p>,
     'normal-flush': ({ children }) => <p className="text-lg leading-relaxed">{children}</p>,
-    h3: ({ children }) => <h3 className="text-xl font-semibold text-[#1b75bc] mb-4">{children}</h3>,
+    h3: ({ children }) => <h3 className="text-xl font-semibold text-[#1a71b6] mb-4">{children}</h3>,
   },
   list: {
     bullet: ({ children }) => <ul className="list-disc pl-6 space-y-2 mb-6">{children}</ul>,
@@ -97,12 +97,12 @@ const bodyComponents: PortableTextComponents = {
           href={href}
           target="_blank"
           rel="noreferrer noopener"
-          className="text-[#1b75bc] hover:text-[#007a5e] transition-colors"
+          className="text-[#1a71b6] hover:text-[#007a5e] transition-colors"
         >
           {children}
         </a>
       ) : (
-        <a href={href} className="text-[#1b75bc] hover:text-[#007a5e] transition-colors">
+        <a href={href} className="text-[#1a71b6] hover:text-[#007a5e] transition-colors">
           {children}
         </a>
       )
@@ -122,7 +122,7 @@ const bodyComponents: PortableTextComponents = {
     ),
     contactCard: ({ value }: { value: ContactCard }) => (
       <div className="bg-gray-50 p-6 rounded-lg">
-        {value.heading && <h3 className="text-lg font-semibold text-[#1b75bc] mb-4">{value.heading}</h3>}
+        {value.heading && <h3 className="text-lg font-semibold text-[#1a71b6] mb-4">{value.heading}</h3>}
         <div className="space-y-3">
           {(value.rows || []).map((row) => {
             const centered = !!row.linkLabel && (!row.lines || row.lines.length === 0)
@@ -145,7 +145,7 @@ const bodyComponents: PortableTextComponents = {
                     </p>
                   )}
                   {row.linkLabel && row.linkHref && (
-                    <a href={row.linkHref} className="text-[#1b75bc] hover:text-[#007a5e] transition-colors">
+                    <a href={row.linkHref} className="text-[#1a71b6] hover:text-[#007a5e] transition-colors">
                       {row.linkLabel}
                     </a>
                   )}
@@ -173,8 +173,8 @@ export function LegalContentSection({ value }: { value: LegalContentValue }) {
               <h2
                 className={
                   g.icon
-                    ? 'text-2xl font-bold text-[#1b75bc] mb-4 flex items-center gap-3'
-                    : 'text-2xl font-bold text-[#1b75bc] mb-4'
+                    ? 'text-2xl font-bold text-[#1a71b6] mb-4 flex items-center gap-3'
+                    : 'text-2xl font-bold text-[#1a71b6] mb-4'
                 }
               >
                 <Icon name={g.icon} className="w-6 h-6" />
@@ -185,14 +185,14 @@ export function LegalContentSection({ value }: { value: LegalContentValue }) {
           ))}
 
           {cc && (cc.heading || cc.bodyText || cc.emailHref || cc.secondaryHref) && (
-            <div className="bg-gradient-to-r from-[#1b75bc]/10 to-[#007a5e]/10 p-8 rounded-lg">
-              {cc.heading && <h3 className="text-xl font-semibold text-[#1b75bc] mb-4">{cc.heading}</h3>}
+            <div className="bg-gradient-to-r from-[#1a71b6]/10 to-[#007a5e]/10 p-8 rounded-lg">
+              {cc.heading && <h3 className="text-xl font-semibold text-[#1a71b6] mb-4">{cc.heading}</h3>}
               {cc.bodyText && <p className="text-lg leading-relaxed mb-6">{cc.bodyText}</p>}
               <div className="flex flex-col sm:flex-row gap-4">
                 {cc.emailHref && cc.emailLabel && (
                   <a
                     href={cc.emailHref}
-                    className="inline-flex items-center justify-center px-6 py-3 bg-[#1b75bc] hover:bg-[#1b75bc]/90 text-white font-medium rounded-lg transition-colors"
+                    className="inline-flex items-center justify-center px-6 py-3 bg-[#1a71b6] hover:bg-[#1a71b6]/90 text-white font-medium rounded-lg transition-colors"
                   >
                     {cc.emailLabel}
                   </a>
@@ -200,7 +200,7 @@ export function LegalContentSection({ value }: { value: LegalContentValue }) {
                 {cc.secondaryHref && cc.secondaryLabel && (
                   <Link
                     href={cc.secondaryHref}
-                    className="inline-flex items-center justify-center px-6 py-3 border border-[#1b75bc] text-[#1b75bc] hover:bg-[#1b75bc] hover:text-white font-medium rounded-lg transition-colors"
+                    className="inline-flex items-center justify-center px-6 py-3 border border-[#1a71b6] text-[#1a71b6] hover:bg-[#1a71b6] hover:text-white font-medium rounded-lg transition-colors"
                   >
                     {cc.secondaryLabel}
                   </Link>
@@ -214,7 +214,7 @@ export function LegalContentSection({ value }: { value: LegalContentValue }) {
               {footer.text && <p className="text-sm text-gray-600">{footer.text}</p>}
               {footer.showReturnHome && (
                 <p className="text-sm text-gray-600 mt-2">
-                  <Link href="/" className="text-[#1b75bc] hover:text-[#007a5e] transition-colors">
+                  <Link href="/" className="text-[#1a71b6] hover:text-[#007a5e] transition-colors">
                     Return to Home
                   </Link>
                 </p>

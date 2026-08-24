@@ -17,7 +17,7 @@ export type MarketingHeroValue = {
 // Verbatim reproduction of the about page hero band.
 export function MarketingHeroSection({ value }: { value: MarketingHeroValue }) {
   return (
-    <section className="relative py-20 bg-gradient-to-r from-[#1b75bc] to-[#007a5e] overflow-hidden">
+    <section className="relative py-20 bg-gradient-to-r from-[#1a71b6] to-[#007a5e] overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="text-white">
@@ -25,7 +25,7 @@ export function MarketingHeroSection({ value }: { value: MarketingHeroValue }) {
             {value.body && <p className="text-xl mb-8 opacity-90 leading-relaxed">{value.body}</p>}
             <div className="flex flex-col sm:flex-row gap-4">
               {value.primaryCta?.href && value.primaryCta.label && (
-                <Button size="lg" className="bg-white text-[#1b75bc] hover:bg-gray-100" asChild>
+                <Button size="lg" className="bg-white text-[#1a71b6] hover:bg-gray-100" asChild>
                   <Link href={value.primaryCta.href}>{value.primaryCta.label}</Link>
                 </Button>
               )}

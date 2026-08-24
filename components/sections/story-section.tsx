@@ -29,14 +29,14 @@ export function StorySection({ value }: { value: StorySectionValue }) {
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#1b75bc] mb-4">{value.heading}</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-[#1a71b6] mb-4">{value.heading}</h2>
             {value.subheading && <p className="text-lg text-gray-600">{value.subheading}</p>}
           </div>
 
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               {value.columnHeading && (
-                <h3 className="text-2xl font-semibold text-[#1b75bc] mb-4">{value.columnHeading}</h3>
+                <h3 className="text-2xl font-semibold text-[#1a71b6] mb-4">{value.columnHeading}</h3>
               )}
               {(value.paragraphs || []).map((para, i) => (
                 <p key={i} className="text-gray-700 mb-6 leading-relaxed">

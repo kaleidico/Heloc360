@@ -19,7 +19,7 @@ export function TwoTierCardsSection({ value }: { value: TwoTierCardsValue }) {
     <div className={`grid ${gridCls} gap-6`}>
       {(value.cards || []).map((card) => (
         <div key={card._key} className="bg-white border border-gray-200 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-[#1b75bc] mb-3">{card.title}</h3>
+          <h3 className="text-lg font-semibold text-[#1a71b6] mb-3">{card.title}</h3>
           {card.body && <p className="text-gray-700 text-sm mb-4">{card.body}</p>}
           {card.finePrint && <p className="text-xs text-gray-600">{card.finePrint}</p>}
         </div>

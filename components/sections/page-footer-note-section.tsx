@@ -14,7 +14,7 @@ export function PageFooterNoteSection({ value }: { value: PageFooterNoteValue })
       {value.text && <p className="text-sm text-gray-600">{value.text}</p>}
       {showReturnHome && (
         <p className="text-sm text-gray-600 mt-2">
-          <Link href="/" className="text-[#1b75bc] hover:text-[#007a5e] transition-colors">
+          <Link href="/" className="text-[#1a71b6] hover:text-[#007a5e] transition-colors">
             Return to Home
           </Link>
         </p>

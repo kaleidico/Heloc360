@@ -54,7 +54,7 @@ export default async function TeamMemberPage({ params }: Props) {
         <div className="container mx-auto px-4">
           <Link
             href="/about"
-            className="inline-flex items-center text-[#1b75bc] hover:text-[#1b75bc]/80 transition-colors"
+            className="inline-flex items-center text-[#1a71b6] hover:text-[#1a71b6]/80 transition-colors"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Team
@@ -80,7 +80,7 @@ export default async function TeamMemberPage({ params }: Props) {
                         priority
                       />
                     </div>
-                    <CardTitle className="text-2xl text-[#1b75bc]">{member.name}</CardTitle>
+                    <CardTitle className="text-2xl text-[#1a71b6]">{member.name}</CardTitle>
                     <p className="text-[#007a5e] font-semibold text-lg">{member.title}</p>
 
                     {member.email && (
@@ -104,7 +104,7 @@ export default async function TeamMemberPage({ params }: Props) {
                       {member.email && (
                         <a
                           href={`mailto:${member.email}`}
-                          className="flex items-center text-gray-700 hover:text-[#1b75bc] transition-colors"
+                          className="flex items-center text-gray-700 hover:text-[#1a71b6] transition-colors"
                         >
                           <Mail className="w-4 h-4 mr-3" />
                           <span className="text-sm">{member.email}</span>
@@ -114,7 +114,7 @@ export default async function TeamMemberPage({ params }: Props) {
                       {member.phone && (
                         <a
                           href={`tel:${member.phone}`}
-                          className="flex items-center text-gray-700 hover:text-[#1b75bc] transition-colors"
+                          className="flex items-center text-gray-700 hover:text-[#1a71b6] transition-colors"
                         >
                           <Phone className="w-4 h-4 mr-3" />
                           <span className="text-sm">{member.phone}</span>
@@ -126,7 +126,7 @@ export default async function TeamMemberPage({ params }: Props) {
                           href={member.linkedIn}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center text-gray-700 hover:text-[#1b75bc] transition-colors"
+                          className="flex items-center text-gray-700 hover:text-[#1a71b6] transition-colors"
                         >
                           <Linkedin className="w-4 h-4 mr-3" />
                           <span className="text-sm">Connect on LinkedIn</span>
@@ -138,7 +138,7 @@ export default async function TeamMemberPage({ params }: Props) {
                           href={member.twitter}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center text-gray-700 hover:text-[#1b75bc] transition-colors"
+                          className="flex items-center text-gray-700 hover:text-[#1a71b6] transition-colors"
                         >
                           <svg className="w-4 h-4 mr-3" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
@@ -148,7 +148,7 @@ export default async function TeamMemberPage({ params }: Props) {
                       )}
                     </div>
 
-                    <Button className="w-full bg-[#1b75bc] hover:bg-[#1b75bc]/90" asChild>
+                    <Button className="w-full bg-[#1a71b6] hover:bg-[#1a71b6]/90" asChild>
                       <Link href="/pre-qual">Schedule a Consultation</Link>
                     </Button>
                   </CardContent>
@@ -159,7 +159,7 @@ export default async function TeamMemberPage({ params }: Props) {
               <div className="lg:col-span-2 space-y-8">
                 {/* Bio */}
                 <div>
-                  <h2 className="text-2xl font-bold text-[#1b75bc] mb-4">About {member.name.split(" ")[0]}</h2>
+                  <h2 className="text-2xl font-bold text-[#1a71b6] mb-4">About {member.name.split(" ")[0]}</h2>
                   <div className="prose prose-gray max-w-none">
                     {member.bio ? (
                       <p className="text-gray-700 leading-relaxed mb-4">
@@ -185,7 +185,7 @@ export default async function TeamMemberPage({ params }: Props) {
         <section className="py-16 bg-gray-50">
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
-              <h2 className="text-2xl font-bold text-[#1b75bc] mb-8 text-center">Meet Other Team Members</h2>
+              <h2 className="text-2xl font-bold text-[#1a71b6] mb-8 text-center">Meet Other Team Members</h2>
               <div className="grid md:grid-cols-3 gap-6">
                 {otherMembers.map((otherMember) => (
                   <Card key={otherMember.id} className="text-center hover:shadow-lg transition-shadow">
@@ -198,7 +198,7 @@ export default async function TeamMemberPage({ params }: Props) {
                           className="rounded-full object-cover"
                         />
                       </div>
-                      <CardTitle className="text-lg text-[#1b75bc]">{otherMember.name}</CardTitle>
+                      <CardTitle className="text-lg text-[#1a71b6]">{otherMember.name}</CardTitle>
                       <p className="text-[#007a5e] font-medium text-sm">{otherMember.title}</p>
                     </CardHeader>
                     <CardContent>
@@ -216,7 +216,7 @@ export default async function TeamMemberPage({ params }: Props) {
       )}
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-[#1b75bc] to-[#007a5e]">
+      <section className="py-16 bg-gradient-to-r from-[#1a71b6] to-[#007a5e]">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center text-white">
             <h2 className="text-3xl font-bold mb-4">Ready to Work with {member.name.split(" ")[0]}?</h2>
@@ -224,7 +224,7 @@ export default async function TeamMemberPage({ params }: Props) {
               Get personalized guidance from our expert team to unlock your home's equity potential.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-white text-[#1b75bc] hover:bg-gray-100">
+              <Button size="lg" className="bg-white text-[#1a71b6] hover:bg-gray-100">
                 Get Pre-Qualified
               </Button>
               <Button

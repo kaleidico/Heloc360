@@ -39,11 +39,11 @@ export type BorderAccentCardsValue = {
 const BG: Record<string, string> = { white: 'bg-white', red: 'bg-red-50' }
 
 // Per-accent class maps — verbatim from source. Left border, icon tile bg, and
-// icon color. Brand accents (green/blue) use the #02c39a/#1b75bc hex values;
+// icon color. Brand accents (green/blue) use the #02c39a/#1a71b6 hex values;
 // the rest use Tailwind named colors.
 const borderLeft: Record<Accent, string> = {
   green: 'border-l-[#02c39a]',
-  blue: 'border-l-[#1b75bc]',
+  blue: 'border-l-[#1a71b6]',
   purple: 'border-l-purple-500',
   teal: 'border-l-teal-500',
   orange: 'border-l-orange-500',
@@ -52,7 +52,7 @@ const borderLeft: Record<Accent, string> = {
 }
 const tileBg: Record<Accent, string> = {
   green: 'bg-[#02c39a]/10',
-  blue: 'bg-[#1b75bc]/10',
+  blue: 'bg-[#1a71b6]/10',
   purple: 'bg-purple-100',
   teal: 'bg-teal-100',
   orange: 'bg-orange-100',
@@ -61,7 +61,7 @@ const tileBg: Record<Accent, string> = {
 }
 const iconColor: Record<Accent, string> = {
   green: 'text-[#02c39a]',
-  blue: 'text-[#1b75bc]',
+  blue: 'text-[#1a71b6]',
   purple: 'text-purple-600',
   teal: 'text-teal-600',
   orange: 'text-orange-600',
@@ -72,7 +72,7 @@ const iconColor: Record<Accent, string> = {
 // coloredTitles is off.
 const titleColor: Record<Accent, string> = {
   green: 'text-[#02c39a]',
-  blue: 'text-[#1b75bc]',
+  blue: 'text-[#1a71b6]',
   purple: 'text-purple-700',
   teal: 'text-teal-700',
   orange: 'text-orange-700',
@@ -94,7 +94,7 @@ export function BorderAccentCardsSection({ value }: { value: BorderAccentCardsVa
     <section id={value.anchorId} className={`py-16 ${bg}`}>
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-[#1b75bc] mb-8">{value.heading}</h2>
+          <h2 className="text-3xl font-bold text-[#1a71b6] mb-8">{value.heading}</h2>
           <div className={gridCls}>
             {(value.cards || []).map((card) => {
               const accent = card.accent || 'green'

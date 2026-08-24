@@ -31,11 +31,11 @@ export type ProcessCardsWithFormulaValue = {
 
 // Per-card tint → icon tile background + icon color, verbatim from source.
 const tileBg: Record<string, string> = {
-  blue: 'bg-[#1b75bc]/10',
+  blue: 'bg-[#1a71b6]/10',
   green: 'bg-[#02c39a]/10',
 }
 const iconColor: Record<string, string> = {
-  blue: 'text-[#1b75bc]',
+  blue: 'text-[#1a71b6]',
   green: 'text-[#02c39a]',
 }
 
@@ -47,7 +47,7 @@ export function ProcessCardsWithFormulaSection({ value }: { value: ProcessCardsW
     <section id={value.anchorId} className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-[#1b75bc] mb-8">{value.heading}</h2>
+          <h2 className="text-3xl font-bold text-[#1a71b6] mb-8">{value.heading}</h2>
           <div className="grid md:grid-cols-2 gap-8 mb-12">
             {(value.cards || []).map((card) => {
               const tint = card.tint || 'blue'
@@ -78,11 +78,11 @@ export function ProcessCardsWithFormulaSection({ value }: { value: ProcessCardsW
 
           <div className="bg-white p-8 rounded-lg shadow-sm">
             {value.formulaHeading && (
-              <h3 className="text-xl font-semibold text-[#1b75bc] mb-4">{value.formulaHeading}</h3>
+              <h3 className="text-xl font-semibold text-[#1a71b6] mb-4">{value.formulaHeading}</h3>
             )}
             {value.formulaIntro && <p className="text-gray-700 mb-4">{value.formulaIntro}</p>}
             <div className="bg-blue-50 p-6 rounded-lg text-center">
-              <p className="text-lg font-semibold text-[#1b75bc]">{value.formula}</p>
+              <p className="text-lg font-semibold text-[#1a71b6]">{value.formula}</p>
             </div>
             {value.formulaNote && <p className="text-sm text-gray-600 mt-4">{value.formulaNote}</p>}
           </div>

@@ -185,7 +185,7 @@ export default function NotFoundClient() {
         <div className="max-w-4xl mx-auto text-center">
           {/* 404 Header */}
           <div className="mb-12">
-            <div className="text-8xl font-bold text-[#1b75bc] mb-4">404</div>
+            <div className="text-8xl font-bold text-[#1a71b6] mb-4">404</div>
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Page Not Found</h1>
             <p className="text-xl text-gray-600 mb-8">
               Sorry, we couldn't find the page you're looking for at{" "}
@@ -197,7 +197,7 @@ export default function NotFoundClient() {
           {suggestions.length > 0 && (
             <Card className="mb-12 text-left">
               <CardHeader>
-                <CardTitle className="text-2xl text-[#1b75bc] flex items-center gap-2">
+                <CardTitle className="text-2xl text-[#1a71b6] flex items-center gap-2">
                   <Search className="w-6 h-6" />
                   Did you mean...?
                 </CardTitle>
@@ -208,13 +208,13 @@ export default function NotFoundClient() {
                     <Link
                       key={index}
                       href={suggestion.path}
-                      className="block p-4 border border-gray-200 rounded-lg hover:border-[#1b75bc] hover:shadow-md transition-all group"
+                      className="block p-4 border border-gray-200 rounded-lg hover:border-[#1a71b6] hover:shadow-md transition-all group"
                     >
-                      <h3 className="font-semibold text-gray-900 group-hover:text-[#1b75bc] mb-2">
+                      <h3 className="font-semibold text-gray-900 group-hover:text-[#1a71b6] mb-2">
                         {suggestion.title}
                       </h3>
                       <p className="text-sm text-gray-600">{suggestion.description}</p>
-                      <div className="flex items-center text-[#1b75bc] text-sm mt-2">
+                      <div className="flex items-center text-[#1a71b6] text-sm mt-2">
                         <span>Visit page</span>
                         <ExternalLink className="w-3 h-3 ml-1" />
                       </div>
@@ -228,7 +228,7 @@ export default function NotFoundClient() {
           {/* Search Section */}
           <Card className="mb-12">
             <CardHeader>
-              <CardTitle className="text-2xl text-[#1b75bc]">Search Our Site</CardTitle>
+              <CardTitle className="text-2xl text-[#1a71b6]">Search Our Site</CardTitle>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSearch} className="flex gap-4 max-w-md mx-auto">
@@ -240,7 +240,7 @@ export default function NotFoundClient() {
                   className="flex-1"
                   aria-label="Search HELOC360"
                 />
-                <Button type="submit" className="bg-[#1b75bc] hover:bg-[#1b75bc]/90">
+                <Button type="submit" className="bg-[#1a71b6] hover:bg-[#1a71b6]/90">
                   <Search className="w-4 h-4" />
                 </Button>
               </form>
@@ -250,7 +250,7 @@ export default function NotFoundClient() {
           {/* Popular Pages */}
           <Card className="mb-12 text-left">
             <CardHeader>
-              <CardTitle className="text-2xl text-[#1b75bc]">Popular Pages</CardTitle>
+              <CardTitle className="text-2xl text-[#1a71b6]">Popular Pages</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid md:grid-cols-2 gap-4">
@@ -258,16 +258,16 @@ export default function NotFoundClient() {
                   <Link
                     key={index}
                     href={page.path}
-                    className="flex items-center gap-4 p-4 border border-gray-200 rounded-lg hover:border-[#1b75bc] hover:shadow-md transition-all group"
+                    className="flex items-center gap-4 p-4 border border-gray-200 rounded-lg hover:border-[#1a71b6] hover:shadow-md transition-all group"
                   >
-                    <div className="w-12 h-12 bg-[#1b75bc]/10 rounded-lg flex items-center justify-center group-hover:bg-[#1b75bc]/20 transition-colors">
-                      <page.icon className="w-6 h-6 text-[#1b75bc]" />
+                    <div className="w-12 h-12 bg-[#1a71b6]/10 rounded-lg flex items-center justify-center group-hover:bg-[#1a71b6]/20 transition-colors">
+                      <page.icon className="w-6 h-6 text-[#1a71b6]" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-semibold text-gray-900 group-hover:text-[#1b75bc]">{page.title}</h3>
+                      <h3 className="font-semibold text-gray-900 group-hover:text-[#1a71b6]">{page.title}</h3>
                       <p className="text-sm text-gray-600">{page.description}</p>
                     </div>
-                    <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-[#1b75bc]" />
+                    <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-[#1a71b6]" />
                   </Link>
                 ))}
               </div>
@@ -276,7 +276,7 @@ export default function NotFoundClient() {
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Button size="lg" className="bg-[#1b75bc] hover:bg-[#1b75bc]/90" asChild>
+            <Button size="lg" className="bg-[#1a71b6] hover:bg-[#1a71b6]/90" asChild>
               <Link href="/">
                 <Home className="w-5 h-5 mr-2" />
                 Go to Homepage
@@ -324,15 +324,15 @@ export default function NotFoundClient() {
           <div className="mt-12 text-center">
             <p className="text-gray-600 mb-4">Still can't find what you're looking for?</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center text-sm">
-              <Link href="/pre-qual" className="text-[#1b75bc] hover:text-[#007a5e] transition-colors">
+              <Link href="/pre-qual" className="text-[#1a71b6] hover:text-[#007a5e] transition-colors">
                 Talk to an advisor
               </Link>
               <span className="hidden sm:inline text-gray-400">•</span>
-              <Link href="/heloc-101" className="text-[#1b75bc] hover:text-[#007a5e] transition-colors">
+              <Link href="/heloc-101" className="text-[#1a71b6] hover:text-[#007a5e] transition-colors">
                 Start with HELOC basics
               </Link>
               <span className="hidden sm:inline text-gray-400">•</span>
-              <Link href="/blog" className="text-[#1b75bc] hover:text-[#007a5e] transition-colors">
+              <Link href="/blog" className="text-[#1a71b6] hover:text-[#007a5e] transition-colors">
                 Browse our blog
               </Link>
             </div>

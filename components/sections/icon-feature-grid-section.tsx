@@ -29,13 +29,13 @@ const BG: Record<string, string> = { blue: 'bg-blue-50', white: 'bg-white', gray
 
 // Per-accent badge background + icon color — verbatim from source.
 const badgeBg: Record<string, string> = {
-  blue: 'bg-[#1b75bc]/10',
+  blue: 'bg-[#1a71b6]/10',
   green: 'bg-[#02c39a]/10',
   teal: 'bg-teal-100',
   purple: 'bg-purple-100',
 }
 const iconColor: Record<string, string> = {
-  blue: 'text-[#1b75bc]',
+  blue: 'text-[#1a71b6]',
   green: 'text-[#02c39a]',
   teal: 'text-teal-600',
   purple: 'text-purple-600',
@@ -50,7 +50,7 @@ export function IconFeatureGridSection({ value }: { value: IconFeatureGridValue 
         <div className="text-center mb-12">
           <h2
             id={value.anchorId}
-            className="text-3xl md:text-4xl font-bold text-[#1b75bc] mb-4"
+            className="text-3xl md:text-4xl font-bold text-[#1a71b6] mb-4"
           >
             {value.heading}
           </h2>
@@ -69,7 +69,7 @@ export function IconFeatureGridSection({ value }: { value: IconFeatureGridValue 
                 >
                   <Icon name={feature.icon} className={`w-8 h-8 ${iconColor[accent]}`} />
                 </div>
-                <h3 className="text-xl font-semibold text-[#1b75bc] mb-3">{feature.title}</h3>
+                <h3 className="text-xl font-semibold text-[#1a71b6] mb-3">{feature.title}</h3>
                 <p className="text-gray-600">{feature.body}</p>
               </div>
             )

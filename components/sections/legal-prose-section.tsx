@@ -30,14 +30,14 @@ export function LegalProseSection({ value }: { value: LegalProseValue }) {
           <LegalPortableText value={value.body} />
 
           {cc && (cc.heading || cc.bodyText || cc.emailHref || cc.phoneHref) && (
-            <div className="bg-gradient-to-r from-[#1b75bc]/10 to-[#007a5e]/10 p-8 rounded-lg mt-12">
-              {cc.heading && <h3 className="text-xl font-semibold text-[#1b75bc] mb-4">{cc.heading}</h3>}
+            <div className="bg-gradient-to-r from-[#1a71b6]/10 to-[#007a5e]/10 p-8 rounded-lg mt-12">
+              {cc.heading && <h3 className="text-xl font-semibold text-[#1a71b6] mb-4">{cc.heading}</h3>}
               {cc.bodyText && <p className="text-lg leading-relaxed mb-4">{cc.bodyText}</p>}
               <div className="flex flex-col sm:flex-row gap-4">
                 {cc.emailHref && cc.emailLabel && (
                   <a
                     href={cc.emailHref}
-                    className="inline-flex items-center justify-center px-6 py-3 bg-[#1b75bc] hover:bg-[#1b75bc]/90 text-white font-medium rounded-lg transition-colors"
+                    className="inline-flex items-center justify-center px-6 py-3 bg-[#1a71b6] hover:bg-[#1a71b6]/90 text-white font-medium rounded-lg transition-colors"
                   >
                     {cc.emailLabel}
                   </a>
@@ -45,7 +45,7 @@ export function LegalProseSection({ value }: { value: LegalProseValue }) {
                 {cc.phoneHref && cc.phoneLabel && (
                   <a
                     href={cc.phoneHref}
-                    className="inline-flex items-center justify-center px-6 py-3 border border-[#1b75bc] text-[#1b75bc] hover:bg-[#1b75bc] hover:text-white font-medium rounded-lg transition-colors"
+                    className="inline-flex items-center justify-center px-6 py-3 border border-[#1a71b6] text-[#1a71b6] hover:bg-[#1a71b6] hover:text-white font-medium rounded-lg transition-colors"
                   >
                     {cc.phoneLabel}
                   </a>
@@ -59,7 +59,7 @@ export function LegalProseSection({ value }: { value: LegalProseValue }) {
               {footer.text && <p className="text-sm text-gray-600">{footer.text}</p>}
               {footer.showReturnHome && (
                 <p className="text-sm text-gray-600 mt-2">
-                  <Link href="/" className="text-[#1b75bc] hover:text-[#007a5e] transition-colors">
+                  <Link href="/" className="text-[#1a71b6] hover:text-[#007a5e] transition-colors">
                     Return to Home
                   </Link>
                 </p>

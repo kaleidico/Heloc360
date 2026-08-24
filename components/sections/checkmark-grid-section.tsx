@@ -26,7 +26,7 @@ export function CheckmarkGridSection({ value }: { value: CheckmarkGridValue }) {
   const inner = (
     <>
       {value.heading && (
-        <h2 className="text-2xl font-bold text-[#1b75bc] mb-6 flex items-center gap-3">
+        <h2 className="text-2xl font-bold text-[#1a71b6] mb-6 flex items-center gap-3">
           <Icon name={value.icon} className="w-6 h-6" />
           {value.heading}
         </h2>
@@ -47,7 +47,7 @@ export function CheckmarkGridSection({ value }: { value: CheckmarkGridValue }) {
 
   if (value.inGradientBox) {
     return (
-      <div className="bg-gradient-to-r from-[#1b75bc]/10 to-[#007a5e]/10 p-8 rounded-lg mb-12">
+      <div className="bg-gradient-to-r from-[#1a71b6]/10 to-[#007a5e]/10 p-8 rounded-lg mb-12">
         {inner}
       </div>
     )

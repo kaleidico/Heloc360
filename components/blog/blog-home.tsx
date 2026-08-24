@@ -188,7 +188,7 @@ export default function BlogHome({
 
 	return (
 		<>
-			<section className='bg-gradient-to-r from-[#1b75bc] to-[#007a5e] py-16'>
+			<section className='bg-gradient-to-r from-[#1a71b6] to-[#007a5e] py-16'>
 				<div className='container mx-auto px-4'>
 					<div className='max-w-4xl mx-auto text-center text-white'>
 						<h1 className='text-4xl md:text-5xl font-bold mb-6'>
@@ -201,7 +201,7 @@ export default function BlogHome({
 						<div className='flex flex-col sm:flex-row gap-4 justify-center'>
 							<Button
 								size='lg'
-								className='bg-white text-[#1b75bc] hover:bg-gray-100'
+								className='bg-white text-[#1a71b6] hover:bg-gray-100'
 								asChild
 							>
 								<Link href='https://get-started.heloc360.com/'>
@@ -227,7 +227,7 @@ export default function BlogHome({
 				<section className='py-16 bg-gray-50'>
 					<div className='container mx-auto px-4'>
 						<div className='max-w-6xl mx-auto'>
-							<h2 className='text-3xl font-bold text-[#1b75bc] mb-8 text-center'>
+							<h2 className='text-3xl font-bold text-[#1a71b6] mb-8 text-center'>
 								Featured Articles
 							</h2>
 							<div className='grid md:grid-cols-2 lg:grid-cols-3 gap-8'>
@@ -248,7 +248,7 @@ export default function BlogHome({
 				<div className='container mx-auto px-4'>
 					<div className='max-w-6xl mx-auto'>
 						<div className='flex items-center justify-between mb-8'>
-							<h2 className='text-3xl font-bold text-[#1b75bc]'>
+							<h2 className='text-3xl font-bold text-[#1a71b6]'>
 								All Articles
 							</h2>
 							<div className='text-gray-600'>
@@ -312,8 +312,8 @@ export default function BlogHome({
 
 							{/* Filter Status */}
 							{(searchTerm || selectedCategory) && (
-								<div className='mt-4 p-3 bg-gradient-to-r from-[#1b75bc]/10 to-[#007a5e]/10 border border-[#1b75bc]/20 rounded-lg'>
-									<div className='flex items-center gap-2 text-[#1b75bc] font-medium'>
+								<div className='mt-4 p-3 bg-gradient-to-r from-[#1a71b6]/10 to-[#007a5e]/10 border border-[#1a71b6]/20 rounded-lg'>
+									<div className='flex items-center gap-2 text-[#1a71b6] font-medium'>
 										<div className='w-2 h-2 bg-[#02c39a] rounded-full'></div>
 										{searchTerm && selectedCategory && (
 											<>
@@ -405,7 +405,7 @@ export default function BlogHome({
 				</div>
 			</section>
 
-			<section className='py-16 bg-gradient-to-r from-[#1b75bc] to-[#007a5e]'>
+			<section className='py-16 bg-gradient-to-r from-[#1a71b6] to-[#007a5e]'>
 				<div className='container mx-auto px-4'>
 					<div className='max-w-3xl mx-auto text-center text-white'>
 						<h2 className='text-3xl font-bold mb-4'>

@@ -26,12 +26,12 @@ export function RequirementCardsSection({ value }: { value: RequirementCardsValu
     <section id={value.anchorId} className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-[#1b75bc] mb-8">{value.heading}</h2>
+          <h2 className="text-3xl font-bold text-[#1a71b6] mb-8">{value.heading}</h2>
           <div className="grid md:grid-cols-2 gap-8">
             {(value.cards || []).map((card) => (
               <Card key={card._key}>
                 <CardHeader>
-                  <CardTitle className="text-xl text-[#1b75bc]">{card.title}</CardTitle>
+                  <CardTitle className="text-xl text-[#1a71b6]">{card.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {(card.items || []).map((item) =>

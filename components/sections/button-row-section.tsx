@@ -15,9 +15,9 @@ export type ButtonRowValue = {
 
 // Class strings copied verbatim from the legal pages' contact callout.
 const PRIMARY =
-  'inline-flex items-center justify-center px-6 py-3 bg-[#1b75bc] hover:bg-[#1b75bc]/90 text-white font-medium rounded-lg transition-colors'
+  'inline-flex items-center justify-center px-6 py-3 bg-[#1a71b6] hover:bg-[#1a71b6]/90 text-white font-medium rounded-lg transition-colors'
 const OUTLINE =
-  'inline-flex items-center justify-center px-6 py-3 border border-[#1b75bc] text-[#1b75bc] hover:bg-[#1b75bc] hover:text-white font-medium rounded-lg transition-colors'
+  'inline-flex items-center justify-center px-6 py-3 border border-[#1a71b6] text-[#1a71b6] hover:bg-[#1a71b6] hover:text-white font-medium rounded-lg transition-colors'
 
 export function ButtonRowSection({ value }: { value: ButtonRowValue }) {
   return (
