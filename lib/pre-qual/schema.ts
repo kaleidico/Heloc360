@@ -41,6 +41,13 @@ export const Step2Schema = z.object({
       message: "Phone number must be at least 10 digits",
     }),
   bestTime: z.enum(BEST_TIME_OPTIONS),
+  // TCPA prior express written consent. Must be an affirmative, unchecked-by-
+  // default opt-in, so `true` is the only accepted value.
+  tcpaConsent: z.literal(true, {
+    errorMap: () => ({
+      message: "Please agree to be contacted so an advisor can call you",
+    }),
+  }),
 })
 
 // Hidden context fields populated by the form host (not user-visible).
@@ -65,6 +72,11 @@ export const PreQualSubmissionSchema = Step1Schema.merge(Step2Schema)
     // production — see app/api/submit-prequal/route.ts for the gate.
     recaptchaToken: z.string().optional(),
     formType: z.literal("pre-qual-v1"),
+    // The exact consent language shown, the version of it, and when it was
+    // agreed. Stored with the lead so the consent is provable later.
+    consentText: z.string().optional(),
+    consentVersion: z.string().optional(),
+    consentTimestamp: z.string().optional(),
   })
 
 export type PreQualSubmission = z.infer<typeof PreQualSubmissionSchema>

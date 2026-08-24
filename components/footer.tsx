@@ -4,6 +4,7 @@ import Link from "next/link"
 import { Facebook, Twitter, Linkedin, Mail } from "lucide-react"
 import footerNavData from "@/config/footer-nav.json"
 import CookiePreferencesLink from "@/components/consent/cookie-preferences-link"
+import FooterMailingListForm from "@/components/footer-mailing-list-form"
 import type { FooterNavigation, FooterNavigationItem } from "@/types/navigation"
 
 // lucide-react exports use "Linkedin" (lowercase d), not "LinkedIn". Keep
@@ -25,9 +26,11 @@ function FooterColumn({
       <ul className="space-y-2">
         {items.map((item, i) => (
           <li key={i}>
+            {/* py-1 takes the link box to 24px, the WCAG 2.2 (2.5.8) minimum
+                target size. It measured 20px before. */}
             <Link
               href={item.url}
-              className="text-sm text-white/80 hover:text-white transition-colors"
+              className="inline-block py-1 text-sm text-white/80 hover:text-white transition-colors"
             >
               {item.label}
             </Link>
@@ -53,26 +56,7 @@ export default function Footer() {
               </h2>
               <p className="text-sm text-white/70">{data.mailingList.subheading}</p>
             </div>
-            <form
-              className="flex flex-col sm:flex-row gap-2"
-              onSubmit={(e) => e.preventDefault()}
-              aria-label="Mailing list signup"
-            >
-              <input
-                type="email"
-                required
-                autoComplete="email"
-                placeholder="you@example.com"
-                className="flex-1 px-4 py-3 rounded-md bg-white text-ink-900 placeholder:text-ink-400 focus:outline-none focus:ring-2 focus:ring-brand-blue"
-                aria-label="Email address"
-              />
-              <button
-                type="submit"
-                className="bg-brand-green hover:bg-brand-green-dark text-white font-semibold px-6 py-3 rounded-md transition-colors"
-              >
-                {data.mailingList.ctaLabel}
-              </button>
-            </form>
+            <FooterMailingListForm ctaLabel={data.mailingList.ctaLabel} />
           </div>
         </div>
       </div>
@@ -131,10 +115,12 @@ export default function Footer() {
               {data.socialMedia.map((s, i) => {
                 const Icon = socialIconMap[s.icon as keyof typeof socialIconMap]
                 return (
+                  // The 16px icon needs padding to reach the 24px minimum
+                  // target size in WCAG 2.2 (2.5.8); inline-flex centres it.
                   <a
                     key={i}
                     href={s.url}
-                    className="text-white/60 hover:text-white transition-colors"
+                    className="inline-flex items-center justify-center w-11 h-11 -m-1 text-white/60 hover:text-white transition-colors"
                     aria-label={s.label}
                   >
                     {Icon ? <Icon className="w-4 h-4" /> : s.label}

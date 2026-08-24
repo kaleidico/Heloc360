@@ -1,5 +1,5 @@
 import BlogHome from "@/components/blog/blog-home";
-import { getAllBlogPosts } from "@/lib/sanity/api";
+import { getBlogCards } from "@/lib/sanity/api";
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 
@@ -42,8 +42,6 @@ export default async function BlogPage({ params, searchParams }: Props) {
 		notFound();
 	}
 
-	const posts = await getAllBlogPosts();
-
 	// Extract filter parameters from URL
 	const search = resolvedSearchParams?.search
 		? (resolvedSearchParams.search as string)
@@ -52,9 +50,19 @@ export default async function BlogPage({ params, searchParams }: Props) {
 		? (resolvedSearchParams.category as string)
 		: "";
 
+	// Filtered and paginated in Sanity.
+	const listing = await getBlogCards({ page: pageNum, search, category });
+
+	// A page past the end is a 404, not an empty grid.
+	if (pageNum > listing.totalPages) {
+		notFound();
+	}
+
 	return (
 		<BlogHome
-			initialPosts={posts}
+			posts={listing.posts}
+			totalPosts={listing.total}
+			totalPages={listing.totalPages}
 			initialPage={pageNum}
 			initialSearch={search}
 			initialCategory={category}

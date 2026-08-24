@@ -8,7 +8,9 @@ import { useConsent } from "./consent-provider"
  * is always present, including after the banner has been dismissed.
  */
 export default function CookiePreferencesLink({
-  className = "text-sm text-white/80 hover:text-white transition-colors underline-offset-2 hover:underline text-left",
+  // py-1 keeps the target at the 24px WCAG 2.2 (2.5.8) minimum, matching the
+  // other footer links.
+  className = "inline-block py-1 text-sm text-white/80 hover:text-white transition-colors underline-offset-2 hover:underline text-left",
 }: {
   className?: string
 }) {

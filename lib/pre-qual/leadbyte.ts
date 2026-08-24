@@ -51,6 +51,14 @@ export function toLeadBytePayload(data: OutboundFields): Record<string, string> 
   set("f_106_property_worth", data.homeValue)
   set("f_105_borrow_amount", borrowingPower)
 
+  // TCPA consent record. LeadByte has named keys for the standard trio, and
+  // the lead is worth much less without them: an unprovable consent is no
+  // consent at all if a complaint arrives.
+  set("TCPA_Consent", data.tcpaConsent ? "1" : "0")
+  set("TCPA_Consent_Text", data.consentText)
+  set("TCPA_Consent_Version", data.consentVersion)
+  set("TCPA_Consent_Timestamp", data.consentTimestamp)
+
   // Attribution
   set("f_113_referer_url", data.referral)
   set("f_114_utm_medium", data.utmMedium)

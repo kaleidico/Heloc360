@@ -53,7 +53,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export async function generateStaticParams() {
   const posts = await getAllBlogPosts()
-  return posts.map((post) => ({ slug: post.slug }))
+  // A post with no slug yet (an empty draft someone started and abandoned in
+  // the Studio) cannot have a route. Filtering here stops one unfinished
+  // document from failing the whole build.
+  return posts
+    .filter((post) => typeof post.slug === 'string' && post.slug.length > 0)
+    .map((post) => ({ slug: post.slug }))
 }
 
 export default async function BlogPostPage({ params }: Props) {

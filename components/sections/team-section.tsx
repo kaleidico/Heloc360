@@ -59,7 +59,14 @@ function MemberCard({ member }: { member: TeamMember }) {
 // Verbatim reproduction of the about page "Meet the Team" section. Fetches team
 // members at render time (async server component) and splits them into Leadership
 // and Contributors using the configured role keywords.
-export async function TeamSection({ value }: { value: TeamSectionValue }) {
+export async function TeamSection({
+  value,
+  asPageHeading = false,
+}: {
+  value: TeamSectionValue
+  /** True when this section leads the page, so its heading is the page's h1. */
+  asPageHeading?: boolean
+}) {
   const teamMembers = await getAllTeamMembers()
   const roles = value.leadershipRoles && value.leadershipRoles.length > 0 ? value.leadershipRoles : DEFAULT_ROLES
 
@@ -80,7 +87,15 @@ export async function TeamSection({ value }: { value: TeamSectionValue }) {
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#1a71b6] mb-4">{value.heading}</h2>
+            {asPageHeading ? (
+              <h1 className="text-3xl md:text-4xl font-bold text-[#1a71b6] mb-4">
+                {value.heading}
+              </h1>
+            ) : (
+              <h2 className="text-3xl md:text-4xl font-bold text-[#1a71b6] mb-4">
+                {value.heading}
+              </h2>
+            )}
             {value.subheading && <p className="text-lg text-gray-600">{value.subheading}</p>}
           </div>
 

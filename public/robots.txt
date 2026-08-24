@@ -9,9 +9,12 @@ Allow: /
 Sitemap: https://heloc360.com/sitemap.xml
 
 # Block access to admin and system areas
+# NOTE: /_next/ must stay crawlable. It holds the compiled CSS and JS that
+# Google needs to render this site; blocking it hides the page content from
+# the renderer and costs rankings.
 Disallow: /admin/
 Disallow: /api/
-Disallow: /_next/
+Disallow: /studio
 Disallow: /_vercel/
 Disallow: /.well-known/
 Disallow: /node_modules/
@@ -27,14 +30,10 @@ Disallow: /docs/
 Disallow: /scripts/
 
 # Block access to development and build files
-Disallow: /*.js$
-Disallow: /*.css$
+# NOTE: .js and .css must NOT be blocked. Google renders the page before
+# indexing it and needs both. Source files (.ts/.tsx/.md) are never served by
+# Next.js in the first place, so there is nothing to block.
 Disallow: /*.map$
-Disallow: /*.json$
-Disallow: /*.txt$
-Disallow: /*.md$
-Disallow: /*.ts$
-Disallow: /*.tsx$
 
 # Block access to temporary and cache files
 Disallow: /temp/
@@ -56,20 +55,22 @@ Disallow: /tailwind.config.*
 Disallow: /postcss.config.*
 Disallow: /components.json
 
-# Block access to image optimization files
-Disallow: /_next/image
-Disallow: /images/optimized/
+# Image files are left crawlable so they can appear in Google Images.
+# (/_next/image and /images/optimized/ were blocked here previously, which
+# prevented every optimised image on the site from being indexed.)
 
 # Allow important pages and content
 Allow: /heloc-101
 Allow: /calculators/
 Allow: /about
 Allow: /blog/
-Allow: /contact
-Allow: https://get-started.heloc360.com/
+Allow: /pre-qual
 Allow: /meet-our-team/
 Allow: /privacy
 Allow: /terms
+Allow: /cookie-policy
+Allow: /privacy-choices
+Allow: /accessibility
 Allow: /affiliate-disclosure
 Allow: /communication-consent
 

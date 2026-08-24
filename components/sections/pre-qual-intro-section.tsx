@@ -11,13 +11,18 @@ export type PreQualIntroValue = {
   suppressStickyCta?: boolean
 }
 
-// Verbatim reproduction of app/(site)/pre-qual/page.tsx: a bg-surface-50 main with a
-// constrained header and a white card hosting the interactive pre-qual form (rendered
-// via the nested componentEmbed, preserving its client logic). The StickyCtaSuppress
-// side-effect is rendered directly (matching the source <main>'s first child).
+// Reproduces app/(site)/pre-qual/page.tsx: a bg-surface-50 band with a constrained
+// header and a white card hosting the interactive pre-qual form (rendered via the
+// nested componentEmbed, preserving its client logic). The StickyCtaSuppress
+// side-effect is rendered directly as the first child.
+//
+// This is a <section>, not a <main>. It renders inside the layout's
+// <main id="main-content">, and a nested second <main> gave screen-reader users
+// two "main" landmarks on the conversion page, breaking the jump-to-content
+// shortcut. Styling is unchanged.
 export function PreQualIntroSection({ value }: { value: PreQualIntroValue }) {
   return (
-    <main className="bg-surface-50 min-h-[80vh]">
+    <section className="bg-surface-50 min-h-[80vh]">
       {value.suppressStickyCta !== false && <StickyCtaSuppress />}
       <div className="container mx-auto px-4 py-12 lg:py-16">
         <div className="max-w-2xl mx-auto">
@@ -37,6 +42,6 @@ export function PreQualIntroSection({ value }: { value: PreQualIntroValue }) {
           </div>
         </div>
       </div>
-    </main>
+    </section>
   )
 }

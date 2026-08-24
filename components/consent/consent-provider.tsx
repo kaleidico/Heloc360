@@ -76,7 +76,23 @@ export default function ConsentProvider({
   // Restore any prior choice on mount.
   useEffect(() => {
     const stored = readConsent()
-    const state = stored ? stored.categories : IMPLIED_DEFAULT
+    let state = stored ? stored.categories : IMPLIED_DEFAULT
+
+    // Global Privacy Control. A browser sending GPC is making a legally
+    // recognised opt-out of the sale or sharing of personal information under
+    // CCPA/CPRA and several other state laws, so it overrides the implied
+    // default and switches advertising off. It does NOT override a later
+    // explicit choice by the visitor to turn advertising back on: that is the
+    // person overruling their browser, which the law allows.
+    const gpc =
+      typeof navigator !== 'undefined' &&
+      (navigator as Navigator & { globalPrivacyControl?: boolean })
+        .globalPrivacyControl === true
+
+    if (gpc && !stored) {
+      state = { ...state, marketing: false }
+    }
+
     setConsent(state)
     setDecided(Boolean(stored))
     setReady(true)

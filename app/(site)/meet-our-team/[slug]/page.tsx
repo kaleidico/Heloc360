@@ -20,9 +20,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
   }
 
+  // Google renders about 155 characters of a description and truncates the
+  // rest mid-sentence. Bill Rice's ran to 396. Trim on a word boundary so the
+  // snippet reads as a finished sentence.
+  const summary = (member.bio || '').replace(/\s+/g, ' ').trim()
+  const description = summary
+    ? summary.length <= 155
+      ? summary
+      : `${summary.slice(0, 152).replace(/[\s,;:.-]+\S*$/, '')}…`
+    : `Meet ${member.name}, ${member.title || 'a member of the HELOC360 team'}.`
+
   return {
     title: `${member.name} - ${member.title || 'Team Member'} | HELOC360 Team`,
-    description: member.bio || `Meet ${member.name}, a valued member of the HELOC360 team.`,
+    description,
     alternates: {
       canonical: `https://heloc360.com/meet-our-team/${member.slug}`,
     },
@@ -31,9 +41,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export async function generateStaticParams() {
   const teamMembers = await getAllTeamMembers()
-  return teamMembers.map((member) => ({
-    slug: member.slug,
-  }))
+  // Same guard as the blog: an unfinished draft has no slug and no route.
+  return teamMembers
+    .filter((member) => typeof member.slug === 'string' && member.slug.length > 0)
+    .map((member) => ({
+      slug: member.slug,
+    }))
 }
 
 export default async function TeamMemberPage({ params }: Props) {
@@ -80,7 +93,13 @@ export default async function TeamMemberPage({ params }: Props) {
                         priority
                       />
                     </div>
-                    <CardTitle className="text-2xl text-[#1a71b6]">{member.name}</CardTitle>
+                    {/* The person's name is this page's h1. It was a CardTitle
+                        div, which left the bio pages with no level-one heading
+                        at all: an accessibility failure and a wasted SEO signal
+                        on ten indexable pages. Classes match CardTitle's. */}
+                    <h1 className="text-2xl font-semibold leading-none tracking-tight text-[#1a71b6]">
+                      {member.name}
+                    </h1>
                     <p className="text-[#007a5e] font-semibold text-lg">{member.title}</p>
 
                     {member.email && (

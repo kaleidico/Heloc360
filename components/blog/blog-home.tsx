@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import Link from "next/link";
@@ -14,7 +14,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import type { BlogPost } from "@/types/blog";
+import type { BlogCard as BlogCardType } from "@/lib/sanity/api";
 import { CATEGORIES } from "@/config/blog";
 import MailingListForm from "@/components/mailing-list-form";
 
@@ -35,25 +35,35 @@ const BlogPagination = dynamic(
 	}
 );
 
-const POSTS_PER_PAGE = 12;
-
 export default function BlogHome({
-	initialPosts,
+	posts,
+	featuredPosts = [],
+	totalPosts,
+	totalPages,
 	initialPage = 1,
 	initialSearch = "",
 	initialCategory = "",
 }: {
-	initialPosts: BlogPost[];
+	/** The current page of cards, already filtered and paginated in Sanity. */
+	posts: BlogCardType[];
+	featuredPosts?: BlogCardType[];
+	totalPosts: number;
+	totalPages: number;
 	initialPage?: number;
 	initialSearch?: string;
 	initialCategory?: string;
 }) {
 	const router = useRouter();
 	const searchParams = useSearchParams();
-	const blogPosts = initialPosts;
 	const [currentPage, setCurrentPage] = useState(initialPage);
 	const [searchTerm, setSearchTerm] = useState(initialSearch);
 	const [selectedCategory, setSelectedCategory] = useState(initialCategory);
+
+	// Filtering and pagination happen in Sanity, so these come straight from
+	// the server. Previously all 250 posts (with their full bodies) were sent
+	// to the browser and sliced here, which made /blog a 6 MB page.
+	const currentPosts = posts;
+	const filteredCount = totalPosts;
 
 	// Sync state with URL parameters when they change
 	useEffect(() => {
@@ -75,73 +85,6 @@ export default function BlogHome({
 		setCurrentPage(pageNum);
 	}, [searchParams]);
 
-	// Filter posts based on search term and category
-	const filteredPosts = useMemo(() => {
-		let filtered = blogPosts;
-
-		// Filter by category first
-		if (selectedCategory) {
-			filtered = filtered.filter(
-				(post) => post.category === selectedCategory
-			);
-		}
-
-		// Then filter by search term
-		if (searchTerm.trim()) {
-			const searchLower = searchTerm.toLowerCase();
-
-			filtered = filtered.filter((post) => {
-				// Search in title
-				if (post.title.toLowerCase().includes(searchLower)) {
-					return true;
-				}
-
-				// Search in excerpt
-				if (post.excerpt.toLowerCase().includes(searchLower)) {
-					return true;
-				}
-
-				// Search in body (PortableText blocks → flattened text)
-				const bodyText = (post.body || [])
-					.flatMap((block: any) =>
-						(block.children || []).map((child: any) =>
-							typeof child.text === "string" ? child.text : ""
-						)
-					)
-					.join(" ")
-					.toLowerCase();
-				if (bodyText.includes(searchLower)) {
-					return true;
-				}
-
-				// Search in tags
-				if (
-					post.tags.some((tag) =>
-						tag.toLowerCase().includes(searchLower)
-					)
-				) {
-					return true;
-				}
-
-				// Search in category
-				if (post.category.toLowerCase().includes(searchLower)) {
-					return true;
-				}
-
-				return false;
-			});
-		}
-
-		return filtered;
-	}, [blogPosts, searchTerm, selectedCategory]);
-
-	const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
-	const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
-	const endIndex = startIndex + POSTS_PER_PAGE;
-	const currentPosts = filteredPosts.slice(startIndex, endIndex);
-
-	const featuredPosts = blogPosts.filter((post) => post.featured).slice(0, 3);
-
 	// Function to update URL with current state (shallow routing for smooth pagination)
 	const updateURL = (page: number, search: string, category: string) => {
 		const params = new URLSearchParams();
@@ -153,8 +96,10 @@ export default function BlogHome({
 		const baseURL = page === 1 ? "/blog" : `/blog/page/${page}`;
 		const newURL = queryString ? `${baseURL}?${queryString}` : baseURL;
 
-		// Use shallow routing to update URL without page refresh
-		router.replace(newURL, { scroll: false, shallow: true });
+		// A real navigation, not shallow: the server re-queries Sanity for the
+		// matching page. Shallow routing would change the URL and leave the
+		// rendered results untouched.
+		router.push(newURL, { scroll: false });
 	};
 
 	// Handle page change
@@ -163,12 +108,20 @@ export default function BlogHome({
 		updateURL(page, searchTerm, selectedCategory);
 	};
 
-	// Reset to first page when search changes
+	// Search now runs in Sanity, so navigating on every keystroke would fire a
+	// query per character. Hold the input locally and navigate once typing
+	// pauses.
 	const handleSearchChange = (value: string) => {
 		setSearchTerm(value);
 		setCurrentPage(1);
-		updateURL(1, value, selectedCategory);
 	};
+
+	useEffect(() => {
+		if (searchTerm === initialSearch) return;
+		const t = setTimeout(() => updateURL(1, searchTerm, selectedCategory), 350);
+		return () => clearTimeout(t);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [searchTerm]);
 
 	// Handle category change
 	const handleCategoryChange = (category: string) => {
@@ -252,8 +205,8 @@ export default function BlogHome({
 								All Articles
 							</h2>
 							<div className='text-gray-600'>
-								{filteredPosts.length} article
-								{filteredPosts.length !== 1 ? "s" : ""} found
+								{filteredCount} article
+								{filteredCount !== 1 ? "s" : ""} found
 							</div>
 						</div>
 
@@ -280,7 +233,13 @@ export default function BlogHome({
 									value={selectedCategory || "all"}
 									onValueChange={handleCategoryChange}
 								>
-									<SelectTrigger className='w-full sm:w-[200px]'>
+									{/* The trigger renders as a button with no text of
+									    its own until a category is chosen, so it needs
+									    an explicit accessible name. */}
+									<SelectTrigger
+										className='w-full sm:w-[200px]'
+										aria-label='Filter articles by category'
+									>
 										<SelectValue placeholder='Filter by category' />
 									</SelectTrigger>
 									<SelectContent>

@@ -39,6 +39,8 @@
 		{ "label": "Privacy Policy", "url": "/privacy", "type": "text", "icon": null },
 		{ "label": "Terms of Use", "url": "/terms", "type": "text", "icon": null },
 		{ "label": "Cookie Policy", "url": "/cookie-policy", "type": "text", "icon": null },
+		{ "label": "Your Privacy Choices", "url": "/privacy-choices", "type": "text", "icon": null },
+		{ "label": "Accessibility", "url": "/accessibility", "type": "text", "icon": null },
 		{ "label": "Affiliate Disclosure", "url": "/affiliate-disclosure", "type": "text", "icon": null },
 		{ "label": "Communication Consent", "url": "/communication-consent", "type": "text", "icon": null }
 	]

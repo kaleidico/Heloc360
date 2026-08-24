@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { PreQualSubmissionSchema } from "@/lib/pre-qual/schema"
 import { sendLeadNotification } from "@/lib/email/notify"
 import { toLeadBytePayload } from "@/lib/pre-qual/leadbyte"
+import { clientIpFromHeaders } from "@/lib/request-ip"
 
 // LeadByte REST API (account: kaleidico). Direct lead delivery — leads post
 // here with campid + a valid `key`. This is additive to the woad webhook
@@ -131,21 +132,32 @@ export async function POST(request: NextRequest) {
   const campid = process.env.LEADBYTE_CAMPID
   const leadByteKey = process.env.LEADBYTE_API_KEY
 
+  // Read the IP from the request we already have rather than asking the
+  // browser to fetch it from a third party. Recorded alongside the consent,
+  // since "who agreed, from where, and when" is what makes a consent record
+  // worth keeping.
+  const clientIp = clientIpFromHeaders(request.headers)
+  const leadByteFields = {
+    ...toLeadBytePayload(outbound),
+    ...(clientIp ? { ip_address: clientIp } : {}),
+  }
+
   // The woad webhook gets the LeadByte field shape when a campid is configured
   // (so its downstream forward can pass through), else the legacy flat payload.
   const woadBody = campid
-    ? toLeadBytePayload(outbound)
+    ? leadByteFields
     : {
         ...outbound,
         submittedAt: new Date().toISOString(),
         userAgent: request.headers.get("user-agent") || undefined,
+        ipAddress: clientIp || undefined,
       }
 
   // Fire both destinations in parallel. The helpers never throw, so a failure
   // in one can't abort the other.
   const deliveries: Promise<DeliveryResult>[] = [postToWoad(woadBody)]
   if (leadByteKey && campid) {
-    deliveries.push(postToLeadByte(toLeadBytePayload(outbound), leadByteKey))
+    deliveries.push(postToLeadByte(leadByteFields, leadByteKey))
   }
   const results = await Promise.all(deliveries)
 

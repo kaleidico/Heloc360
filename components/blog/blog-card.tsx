@@ -6,7 +6,10 @@ import type { BlogPost } from "@/types/blog"
 import { decodeHtmlEntities } from "@/lib/utils"
 
 interface BlogCardProps {
-  post: BlogPost
+  // The card renders title, excerpt, image, category, date and read time, and
+  // never the article body. Omitting it lets listings pass the lightweight
+  // card shape instead of fetching every post in full.
+  post: Omit<BlogPost, 'body'> & { body?: BlogPost['body'] }
   featured?: boolean
 }
 

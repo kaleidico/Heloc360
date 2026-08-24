@@ -335,12 +335,10 @@ export default function MortgageApplicationForm() {
 		return getMergedTrackingData();
 	};
 
-	// Get IP address using utility
-	const getIpAddress = async () => {
-		await updateTrackingWithIp();
-		const trackingData = getMergedTrackingData();
-		return trackingData.ipAddress || "";
-	};
+	// The IP is no longer looked up from the browser. The API route reads it
+	// from the request it already receives, so nothing is disclosed to a third
+	// party just to learn it. Returns "" here and the server fills it in.
+	const getIpAddress = async () => "";
 
 	// Form submission
 	const onSubmit = async (data: FormData) => {

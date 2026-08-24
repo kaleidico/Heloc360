@@ -114,7 +114,7 @@ export type Section =
 // Renders a single section, keyed by its `_key`. Exported so container blocks
 // (e.g. contentSection) can recursively render their nested children, making
 // rendering recursive one level deep.
-export function renderBlock(section: Section): React.ReactNode {
+export function renderBlock(section: Section, index = 0): React.ReactNode {
   switch (section._type) {
     case 'heroSection':
       return <HeroSection key={section._key} value={section} />
@@ -171,7 +171,12 @@ export function renderBlock(section: Section): React.ReactNode {
     case 'valueCardsGrid':
       return <ValueCardsGridSection key={section._key} value={section} />
     case 'teamSection':
-      return <TeamSection key={section._key} value={section} />
+      // When this section leads the page it carries the page's only heading,
+      // so it renders as the h1. /meet-our-team is a single teamSection and
+      // previously had no level-one heading at all.
+      return (
+        <TeamSection key={section._key} value={section} asPageHeading={index === 0} />
+      )
     case 'missionStatement':
       return <MissionStatementSection key={section._key} value={section} />
     case 'awardsGrid':
@@ -237,5 +242,5 @@ export function renderBlock(section: Section): React.ReactNode {
 }
 
 export function SectionRenderer({ sections }: { sections: Section[] }) {
-  return <>{sections.map((section) => renderBlock(section))}</>
+  return <>{sections.map((section, index) => renderBlock(section, index))}</>
 }

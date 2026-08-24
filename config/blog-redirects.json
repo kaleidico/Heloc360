@@ -1,0 +1,53 @@
+{
+  "_comment": "Duplicate blog posts folded into a canonical URL. `from` is the retired slug and is 301'd to `to` in next.config.mjs, and filtered out of sitemap.xml so Google is never pointed at a redirect. Once these are live, the retired documents can be deleted in Sanity.",
+  "redirects": [
+    {
+      "from": "can-you-get-a-heloc-on-an-underwater-home-2",
+      "to": "can-you-get-a-heloc-on-an-underwater-home"
+    },
+    {
+      "from": "are-helocs-recession-proof-2025-analysis-2",
+      "to": "are-helocs-recession-proof-2025-analysis"
+    },
+    {
+      "from": "hidden-heloc-closing-costs-to-watch-out-for",
+      "to": "surprising-heloc-closing-costs-to-watch-out-for"
+    },
+    {
+      "from": "understanding-your-heloc-minimum-payments",
+      "to": "understanding-heloc-minimum-payments-a-guide"
+    },
+    {
+      "from": "helocs-in-retirement-smart-move-or-risky-bet",
+      "to": "helocs-in-retirement-smart-move-or-risky-gamble"
+    },
+    {
+      "from": "funding-education-with-a-heloc-pros-and-cons",
+      "to": "funding-your-childs-education-with-a-heloc-pros-and-cons"
+    },
+    {
+      "from": "why-a-heloc-could-be-your-financial-safety-net",
+      "to": "why-a-heloc-could-be-your-ultimate-financial-safety-net"
+    },
+    {
+      "from": "why-helocs-offer-unmatched-financial-flexibility",
+      "to": "why-helocs-offer-unmatched-financial-flexibility-guide"
+    },
+    {
+      "from": "maximizing-heloc-tax-benefits-2025-update",
+      "to": "maximizing-heloc-tax-deductions-2025-update"
+    },
+    {
+      "from": "navigating-helocs-during-divorce-expert-guide",
+      "to": "navigating-helocs-during-divorce-what-you-must-know"
+    },
+    {
+      "from": "heloc-interest-rates-today-daily-updates",
+      "to": "best-heloc-rates-today-daily-updates"
+    },
+    {
+      "from": "avoid-these-common-heloc-mistakes",
+      "to": "avoid-these-costly-heloc-mistakes-at-all-costs"
+    }
+  ]
+}

@@ -27,7 +27,9 @@ export function HeroSection({ value }: { value: HeroSectionValue }) {
             priority
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-black/50" />
+          {/* 60%, not 50%: guarantees at least 4.5:1 for white text even over a
+              pure-white part of the photograph. See image-hero-section.tsx. */}
+          <div className="absolute inset-0 bg-black/60" />
         </div>
       )}
       <div className="relative z-10 container mx-auto px-4 text-center text-white">

@@ -69,7 +69,7 @@ export default function Header() {
                 {item.children ? (
                   <>
                     <button
-                      className="flex items-center text-ink-700 hover:text-brand-blue transition-colors font-medium"
+                      className="flex items-center py-2 text-ink-700 hover:text-brand-blue transition-colors font-medium"
                       aria-expanded={openDropdown === index}
                       onClick={() =>
                         setOpenDropdown(openDropdown === index ? null : index)
@@ -113,7 +113,7 @@ export default function Header() {
                 ) : (
                   <Link
                     href={item.url || "#"}
-                    className="text-ink-700 hover:text-brand-blue transition-colors font-medium"
+                    className="inline-block py-2 text-ink-700 hover:text-brand-blue transition-colors font-medium"
                   >
                     {item.label}
                   </Link>

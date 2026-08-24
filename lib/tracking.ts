@@ -180,29 +180,17 @@ export function initializeTracking(): void {
 }
 
 /**
- * Get user's IP address
- */
-export async function getIpAddress(): Promise<string> {
-	try {
-		const response = await fetch("https://api.ipify.org?format=json");
-		const data = await response.json();
-		return data.ip;
-	} catch (error) {
-		console.warn("Failed to get IP address:", error);
-		return "";
-	}
-}
-
-/**
- * Update tracking data with IP address
+ * Deprecated, and now a no-op.
+ *
+ * This used to call api.ipify.org from the visitor's browser to learn their IP
+ * address, which handed a third party the IP of every person who opened the
+ * form, for no benefit: our own server already sees the source IP on the
+ * request. The API routes read it from the request headers instead (see
+ * `clientIpFromHeaders` in lib/request-ip.ts).
+ *
+ * Kept as a no-op so any remaining caller stops making the third-party
+ * request rather than breaking.
  */
 export async function updateTrackingWithIp(): Promise<void> {
-	const ipAddress = await getIpAddress();
-	if (ipAddress) {
-		const existing = getTrackingData();
-		saveTrackingData({
-			...existing,
-			ipAddress,
-		});
-	}
+	return;
 }

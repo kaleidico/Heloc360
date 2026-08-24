@@ -8,6 +8,9 @@ import { imageUrl } from './image'
 import {
   ALL_BLOG_POSTS_QUERY,
   BLOG_POST_BY_SLUG_QUERY,
+  BLOG_CARDS_QUERY,
+  BLOG_CARDS_COUNT_QUERY,
+  BLOG_CATEGORIES_QUERY,
   ALL_TEAM_MEMBERS_QUERY,
   TEAM_MEMBER_BY_SLUG_QUERY,
 } from './queries'
@@ -122,6 +125,104 @@ function mapTeamMember(raw: RawTeamMember): TeamMember {
     twitter: raw.twitter,
     bio: raw.bio,
     image: raw.photo ? imageUrl(raw.photo) : '/placeholder.svg',
+  }
+}
+
+/** A listing card. Same shape as BlogPost minus the article body. */
+export type BlogCard = Omit<BlogPost, 'body'>
+
+type RawBlogCard = Omit<RawBlogPost, 'body'> & {
+  wordCount?: number
+  autoExcerpt?: string
+}
+
+function mapBlogCard(raw: RawBlogCard): BlogCard {
+  const categories = Array.isArray(raw.categories) ? raw.categories : []
+  const words = raw.wordCount ?? 0
+  return {
+    id: raw.id,
+    title: raw.title,
+    slug: raw.slug,
+    // Same precedence as the full mapper; the GROQ-computed autoExcerpt stands
+    // in for the body-derived fallback.
+    excerpt:
+      raw.seoDescription || raw.excerpt || (raw.autoExcerpt ? `${raw.autoExcerpt}…` : ''),
+    publishedDate: raw.publishDate,
+    readTime: Math.max(1, Math.ceil(words / 200)),
+    category: categories[0] || 'General',
+    tags: [],
+    featuredImage: imageUrl(raw.featureImage),
+    featureImageAlt: raw.featureImageAlt,
+    featured: categories.map((c) => c.toLowerCase()).includes('featured'),
+    seoTitle: raw.seoTitle,
+  }
+}
+
+export type BlogListing = {
+  posts: BlogCard[]
+  total: number
+  totalPages: number
+  page: number
+  perPage: number
+}
+
+/**
+ * One page of blog cards, filtered and paginated in Sanity.
+ *
+ * Search runs server-side against the body via `pt::text()`, so full-text
+ * search still works while the browser only ever receives the current page.
+ */
+export async function getBlogCards({
+  page = 1,
+  perPage = 12,
+  search = '',
+  category = '',
+}: {
+  page?: number
+  perPage?: number
+  search?: string
+  category?: string
+} = {}): Promise<BlogListing> {
+  const term = search.trim()
+  const params = {
+    // GROQ treats an undefined param as "no filter" via !defined().
+    q: term ? `${term.replace(/[*"]/g, '')}*` : null,
+    category: category.trim() || null,
+    from: (Math.max(1, page) - 1) * perPage,
+    to: Math.max(1, page) * perPage,
+  }
+
+  try {
+    const [raws, total] = await Promise.all([
+      sanityClient.fetch<RawBlogCard[]>(BLOG_CARDS_QUERY, params, { next: READ_TAGS }),
+      sanityClient.fetch<number>(BLOG_CARDS_COUNT_QUERY, params, { next: READ_TAGS }),
+    ])
+    const count = typeof total === 'number' ? total : 0
+    return {
+      // An unfinished draft has no slug and no title. It must not render a
+      // card, which would link to /blog/null with an unnamed image.
+      posts: (raws || [])
+        .filter((raw) => typeof raw.slug === 'string' && raw.slug.length > 0)
+        .map(mapBlogCard),
+      total: count,
+      totalPages: Math.max(1, Math.ceil(count / perPage)),
+      page: Math.max(1, page),
+      perPage,
+    }
+  } catch (err) {
+    console.error('Failed to load blog cards from Sanity', err)
+    return { posts: [], total: 0, totalPages: 1, page: 1, perPage }
+  }
+}
+
+/** Category names actually in use, for the listing filter. */
+export async function getBlogCategories(): Promise<string[]> {
+  try {
+    const cats = await sanityClient.fetch<string[]>(BLOG_CATEGORIES_QUERY, {}, { next: READ_TAGS })
+    return (cats || []).filter(Boolean).sort()
+  } catch (err) {
+    console.error('Failed to load blog categories from Sanity', err)
+    return []
   }
 }
 

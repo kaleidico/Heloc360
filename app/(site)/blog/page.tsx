@@ -1,5 +1,5 @@
 import BlogHome from "@/components/blog/blog-home";
-import { getAllBlogPosts } from "@/lib/sanity/api";
+import { getBlogCards } from "@/lib/sanity/api";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -39,7 +39,6 @@ type Props = {
 };
 
 export default async function BlogPage({ searchParams }: Props) {
-	const posts = await getAllBlogPosts();
 	const resolvedSearchParams = await searchParams;
 
 	// Extract filter parameters from URL
@@ -50,9 +49,15 @@ export default async function BlogPage({ searchParams }: Props) {
 		? (resolvedSearchParams.category as string)
 		: "";
 
+	// Filtered and paginated in Sanity, so only this page of cards is sent to
+	// the browser.
+	const listing = await getBlogCards({ page: 1, search, category });
+
 	return (
 		<BlogHome
-			initialPosts={posts}
+			posts={listing.posts}
+			totalPosts={listing.total}
+			totalPages={listing.totalPages}
 			initialPage={1}
 			initialSearch={search}
 			initialCategory={category}

@@ -4,12 +4,14 @@ import { sendLeadNotification } from "@/lib/email/notify";
 export async function POST(request: NextRequest) {
 	try {
 		const body = await request.json();
-		const { firstName, email } = body;
+		const { firstName, email, source } = body;
 
-		// Validate required fields
-		if (!firstName || !email) {
+		// Email is the only required field. The footer signup is email-only on
+		// purpose: asking for a name on a newsletter box costs conversions, and
+		// the homepage form still sends one when it has it.
+		if (!email) {
 			return NextResponse.json(
-				{ error: "First name and email are required" },
+				{ error: "Please enter your email address" },
 				{ status: 400 }
 			);
 		}
@@ -32,10 +34,13 @@ export async function POST(request: NextRequest) {
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
-					firstName: firstName.trim(),
+					firstName: typeof firstName === "string" ? firstName.trim() : "",
 					email: email.trim(),
 					submittedAt: new Date().toISOString(),
-					source: "homepage-mailing-list",
+					source:
+						typeof source === "string" && source
+							? `${source}-mailing-list`
+							: "homepage-mailing-list",
 				}),
 			}
 		);
@@ -49,7 +54,11 @@ export async function POST(request: NextRequest) {
 		// Notify the team (additive, best-effort — never throws).
 		await sendLeadNotification({
 			formName: "Mailing List Signup",
-			fields: { firstName: firstName.trim(), email: email.trim(), source: "homepage-mailing-list" },
+			fields: {
+				firstName: typeof firstName === "string" ? firstName.trim() : "",
+				email: email.trim(),
+				source: typeof source === "string" && source ? source : "homepage",
+			},
 			subjectHint: email.trim(),
 			replyTo: email.trim(),
 		});

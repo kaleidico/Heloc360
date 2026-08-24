@@ -38,7 +38,8 @@
 		"icon": null
 	},
 	{
-		"label": "Get Started",
+		"__comment": "Matches the hero CTA label. Two different names for the same destination ('Get Started' here, 'Get Pre-Qualified' in the hero) read as two separate offers.",
+		"label": "Get Pre-Qualified",
 		"url": "/pre-qual",
 		"type": "cta-button",
 		"icon": null

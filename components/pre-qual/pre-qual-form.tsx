@@ -19,6 +19,11 @@ import { lookupZip } from "@/lib/pre-qual/zip-lookup"
 import { EquityReadout } from "./equity-readout"
 import { BestTimeChips } from "./best-time-chips"
 import { slaCopy } from "@/lib/pre-qual/sla"
+import {
+  TCPA_CONSENT_TEXT,
+  CONSENT_TEXT_VERSION,
+  POST_SUBMIT_DISCLOSURE,
+} from "@/lib/pre-qual/consent"
 import type { UseCase } from "@/lib/pre-qual/use-case"
 
 const STORAGE_KEY = "prequal:state"
@@ -76,6 +81,8 @@ export function PreQualForm({ useCase }: PreQualFormProps) {
       email: "",
       phone: "",
       bestTime: undefined,
+      // Deliberately not pre-checked: consent must be an affirmative act.
+      tcpaConsent: undefined as unknown as true,
       useCase,
       formType: "pre-qual-v1",
     },
@@ -214,6 +221,10 @@ export function PreQualForm({ useCase }: PreQualFormProps) {
       useCase,
       formType: "pre-qual-v1",
       recaptchaToken: recaptchaToken || undefined,
+      // Store what was agreed to, and when, alongside the lead.
+      consentText: TCPA_CONSENT_TEXT,
+      consentVersion: CONSENT_TEXT_VERSION,
+      consentTimestamp: new Date().toISOString(),
     }
     try {
       const response = await fetch("/api/submit-prequal", {
@@ -466,6 +477,34 @@ export function PreQualForm({ useCase }: PreQualFormProps) {
 
           <InvisibleRecaptcha ref={recaptchaRef} />
 
+          {/* TCPA prior express written consent. Unchecked by default, and
+              required: a phone number plus a preferred call time is collected
+              here and passed to parties whose purpose is to call. */}
+          <div className="rounded-md border border-surface-200 bg-surface-50 p-3">
+            <div className="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="tcpaConsent"
+                {...register("tcpaConsent")}
+                aria-describedby="tcpaConsent-text"
+                aria-invalid={errors.tcpaConsent ? "true" : "false"}
+                className="mt-1 h-5 w-5 shrink-0 accent-[#007a5e] focus:outline-none focus:ring-2 focus:ring-brand-blue focus:ring-offset-2"
+              />
+              <label
+                htmlFor="tcpaConsent"
+                id="tcpaConsent-text"
+                className="text-xs text-ink-700 leading-relaxed cursor-pointer"
+              >
+                {TCPA_CONSENT_TEXT}
+              </label>
+            </div>
+            {errors.tcpaConsent && (
+              <p id="tcpaConsent-error" role="alert" className="text-sm text-red-600 mt-2">
+                {errors.tcpaConsent.message}
+              </p>
+            )}
+          </div>
+
           <Button
             type="submit"
             disabled={submitting}
@@ -491,7 +530,22 @@ export function PreQualForm({ useCase }: PreQualFormProps) {
           )}
 
           <p className="text-xs text-ink-500 leading-relaxed">
-            No credit pull. We share your info only after you approve a specific lender.
+            {POST_SUBMIT_DISCLOSURE}{" "}
+            <a href="/privacy" className="underline hover:text-ink-700">
+              Privacy Policy
+            </a>
+            {", "}
+            <a href="/terms" className="underline hover:text-ink-700">
+              Terms of Use
+            </a>
+            {" and "}
+            <a
+              href="/communication-consent"
+              className="underline hover:text-ink-700"
+            >
+              Communication Consent
+            </a>
+            .
           </p>
         </section>
       )}
