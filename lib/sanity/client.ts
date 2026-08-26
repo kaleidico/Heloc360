@@ -1,13 +1,25 @@
 import 'server-only'
 import { createClient, type SanityClient } from '@sanity/client'
 
-const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
+/**
+ * HELOC360's Sanity project id.
+ *
+ * Not a secret. It is public by construction: it appears in the URL of every
+ * image this site serves (`cdn.sanity.io/images/2a445j5i/production/...`), and
+ * in the client bundle of any Sanity front end.
+ *
+ * It is hardcoded because `dataset` and `apiVersion` below already have
+ * defaults and this one did not, which made the build depend on an environment
+ * variable that is absent in the Vercel project's Production environment. A
+ * production build would otherwise come up with no project id and render every
+ * page empty. The environment variable still takes precedence wherever it is
+ * set, so other datasets and environments stay configurable.
+ */
+const DEFAULT_PROJECT_ID = '2a445j5i'
+
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || DEFAULT_PROJECT_ID
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
 const apiVersion = process.env.SANITY_API_VERSION || '2024-12-01'
-
-if (!projectId) {
-  console.warn('NEXT_PUBLIC_SANITY_PROJECT_ID is not set. Sanity fetches will fail at runtime.')
-}
 
 /**
  * Local content preview.
@@ -32,7 +44,7 @@ if (previewDrafts) {
 
 // Public read client — uses CDN for fast cached reads.
 export const sanityClient: SanityClient = createClient({
-  projectId: projectId || 'missing-project-id',
+  projectId,
   dataset,
   apiVersion,
   // Drafts are never on the CDN and require auth.
@@ -43,7 +55,7 @@ export const sanityClient: SanityClient = createClient({
 
 // Server-side authenticated client — used when we need draft access or to bypass CDN.
 export const sanityServerClient: SanityClient = createClient({
-  projectId: projectId || 'missing-project-id',
+  projectId,
   dataset,
   apiVersion,
   useCdn: false,
