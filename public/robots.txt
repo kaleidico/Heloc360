@@ -1,146 +1,59 @@
-# HELOC360 Robots.txt
-# Optimized for search engines and web crawlers
+# HELOC360 robots.txt
+#
+# Kept deliberately short. The previous version blocked /_next/, *.js and *.css for
+# `User-agent: *` — rules that would stop a crawler rendering the site as users see it.
+# They never actually applied to Google or Bing (a crawler obeys only its most specific
+# group, and both had their own group below), but the file was one deletion away from
+# them biting. It also blocked *.txt$, which covered the llms.txt we publish on purpose.
 
-# Allow all crawlers by default
 User-agent: *
 Allow: /
-
-# Sitemaps
-Sitemap: https://heloc360.com/sitemap.xml
-
-# Block access to admin and system areas
-Disallow: /admin/
 Disallow: /api/
-Disallow: /_next/
-Disallow: /_vercel/
-Disallow: /.well-known/
-Disallow: /node_modules/
-Disallow: /src/
-Disallow: /app/
-Disallow: /components/
-Disallow: /lib/
-Disallow: /config/
-Disallow: /types/
-Disallow: /hooks/
-Disallow: /styles/
-Disallow: /docs/
-Disallow: /scripts/
+Disallow: /studio/
 
-# Block access to development and build files
-Disallow: /*.js$
-Disallow: /*.css$
-Disallow: /*.map$
-Disallow: /*.json$
-Disallow: /*.txt$
-Disallow: /*.md$
-Disallow: /*.ts$
-Disallow: /*.tsx$
+# --- AI crawlers -------------------------------------------------------------
+# Split by what the crawler is for, rather than blocking every AI user agent.
+#
+# Allowed: the retrieval and answer-engine crawlers. "Should I get a HELOC?" is exactly
+# the kind of question people now ask an assistant instead of a search box, and being
+# absent from that surface costs visibility with no offsetting benefit.
 
-# Block access to temporary and cache files
-Disallow: /temp/
-Disallow: /cache/
-Disallow: /tmp/
-Disallow: /.cache/
-Disallow: /.tmp/
-
-# Block access to sensitive files
-Disallow: /.env
-Disallow: /.env.*
-Disallow: /package.json
-Disallow: /package-lock.json
-Disallow: /pnpm-lock.yaml
-Disallow: /yarn.lock
-Disallow: /tsconfig.json
-Disallow: /next.config.*
-Disallow: /tailwind.config.*
-Disallow: /postcss.config.*
-Disallow: /components.json
-
-# Block access to image optimization files
-Disallow: /_next/image
-Disallow: /images/optimized/
-
-# Allow important pages and content
-Allow: /heloc-101
-Allow: /calculators/
-Allow: /about
-Allow: /blog/
-Allow: /contact
-Allow: https://get-started.heloc360.com/
-Allow: /meet-our-team/
-Allow: /privacy
-Allow: /terms
-Allow: /affiliate-disclosure
-Allow: /communication-consent
-
-# Specific rules for major search engines
-User-agent: Googlebot
+User-agent: OAI-SearchBot
 Allow: /
-Crawl-delay: 1
 
-User-agent: Bingbot
+User-agent: ChatGPT-User
 Allow: /
-Crawl-delay: 1
 
-User-agent: Slurp
+User-agent: Claude-User
 Allow: /
-Crawl-delay: 1
 
-User-agent: DuckDuckBot
+User-agent: Claude-SearchBot
 Allow: /
-Crawl-delay: 1
 
-User-agent: Baiduspider
+User-agent: PerplexityBot
 Allow: /
-Crawl-delay: 2
 
-User-agent: YandexBot
+User-agent: Perplexity-User
 Allow: /
-Crawl-delay: 2
 
-# Block AI training crawlers (optional - remove if you want AI training)
+# Blocked: bulk crawlers whose purpose is assembling training corpora. Nothing comes
+# back to the site from these.
+
 User-agent: GPTBot
 Disallow: /
 
-User-agent: ChatGPT-User
-Disallow: /
-
-User-agent: CCBot
+User-agent: ClaudeBot
 Disallow: /
 
 User-agent: anthropic-ai
 Disallow: /
 
-User-agent: Claude-Web
+User-agent: CCBot
 Disallow: /
 
-User-agent: Omgilibot
+User-agent: Google-Extended
 Disallow: /
 
-# Block archive and backup crawlers
-User-agent: ia_archiver
-Disallow: /
+# --- Sitemap -----------------------------------------------------------------
 
-User-agent: archive.org_bot
-Disallow: /
-
-# Block aggressive crawlers
-User-agent: AhrefsBot
-Disallow: /
-Crawl-delay: 10
-
-User-agent: SemrushBot
-Disallow: /
-Crawl-delay: 10
-
-User-agent: MJ12bot
-Disallow: /
-Crawl-delay: 10
-
-User-agent: DotBot
-Disallow: /
-Crawl-delay: 10
-
-# Performance optimization
-# Set crawl delay for all bots to prevent server overload
-Crawl-delay: 1
+Sitemap: https://heloc360.com/sitemap.xml

@@ -195,6 +195,19 @@
     @apply text-blue-600 hover:text-blue-800 underline;
   }
   
+  /* The mid-article CTA renders inside .prose-custom, where `.prose-custom a` (0,1,1)
+     outranks the utility classes on the element itself (0,1,0) and would repaint the
+     link blue-600 with an underline. Tailwind's own `not-prose` doesn't help here — it
+     only disables the typography plugin's styles, not these custom descendant rules — so
+     the CTA gets an explicit, higher-specificity reset. */
+  .prose-custom .blog-inline-cta a {
+    @apply no-underline text-[#1b75bc];
+  }
+
+  .prose-custom .blog-inline-cta a:hover {
+    @apply text-[#12547f];
+  }
+
   .prose-custom img {
     @apply rounded-lg shadow-md;
   }

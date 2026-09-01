@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import { EmailCapture } from '@/components/lead/email-capture'
 
 export type MortgageMateEmbedValue = {
   _type: 'mortgageMateEmbed'
@@ -11,6 +12,7 @@ export type MortgageMateEmbedValue = {
   background?: 'white' | 'gray-50'
   maxWidth?: 'none' | '4xl' | '6xl' | '7xl'
   paddingY?: 'none' | 'sm' | 'md' | 'lg'
+  hideLeadCapture?: boolean
 }
 
 const EMBED_SRC = 'https://mortgagemate.app/embed.js'
@@ -60,6 +62,21 @@ export function MortgageMateEmbedSection({ value }: { value: MortgageMateEmbedVa
           <h2 className="text-2xl font-bold text-gray-900 mb-4">{value.heading}</h2>
         )}
         <div ref={containerRef} data-mortgagemate={value.calculator} data-key={value.dataKey} />
+
+        {/* The vendor widget hands over its answer and asks for nothing. This is the
+            follow-up: the result stays ungated (gating it would cost the page its ability
+            to rank) and the offer comes after the value has landed. */}
+        {!value.hideLeadCapture && (
+          <div className="mt-8 max-w-2xl">
+            <EmailCapture
+              source={`calculator-${value.calculator}`}
+              context={{ calculator: value.calculator }}
+              heading="Want these numbers emailed to you?"
+              body="We'll send this breakdown plus what lenders look for, so you can compare it against a real offer."
+              action="Email my breakdown"
+            />
+          </div>
+        )}
       </div>
     </section>
   )
