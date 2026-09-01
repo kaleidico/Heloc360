@@ -1,3 +1,17 @@
+// Blog posts retired 2026-09-01 (ClickUp 868kd5nv5): removed from Sanity and
+// permanently redirected to the blog index so the live URLs keep their equity.
+const RETIRED_BLOG_SLUGS = [
+	"why-savvy-homeowners-are-turning-to-helocs-in-2025",
+	"why-a-heloc-could-be-your-ultimate-financial-safety-net",
+	"master-these-heloc-strategies-for-financial-success-2025",
+	"unlocking-your-homes-hidden-potential-with-a-heloc",
+	"whens-the-perfect-time-to-apply-for-a-heloc",
+	"is-a-heloc-right-for-your-financial-future-2025-guide",
+	"the-shocking-consequences-of-heloc-default",
+	"helocs-in-a-post-covid-world-whats-changed",
+	"why-a-heloc-is-your-ultimate-emergency-fund",
+];
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	poweredByHeader: false,
@@ -90,6 +104,12 @@ const nextConfig = {
 				destination: "/calculators/home-equity-estimator",
 				permanent: true,
 			},
+			// Retired blog posts -> blog index
+			...RETIRED_BLOG_SLUGS.map((slug) => ({
+				source: `/blog/${slug}`,
+				destination: "/blog",
+				permanent: true,
+			})),
 		];
 	},
 };
