@@ -1,11 +1,5 @@
 [
 	{
-		"label": "How it works",
-		"url": "/#how-it-works",
-		"type": "text",
-		"icon": null
-	},
-	{
 		"label": "HELOC 101",
 		"url": "/heloc-101",
 		"type": "text",
