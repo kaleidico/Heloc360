@@ -39,6 +39,14 @@ export const mortgageMateEmbed = defineType({
       validation: (R) => R.required(),
     }),
     defineField({
+      name: 'hideLeadCapture',
+      title: 'Hide the follow-up offer',
+      type: 'boolean',
+      initialValue: false,
+      description:
+        'By default a short email capture appears under the calculator — someone entering their mortgage balance is the highest-intent visitor on the site, and the vendor widget itself captures nothing. Tick this only if a page needs the calculator with no follow-up.',
+    }),
+    defineField({
       name: 'heading',
       title: 'Heading (optional)',
       type: 'string',

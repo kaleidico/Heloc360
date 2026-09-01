@@ -13,6 +13,13 @@ export const ALL_BLOG_POSTS_QUERY = `
     "categories": coalesce(categories, []),
     featureImage,
     "featureImageAlt": featureImage.alt,
+    updatedAt,
+    author->{
+      "name": teamMemberName,
+      "slug": slug.current,
+      title,
+      photo
+    },
     seoTitle,
     seoDescription
   }
@@ -29,6 +36,13 @@ export const BLOG_POST_BY_SLUG_QUERY = `
     "categories": coalesce(categories, []),
     featureImage,
     "featureImageAlt": featureImage.alt,
+    updatedAt,
+    author->{
+      "name": teamMemberName,
+      "slug": slug.current,
+      title,
+      photo
+    },
     seoTitle,
     seoDescription
   }

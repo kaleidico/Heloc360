@@ -9,8 +9,14 @@ export interface BlogPost {
   author?: {
     name: string
     image: string
+    /** Job title, rendered alongside the byline as an expertise signal. */
+    role?: string
+    /** Links the byline through to the team member's profile page. */
+    slug?: string
   }
   publishedDate: string
+  /** Set only when the post has been revised since publication. */
+  updatedDate?: string
   readTime: number
   category: string
   tags: string[]

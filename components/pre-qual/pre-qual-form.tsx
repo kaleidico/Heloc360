@@ -19,7 +19,7 @@ import { lookupZip } from "@/lib/pre-qual/zip-lookup"
 import { EquityReadout } from "./equity-readout"
 import { BestTimeChips } from "./best-time-chips"
 import { slaCopy } from "@/lib/pre-qual/sla"
-import type { UseCase } from "@/lib/pre-qual/use-case"
+import { USE_CASES, type UseCase } from "@/lib/pre-qual/use-case"
 
 const STORAGE_KEY = "prequal:state"
 
@@ -81,6 +81,18 @@ export function PreQualForm({ useCase }: PreQualFormProps) {
     },
     mode: "onTouched",
   })
+
+  // Adopt the use case from `?use=` when the visitor arrived from a CTA that knows the
+  // vertical (blog posts and calculators send one). Read off window.location rather than
+  // useSearchParams so the host page can stay statically rendered. Unknown values are
+  // ignored, leaving the `useCase` prop as the default.
+  useEffect(() => {
+    if (typeof window === "undefined") return
+    const requested = new URLSearchParams(window.location.search).get("use")
+    if (requested && (USE_CASES as readonly string[]).includes(requested)) {
+      setValue("useCase", requested as UseCase)
+    }
+  }, [setValue])
 
   // Rehydrate persisted state on mount.
   useEffect(() => {

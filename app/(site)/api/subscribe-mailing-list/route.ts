@@ -4,7 +4,14 @@ import { sendLeadNotification } from "@/lib/email/notify";
 export async function POST(request: NextRequest) {
 	try {
 		const body = await request.json();
-		const { firstName, email } = body;
+		const { firstName, email, source, context } = body;
+
+		// Which surface produced the signup. Defaults to the homepage form, which was the
+		// only caller before blog posts and calculators got their own capture blocks.
+		const leadSource =
+			typeof source === "string" && source.trim()
+				? source.trim().slice(0, 80)
+				: "homepage-mailing-list";
 
 		// Validate required fields
 		if (!firstName || !email) {
@@ -35,7 +42,8 @@ export async function POST(request: NextRequest) {
 					firstName: firstName.trim(),
 					email: email.trim(),
 					submittedAt: new Date().toISOString(),
-					source: "homepage-mailing-list",
+					source: leadSource,
+					...(context && typeof context === "object" ? { context } : {}),
 				}),
 			}
 		);
@@ -49,7 +57,12 @@ export async function POST(request: NextRequest) {
 		// Notify the team (additive, best-effort — never throws).
 		await sendLeadNotification({
 			formName: "Mailing List Signup",
-			fields: { firstName: firstName.trim(), email: email.trim(), source: "homepage-mailing-list" },
+			fields: {
+				firstName: firstName.trim(),
+				email: email.trim(),
+				source: leadSource,
+				...(context && typeof context === "object" ? context : {}),
+			},
 			subjectHint: email.trim(),
 			replyTo: email.trim(),
 		});

@@ -36,6 +36,13 @@ type RawBlogPost = {
   categories: string[]
   featureImage?: SanityImageSource & { alt?: string }
   featureImageAlt?: string
+  updatedAt?: string
+  author?: {
+    name?: string
+    slug?: string
+    title?: string
+    photo?: SanityImageSource
+  }
   seoTitle?: string
   seoDescription?: string
 }
@@ -100,6 +107,15 @@ function mapBlogPost(raw: RawBlogPost): BlogPost {
     excerpt: raw.seoDescription || raw.excerpt || excerptFromBlocks(body),
     body,
     publishedDate: raw.publishDate,
+    updatedDate: raw.updatedAt,
+    author: raw.author?.name
+      ? {
+          name: raw.author.name,
+          image: raw.author.photo ? imageUrl(raw.author.photo) : '/placeholder-user.jpg',
+          role: raw.author.title,
+          slug: raw.author.slug,
+        }
+      : undefined,
     readTime: estimateReadTimeFromBlocks(body),
     category,
     tags: [],

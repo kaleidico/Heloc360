@@ -92,6 +92,21 @@ export const blogPost = defineType({
       ],
     }),
     defineField({
+      name: 'author',
+      title: 'Author',
+      type: 'reference',
+      to: [{ type: 'teamMember' }],
+      description:
+        'Shown as the byline and emitted in the article schema. Home equity advice counts as YMYL content, where a named, credentialed author carries real ranking weight.',
+    }),
+    defineField({
+      name: 'updatedAt',
+      title: 'Last reviewed',
+      type: 'datetime',
+      description:
+        'Set this when the post is revised. It drives dateModified in the article schema and the visible "Reviewed" line — leave it empty and the post reads as untouched since publication.',
+    }),
+    defineField({
       name: 'seoTitle',
       title: 'SEO title',
       type: 'string',

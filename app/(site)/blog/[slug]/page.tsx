@@ -11,6 +11,9 @@ import { PortableText } from "@/components/blog/portable-text"
 
 import { getAllBlogPosts, getBlogPostBySlug } from "@/lib/sanity/api"
 import { decodeHtmlEntities } from "@/lib/utils"
+import { MidArticleCta, ArticleEndCta } from "@/components/blog/inline-cta"
+import { EmailCapture } from "@/components/lead/email-capture"
+import { deriveUseCase, splitIndexForCta } from "@/lib/blog/cta-context"
 
 type Props = {
   params: { slug: string }
@@ -66,6 +69,11 @@ export default async function BlogPostPage({ params }: Props) {
   const allPosts = await getAllBlogPosts()
   const relatedPosts = allPosts.filter((p) => p.category === post.category && p.id !== post.id).slice(0, 3)
 
+  // Conversion context for this post: which pre-qual vertical to send readers to, and
+  // where to break the article for the mid-article prompt.
+  const useCase = deriveUseCase(post)
+  const splitAt = splitIndexForCta(post.body)
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -90,7 +98,20 @@ export default async function BlogPostPage({ params }: Props) {
       },
     },
     datePublished: post.publishedDate,
-    dateModified: post.publishedDate,
+    // Only claim a modification date when the post actually carries one.
+    dateModified: post.updatedDate || post.publishedDate,
+    ...(post.author
+      ? {
+          author: {
+            "@type": "Person",
+            name: post.author.name,
+            ...(post.author.role ? { jobTitle: post.author.role } : {}),
+            ...(post.author.slug
+              ? { url: `https://heloc360.com/meet-our-team/${post.author.slug}` }
+              : {}),
+          },
+        }
+      : {}),
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": `https://heloc360.com/blog/${post.slug}`,
@@ -131,10 +152,43 @@ export default async function BlogPostPage({ params }: Props) {
 
             {/* Meta Information */}
             <div className="flex flex-wrap items-center gap-6 text-gray-600 mb-8 pb-8 border-b border-gray-200">
+              {post.author && (
+                <div className="flex items-center gap-3">
+                  <Image
+                    src={post.author.image}
+                    alt=""
+                    width={40}
+                    height={40}
+                    className="rounded-full object-cover w-10 h-10"
+                  />
+                  <span className="leading-tight">
+                    {post.author.slug ? (
+                      <Link
+                        href={`/meet-our-team/${post.author.slug}`}
+                        className="font-semibold text-gray-900 hover:text-[#1b75bc] transition-colors"
+                      >
+                        {post.author.name}
+                      </Link>
+                    ) : (
+                      <span className="font-semibold text-gray-900">{post.author.name}</span>
+                    )}
+                    {post.author.role && (
+                      <span className="block text-sm text-gray-500">{post.author.role}</span>
+                    )}
+                  </span>
+                </div>
+              )}
+
               <div className="flex items-center gap-1">
                 <Calendar className="w-4 h-4" />
                 <span>{formatDate(post.publishedDate)}</span>
               </div>
+
+              {post.updatedDate && post.updatedDate !== post.publishedDate && (
+                <span className="text-sm text-gray-500">
+                  Reviewed {formatDate(post.updatedDate)}
+                </span>
+              )}
 
               <div className="flex items-center gap-1">
                 <Clock className="w-4 h-4" />
@@ -165,16 +219,39 @@ export default async function BlogPostPage({ params }: Props) {
               <TableOfContents blocks={post.body} />
             )}
 
-            {/* Article Content */}
+            {/* Article Content — split around the mid-article CTA when the post is long
+                enough to carry one, otherwise rendered in a single pass. */}
             {post.body && post.body.length > 0 ? (
               <div className="prose-custom" style={{ lineHeight: "1.8" }}>
-                <PortableText value={post.body} />
+                {splitAt > 0 ? (
+                  <>
+                    <PortableText value={post.body.slice(0, splitAt)} />
+                    <MidArticleCta useCase={useCase} slug={post.slug} />
+                    <PortableText value={post.body.slice(splitAt)} />
+                  </>
+                ) : (
+                  <PortableText value={post.body} />
+                )}
               </div>
             ) : (
               <div className="text-center py-12 text-gray-500">
                 <p>Content coming soon...</p>
               </div>
             )}
+
+            {/* Primary conversion block */}
+            <ArticleEndCta useCase={useCase} slug={post.slug} />
+
+            {/* Secondary, lower-commitment path for readers who aren't ready to pre-qualify */}
+            <div className="mt-8">
+              <EmailCapture
+                source="blog-post"
+                context={{ slug: post.slug, useCase }}
+                heading="Not ready yet? Get the HELOC readiness checklist."
+                body="The six things lenders look at, and how to get ahead of them before you apply."
+                action="Send the checklist"
+              />
+            </div>
 
             {/* Related Articles */}
             {relatedPosts.length > 0 && (
