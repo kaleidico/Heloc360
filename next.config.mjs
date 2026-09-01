@@ -110,6 +110,16 @@ const nextConfig = {
 				destination: "/blog",
 				permanent: true,
 			})),
+			// Same nine posts at their legacy root-level URLs. These normally resolve via
+			// the catch-all in app/(site)/[...slug]/page.tsx, which looks the slug up in
+			// Sanity and redirects to /blog/<slug> — so the moment the documents are
+			// deleted that lookup fails and the URL 404s instead. Redirecting here keeps
+			// them working for inbound links and anything still in the index.
+			...RETIRED_BLOG_SLUGS.map((slug) => ({
+				source: `/${slug}`,
+				destination: "/blog",
+				permanent: true,
+			})),
 		];
 	},
 };
