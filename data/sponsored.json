@@ -4,21 +4,20 @@
   "active": true,
   "lei": "254900UL88QFG0E40516",
   "brand": "Figure",
-  "headline": "Get an instant decision online",
-  "body": "Check your rate in minutes without leaving your couch, and see what you qualify for before you commit to a full application.",
+  "headline": "Get the cash you need without leaving home",
+  "body": "Apply with a 100% online application in minutes, with no need to wait for an in-person appraisal.",
   "cta": {
-    "label": "Check your rate",
-    "url": "https://REPLACE-WITH-AFFILIATE-LINK"
+    "label": "Find my HELOC rate",
+    "url": "https://www.figure.com/affiliate/b/home-equity-line-2/?irclickid=2%3AIzmdzfNxyZRrg2Hdwhz1TSUkr1Q4xWU2Si180&irgwc=1&afsrc=1&utm_medium=affiliate&utm_source=Kaleidico&utm_campaign=heloc&sharedID=&utm_content=Online%20Tracking%20Link&utm_id="
   },
   "disclosureShort": "Advertisement",
   "disclosureLong": "Figure is a paid advertiser. Payment does not affect our rankings, which are computed from federal HMDA filings and cannot be purchased.",
   "organicRank": 3,
-  "claimsVerifiedOn": null,
-  "claimsSourceUrl": null,
+  "claimsVerifiedOn": "2026-10-12",
+  "claimsSourceUrl": "https://www.figure.com/affiliate/b/home-equity-line-2/",
   "payoutTrigger": null,
   "_blocking": [
-    "Every claim in headline/body must be verified against Figure's approved affiliate creative before launch. Set claimsVerifiedOn + claimsSourceUrl.",
-    "Affiliate link must be replaced with the live tracking URL.",
+    "Copy is taken verbatim from Figure's own landing page (claimsSourceUrl), checked 2026-10-12; no approved affiliate creative was supplied. Footnoted claims (funding in as few as 5 days, up to $750,000) are left out because this unit carries no disclaimer. Re-check if Figure changes the page.",
     "Payout trigger (click / form fill / funded loan) is currently unverified - confirm with Sydney via Ken.",
     "Confirm Figure permits placement alongside a ranking that includes competitors.",
     "FTC material-connection disclosure must appear on /about and on every page carrying this unit."

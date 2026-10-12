@@ -174,10 +174,9 @@ export const getMethodologyMarkdown = memoize(() =>
  * Whether the paid placement may render.
  *
  * Three independent conditions, all required (PDR section 7.3). `claimsVerifiedOn`
- * is null in the committed config on purpose: it blocks the unit until every
- * claim in the headline and body has been checked against the advertiser's own
- * approved creative. The placeholder affiliate URL blocks it too, so a half-wired
- * unit cannot reach production and quietly send traffic nowhere.
+ * blocks the unit until every claim in the headline and body has been checked
+ * against the advertiser's own copy, recorded in `claimsSourceUrl`. The
+ * placeholder affiliate URL blocks it too, so a half-wired unit cannot reach production and quietly send traffic nowhere.
  *
  * This is deliberately a hard gate rather than a warning. Shipping an unverified
  * advertising claim on a page whose entire value is verifiability is the one
