@@ -184,9 +184,9 @@ export default async function BlogPostPage({ params }: Props) {
                 <span>{formatDate(post.publishedDate)}</span>
               </div>
 
-              {post.updatedDate && post.updatedDate !== post.publishedDate && (
+              {post.updatedDate && (
                 <span className="text-sm text-gray-500">
-                  Reviewed {formatDate(post.updatedDate)}
+                  Last updated: {new Date(post.updatedDate).toLocaleDateString('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' })}
                 </span>
               )}
 

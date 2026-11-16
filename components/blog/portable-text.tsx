@@ -21,6 +21,37 @@ function makeHeadingComponents(): PortableTextComponents['block'] {
 const components: PortableTextComponents = {
   block: makeHeadingComponents(),
   types: {
+    table: ({ value }) => {
+      const rows = (value as { rows?: { _key?: string; cells?: string[] }[] })?.rows
+      if (!rows || rows.length === 0) return null
+      const hasHeader = (value as { hasHeader?: boolean }).hasHeader !== false
+      const head = hasHeader ? rows[0] : null
+      const bodyRows = hasHeader ? rows.slice(1) : rows
+      return (
+        <div className="not-prose my-6 w-full max-w-full overflow-x-auto">
+          <table className="blog-table">
+            {head && (
+              <thead>
+                <tr>
+                  {(head.cells || []).map((c, i) => (
+                    <th key={i} scope="col">{c}</th>
+                  ))}
+                </tr>
+              </thead>
+            )}
+            <tbody>
+              {bodyRows.map((r, ri) => (
+                <tr key={r._key || ri}>
+                  {(r.cells || []).map((c, ci) => (
+                    <td key={ci}>{c}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )
+    },
     image: ({ value }) => {
       if (!value) return null
       const src = imageUrl(value)

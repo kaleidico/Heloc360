@@ -232,4 +232,22 @@
   .prose-custom tr:hover {
     @apply bg-gray-100;
   }
+
+  .blog-table {
+    @apply w-full border-collapse border border-gray-300 text-base;
+    min-width: 36rem;
+  }
+
+  .blog-table th,
+  .blog-table td {
+    @apply border border-gray-300 px-4 py-2 text-left align-top;
+  }
+
+  .blog-table th {
+    @apply bg-gray-100 font-semibold text-gray-900;
+  }
+
+  .blog-table tbody tr:nth-child(even) {
+    @apply bg-gray-50;
+  }
 }

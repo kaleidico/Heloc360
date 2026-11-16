@@ -62,6 +62,44 @@ export const blogPost = defineType({
           },
         }),
         defineArrayMember({
+          name: 'table',
+          title: 'Table',
+          type: 'object',
+          fields: [
+            {
+              name: 'hasHeader',
+              title: 'First row is a header',
+              type: 'boolean',
+              initialValue: true,
+            },
+            {
+              name: 'rows',
+              title: 'Rows',
+              type: 'array',
+              of: [
+                {
+                  name: 'tableRow',
+                  title: 'Row',
+                  type: 'object',
+                  fields: [
+                    {
+                      name: 'cells',
+                      title: 'Cells',
+                      type: 'array',
+                      of: [{ type: 'string' }],
+                    },
+                  ],
+                  preview: { select: { cells: 'cells' }, prepare: ({ cells }) => ({ title: (cells || []).join(' | ') }) },
+                },
+              ],
+            },
+          ],
+          preview: {
+            select: { rows: 'rows' },
+            prepare: ({ rows }) => ({ title: 'Table', subtitle: `${(rows || []).length} rows` }),
+          },
+        }),
+        defineArrayMember({
           type: 'image',
           options: { hotspot: true },
           fields: [
@@ -101,10 +139,10 @@ export const blogPost = defineType({
     }),
     defineField({
       name: 'updatedAt',
-      title: 'Last reviewed',
+      title: 'Last updated',
       type: 'datetime',
       description:
-        'Set this when the post is revised. It drives dateModified in the article schema and the visible "Reviewed" line — leave it empty and the post reads as untouched since publication.',
+        'Set this when the post is revised. It drives dateModified in the article schema and the visible "Last updated" line — leave it empty and the post reads as untouched since publication.',
     }),
     defineField({
       name: 'seoTitle',
