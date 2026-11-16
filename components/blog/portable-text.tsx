@@ -18,11 +18,32 @@ function makeHeadingComponents(): PortableTextComponents['block'] {
   }
 }
 
+type TableCell = { _key?: string; content?: PortableTextBlock[] }
+
+const cellComponents: PortableTextComponents = {
+  block: { normal: ({ children }) => <span className="block">{children}</span> },
+  marks: {
+    link: ({ value, children }) => {
+      const href = (value as { href?: string })?.href || '#'
+      return href.startsWith('http') ? (
+        <a href={href} target="_blank" rel="noopener noreferrer">{children}</a>
+      ) : (
+        <a href={href}>{children}</a>
+      )
+    },
+  },
+}
+
+function CellContent({ cell }: { cell: TableCell }) {
+  if (!cell?.content?.length) return null
+  return <BasePortableText value={cell.content} components={cellComponents} />
+}
+
 const components: PortableTextComponents = {
   block: makeHeadingComponents(),
   types: {
     table: ({ value }) => {
-      const rows = (value as { rows?: { _key?: string; cells?: string[] }[] })?.rows
+      const rows = (value as { rows?: { _key?: string; cells?: TableCell[] }[] })?.rows
       if (!rows || rows.length === 0) return null
       const hasHeader = (value as { hasHeader?: boolean }).hasHeader !== false
       const head = hasHeader ? rows[0] : null
@@ -34,7 +55,7 @@ const components: PortableTextComponents = {
               <thead>
                 <tr>
                   {(head.cells || []).map((c, i) => (
-                    <th key={i} scope="col">{c}</th>
+                    <th key={i} scope="col"><CellContent cell={c} /></th>
                   ))}
                 </tr>
               </thead>
@@ -43,7 +64,7 @@ const components: PortableTextComponents = {
               {bodyRows.map((r, ri) => (
                 <tr key={r._key || ri}>
                   {(r.cells || []).map((c, ci) => (
-                    <td key={ci}>{c}</td>
+                    <td key={ci}><CellContent cell={c} /></td>
                   ))}
                 </tr>
               ))}

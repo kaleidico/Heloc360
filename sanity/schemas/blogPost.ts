@@ -86,10 +86,52 @@ export const blogPost = defineType({
                       name: 'cells',
                       title: 'Cells',
                       type: 'array',
-                      of: [{ type: 'string' }],
+                      of: [
+                        {
+                          name: 'tableCell',
+                          title: 'Cell',
+                          type: 'object',
+                          fields: [
+                            {
+                              name: 'content',
+                              title: 'Content',
+                              type: 'array',
+                              of: [
+                                {
+                                  type: 'block',
+                                  styles: [{ title: 'Normal', value: 'normal' }],
+                                  lists: [],
+                                  marks: {
+                                    decorators: [
+                                      { title: 'Strong', value: 'strong' },
+                                      { title: 'Emphasis', value: 'em' },
+                                    ],
+                                    annotations: [
+                                      {
+                                        name: 'link',
+                                        type: 'object',
+                                        title: 'Link',
+                                        fields: [{ name: 'href', type: 'url', title: 'URL' }],
+                                      },
+                                    ],
+                                  },
+                                },
+                              ],
+                            },
+                          ],
+                          preview: {
+                            select: { content: 'content' },
+                            prepare: ({ content }) => ({
+                              title: ((content || []) as { children?: { text?: string }[] }[])
+                                .map((b) => (b.children || []).map((c) => c.text || '').join(''))
+                                .join(' '),
+                            }),
+                          },
+                        },
+                      ],
                     },
                   ],
-                  preview: { select: { cells: 'cells' }, prepare: ({ cells }) => ({ title: (cells || []).join(' | ') }) },
+                  preview: { select: { cells: 'cells' }, prepare: ({ cells }) => ({ title: `${(cells || []).length} cells` }) },
                 },
               ],
             },
