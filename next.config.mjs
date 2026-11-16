@@ -149,8 +149,8 @@ const nextConfig = {
 			})),
 			// Consolidated duplicates -> refreshed posts (both /blog/<slug> and legacy root form)
 			...CONSOLIDATED_BLOG_POSTS.flatMap(([from, to]) => [
-				{ source: `/blog/${from}`, destination: `/blog/${to}`, permanent: true },
-				{ source: `/${from}`, destination: `/blog/${to}`, permanent: true },
+				{ source: `/blog/${from}`, destination: `/blog/${to}`, statusCode: 301 },
+				{ source: `/${from}`, destination: `/blog/${to}`, statusCode: 301 },
 			]),
 		];
 	},
