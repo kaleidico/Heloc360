@@ -209,7 +209,12 @@
   }
 
   .prose-custom img {
-    @apply rounded-lg shadow-md mx-auto h-auto w-full max-w-[640px];
+    @apply rounded-lg shadow-md;
+  }
+
+  /* Blog article body graphics: narrower than the column, centered, full width on phones. */
+  .blog-article-body img {
+    @apply mx-auto h-auto w-full max-w-[640px];
   }
   
   .prose-custom table {

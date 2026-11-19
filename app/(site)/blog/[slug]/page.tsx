@@ -222,7 +222,7 @@ export default async function BlogPostPage({ params }: Props) {
             {/* Article Content — split around the mid-article CTA when the post is long
                 enough to carry one, otherwise rendered in a single pass. */}
             {post.body && post.body.length > 0 ? (
-              <div className="prose-custom" style={{ lineHeight: "1.8" }}>
+              <div className="prose-custom blog-article-body" style={{ lineHeight: "1.8" }}>
                 {splitAt > 0 ? (
                   <>
                     <PortableText value={post.body.slice(0, splitAt)} />
