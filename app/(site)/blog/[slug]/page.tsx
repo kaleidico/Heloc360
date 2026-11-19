@@ -72,7 +72,8 @@ export default async function BlogPostPage({ params }: Props) {
   // Conversion context for this post: which pre-qual vertical to send readers to, and
   // where to break the article for the mid-article prompt.
   const useCase = deriveUseCase(post)
-  const splitAt = splitIndexForCta(post.body)
+  const hasInlineCta = !!post.body?.some((b: { _type?: string }) => b?._type === 'ctaBox')
+  const splitAt = hasInlineCta ? 0 : splitIndexForCta(post.body)
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -230,7 +231,7 @@ export default async function BlogPostPage({ params }: Props) {
                     <PortableText value={post.body.slice(splitAt)} />
                   </>
                 ) : (
-                  <PortableText value={post.body} />
+                  <PortableText value={post.body} cta={{ useCase, slug: post.slug }} />
                 )}
               </div>
             ) : (

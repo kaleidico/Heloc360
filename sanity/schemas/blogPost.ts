@@ -148,6 +148,24 @@ export const blogPost = defineType({
             { name: 'alt', type: 'string', title: 'Alt text' },
           ],
         }),
+        defineArrayMember({
+          type: 'object',
+          name: 'ctaBox',
+          title: 'CTA box',
+          description:
+            'Places the "Ready to see your numbers?" box here. Posts with one of these do not also get the automatic box.',
+          fields: [
+            defineField({
+              name: 'note',
+              title: 'Note (not shown on the site)',
+              type: 'string',
+              hidden: true,
+            }),
+          ],
+          preview: {
+            prepare: () => ({ title: 'CTA box: Ready to see your numbers?' }),
+          },
+        }),
       ],
     }),
     defineField({

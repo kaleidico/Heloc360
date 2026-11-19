@@ -3,6 +3,8 @@
 import { PortableText as BasePortableText, type PortableTextComponents } from '@portabletext/react'
 import type { PortableTextBlock } from '@portabletext/types'
 import { imageUrl } from '@/lib/sanity/image'
+import { MidArticleCta } from '@/components/blog/inline-cta'
+import type { UseCase } from '@/lib/pre-qual/use-case'
 
 // IDs match the contract used by TableOfContents: heading-{N} sequentially across h2/h3/h4.
 function makeHeadingComponents(): PortableTextComponents['block'] {
@@ -96,8 +98,18 @@ const components: PortableTextComponents = {
   },
 }
 
-export function PortableText({ value }: { value: PortableTextBlock[] }) {
+type CtaContext = { useCase: UseCase; slug: string }
+
+export function PortableText({ value, cta }: { value: PortableTextBlock[]; cta?: CtaContext }) {
   // Recreate the heading counter on every render so navigations don't leak.
-  const renderComponents: PortableTextComponents = { ...components, block: makeHeadingComponents() }
+  const renderComponents: PortableTextComponents = {
+    ...components,
+    block: makeHeadingComponents(),
+    types: {
+      ...components.types,
+      // Editor-placed CTA box. Only rendered where the page supplies the use case and slug.
+      ctaBox: () => (cta ? <MidArticleCta useCase={cta.useCase} slug={cta.slug} /> : null),
+    },
+  }
   return <BasePortableText value={value} components={renderComponents} />
 }
