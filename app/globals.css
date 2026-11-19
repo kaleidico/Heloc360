@@ -209,7 +209,7 @@
   }
 
   .prose-custom img {
-    @apply rounded-lg shadow-md;
+    @apply rounded-lg shadow-md mx-auto h-auto w-full max-w-[640px];
   }
   
   .prose-custom table {
